@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const COMPANY_DATA = {
   name: "VIG CZ",
@@ -744,8 +745,10 @@ export default function CompanyAssessmentReport() {
               Na základě assessmentu doporučujeme tyto vzdělávací priority
             </p>
           </div>
-          <button
+          <Link
+            href="/admin/kurzy"
             style={{
+              display: "inline-block",
               padding: "10px 20px",
               background: "transparent",
               border: "2px solid #2596FF",
@@ -755,6 +758,7 @@ export default function CompanyAssessmentReport() {
               fontWeight: 600,
               cursor: "pointer",
               transition: "all 0.15s",
+              textDecoration: "none",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = "#2596FF";
@@ -766,7 +770,7 @@ export default function CompanyAssessmentReport() {
             }}
           >
             Upravit výběr (Admin)
-          </button>
+          </Link>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
@@ -797,8 +801,10 @@ export default function CompanyAssessmentReport() {
             Přiřaďte kurzy zaměstnancům a sledujte jejich pokrok v reálném čase.
           </p>
         </div>
-        <button
+        <Link
+          href="/admin/kurzy"
           style={{
+            display: "inline-block",
             padding: "14px 28px",
             background: "white",
             border: "none",
@@ -808,12 +814,13 @@ export default function CompanyAssessmentReport() {
             fontWeight: 700,
             cursor: "pointer",
             transition: "transform 0.15s",
+            textDecoration: "none",
           }}
           onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
           onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
         >
           Přejít do Admin panelu
-        </button>
+        </Link>
       </div>
     </div>
   );
