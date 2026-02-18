@@ -1,15 +1,27 @@
-/* Digiskills Design Tokens – neměň tyto hodnoty, vždy je používej přes CSS proměnné */
+/* Digiskills Design Tokens – podle brand manuálu kapitola 3.0 */
 
 :root {
-  /* Barvy */
-  --color-primary: #1a9be6;
-  --color-primary-hover: #1587cc;
-  --color-text-main: #1a2b4a;
-  --color-text-secondary: #6c757d;
+  /* Main Neutral Colors */
+  --color-digi-sky: #040E3C;
+  --color-text-main: #040E3C;
+
+  /* Main CTA Color – Digi Azure */
+  --color-primary: #2596FF;
+  --color-primary-hover: #1F80D9;
+
+  /* Accent Colors */
+  --color-accent-green: #77F9D9;
+  --color-accent-orange: #F7981C;
+
+  /* Backgrounds */
+  --color-breeze: #F4F5FA;
   --color-background: #ffffff;
+
+  /* Secondary */
+  --color-text-secondary: #6c757d;
   --color-border: #e9ecef;
   --color-border-input: #ced4da;
-  --color-accent: #ff7a00;
+  --color-accent: #F7981C;
   --color-card-shadow: rgba(0, 0, 0, 0.08);
 
   /* Border radius */
@@ -17,9 +29,12 @@
   --radius-card: 12px;
   --radius-input: 6px;
 
-  /* Typografie */
+  /* Typografie – Montserrat (--font-montserrat se nastavuje v layout.tsx přes next/font) */
   --font-size-page-title: 34px;
   --font-size-section-title: 20px;
   --font-size-body: 15px;
   --font-size-meta: 13px;
+
+  /* Brand slant pro grafické prvky (11,3°) */
+  --brand-slant-deg: 11.3;
 }

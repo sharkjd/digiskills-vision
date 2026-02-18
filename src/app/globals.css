@@ -1,10 +1,20 @@
 @import "tailwindcss";
 @import "../styles/design-tokens.css";
 
+/* Tailwind v4 theme – barvy podle brand manuálu */
+@theme {
+  --color-primary: #2596FF;
+  --color-primary-hover: #1F80D9;
+  --color-digi-sky: #040E3C;
+  --color-accent-green: #77F9D9;
+  --color-accent-orange: #F7981C;
+  --color-breeze: #F4F5FA;
+}
+
 body {
   background: var(--color-background);
   color: var(--color-text-main);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-montserrat, "Montserrat"), var(--font-geist-sans), system-ui, sans-serif;
   font-size: var(--font-size-body);
 }
 

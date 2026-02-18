@@ -138,10 +138,10 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
-      {/* HERO SEKCE */}
+      {/* HERO SEKCE – Digi Sky #040E3C podle brand manuálu */}
       <div
         style={{
-          background: "linear-gradient(135deg, #002D5B 0%, #004080 100%)",
+          background: "#040E3C",
           borderRadius: 16,
           padding: "32px 28px",
           color: "white",
@@ -177,7 +177,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
                 width: 48,
                 height: 48,
                 borderRadius: "50%",
-                background: "#00AEEF",
+                background: "#2596FF",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -210,7 +210,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
                 cy="70"
                 r="60"
                 fill="none"
-                stroke="#00AEEF"
+                stroke="#2596FF"
                 strokeWidth="12"
                 strokeLinecap="round"
                 strokeDasharray={`${(overallScore / 10) * 377} 377`}
@@ -247,7 +247,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
           border: "1px solid #E5E7EB",
         }}
       >
-        <h2 style={{ fontSize: 20, fontWeight: 700, color: "#002D5B", margin: "0 0 24px" }}>
+        <h2 style={{ fontSize: 20, fontWeight: 700, color: "#040E3C", margin: "0 0 24px" }}>
           Porovnání kompetencí dle kategorií DigComp
         </h2>
 
@@ -267,12 +267,12 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
                       width: 8,
                       height: 8,
                       borderRadius: "50%",
-                      background: userScores[i] >= COMPANY_AVG[i] ? "#00AEEF" : "#F59E0B",
+                      background: userScores[i] >= COMPANY_AVG[i] ? "#2596FF" : "#F7981C",
                       flexShrink: 0,
                     }}
                   />
                   <span style={{ fontSize: 14, color: "#374151", flex: 1 }}>{label}</span>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: "#002D5B" }}>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: "#040E3C" }}>
                     {userScores[i].toFixed(1)}
                   </span>
                 </div>
@@ -289,7 +289,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <div style={{ width: 16, height: 3, background: "#00AEEF", borderRadius: 2 }} />
+                <div style={{ width: 16, height: 3, background: "#2596FF", borderRadius: 2 }} />
                 <span style={{ fontSize: 12, color: "#6B7280" }}>Můj výsledek</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -301,16 +301,16 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
         </div>
       </div>
 
-      {/* SLOVNÍ VYHODNOCENÍ */}
+      {/* SLOVNÍ VYHODNOCENÍ – Digi Breeze pozadí */}
       <div
         style={{
-          background: "#F8FAFC",
+          background: "#F4F5FA",
           borderRadius: 16,
           padding: "32px 36px",
           border: "1px solid #E5E7EB",
         }}
       >
-        <h2 style={{ fontSize: 20, fontWeight: 700, color: "#002D5B", margin: "0 0 24px" }}>
+        <h2 style={{ fontSize: 20, fontWeight: 700, color: "#040E3C", margin: "0 0 24px" }}>
           Slovní vyhodnocení
         </h2>
         <div style={{ maxWidth: 720, display: "flex", flexDirection: "column", gap: 20 }}>
@@ -336,15 +336,15 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
         </div>
       </div>
 
-      {/* SILNÉ STRÁNKY vs PŘÍLEŽITOSTI */}
+      {/* SILNÉ STRÁNKY vs PŘÍLEŽITOSTI – Digi Skills a Digi Orange */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
-        {/* Superschopnosti */}
+        {/* Superschopnosti – Digi Skills #77F9D9 */}
         <div
           style={{
-            background: "linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)",
+            background: "linear-gradient(135deg, #F9FAFD 0%, #A0FBE4 100%)",
             borderRadius: 16,
             padding: 24,
-            border: "1px solid #A7F3D0",
+            border: "1px solid #77F9D9",
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
@@ -353,7 +353,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
                 width: 40,
                 height: 40,
                 borderRadius: 12,
-                background: "#10B981",
+                background: "#77F9D9",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -362,27 +362,27 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
             >
               💪
             </div>
-            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#065F46", margin: 0 }}>
+            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: 0 }}>
               Tvé superschopnosti
             </h3>
           </div>
-          <div style={{ fontSize: 20, fontWeight: 800, color: "#047857", marginBottom: 8 }}>
+          <div style={{ fontSize: 20, fontWeight: 800, color: "#040E3C", marginBottom: 8 }}>
             {DIGCOMP_LABELS[strongestIndex]}
           </div>
-          <p style={{ fontSize: 14, color: "#065F46", margin: 0, lineHeight: 1.5 }}>
+          <p style={{ fontSize: 14, color: "#040E3C", margin: 0, lineHeight: 1.5 }}>
             V této oblasti jsi nad průměrem firmy. Tvé skóre{" "}
             <strong>{userScores[strongestIndex].toFixed(1)}</strong> ukazuje, že máš solidní základ pro
             mentoring kolegů.
           </p>
         </div>
 
-        {/* Prostor pro růst */}
+        {/* Prostor pro růst – Digi Orange #F7981C */}
         <div
           style={{
-            background: "linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)",
+            background: "linear-gradient(135deg, #FEF8F0 0%, #F9AD49 100%)",
             borderRadius: 16,
             padding: 24,
-            border: "1px solid #FCD34D",
+            border: "1px solid #F7981C",
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
@@ -391,7 +391,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
                 width: 40,
                 height: 40,
                 borderRadius: 12,
-                background: "#F59E0B",
+                background: "#F7981C",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -400,30 +400,30 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
             >
               🚀
             </div>
-            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#92400E", margin: 0 }}>
+            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: 0 }}>
               Prostor pro růst
             </h3>
           </div>
-          <div style={{ fontSize: 20, fontWeight: 800, color: "#B45309", marginBottom: 8 }}>
+          <div style={{ fontSize: 20, fontWeight: 800, color: "#040E3C", marginBottom: 8 }}>
             {DIGCOMP_LABELS[weakestIndex]}
           </div>
-          <p style={{ fontSize: 14, color: "#92400E", margin: 0, lineHeight: 1.5 }}>
+          <p style={{ fontSize: 14, color: "#040E3C", margin: 0, lineHeight: 1.5 }}>
             Zde máš největší potenciál se zlepšit. Aktuální skóre{" "}
-            <strong>{userScores[weakestIndex].toFixed(1)}</strong> – s cílenými kurzy se rychle posunešdál.
+            <strong>{userScores[weakestIndex].toFixed(1)}</strong> – s cílenými kurzy se rychle posuneš dál.
           </p>
         </div>
       </div>
 
-      {/* APLIKACE K ROZVOJI */}
+      {/* APLIKACE K ROZVOJI – Digi Breeze pozadí */}
       <div
         style={{
-          background: "#F8FAFC",
+          background: "#F4F5FA",
           borderRadius: 16,
           padding: 24,
           border: "1px solid #E5E7EB",
         }}
       >
-        <h3 style={{ fontSize: 18, fontWeight: 700, color: "#002D5B", margin: "0 0 16px" }}>
+        <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: "0 0 16px" }}>
           Aplikace k rozvoji
         </h3>
         <p style={{ fontSize: 14, color: "#6B7280", margin: "0 0 20px" }}>
@@ -476,7 +476,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
 
       {/* DOPORUČENÉ KURZY */}
       <div>
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: "#002D5B", margin: "0 0 20px" }}>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: "#040E3C", margin: "0 0 20px" }}>
           Kurzy vybrané přímo pro tebe
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
@@ -486,10 +486,10 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
         </div>
       </div>
 
-      {/* CTA */}
+      {/* CTA – Digi Azure #2596FF */}
       <div
         style={{
-          background: "linear-gradient(135deg, #00AEEF 0%, #0077B6 100%)",
+          background: "#2596FF",
           borderRadius: 16,
           padding: "28px 32px",
           display: "flex",
@@ -578,12 +578,12 @@ function RadarChart({
       {/* Průměr firmy */}
       <path d={companyPath} fill="rgba(156, 163, 175, 0.2)" stroke="#9CA3AF" strokeWidth="2" />
 
-      {/* Uživatelské skóre */}
-      <path d={userPath} fill="rgba(0, 174, 239, 0.25)" stroke="#00AEEF" strokeWidth="3" />
+      {/* Uživatelské skóre – Digi Azure */}
+      <path d={userPath} fill="rgba(37, 150, 255, 0.25)" stroke="#2596FF" strokeWidth="3" />
 
       {/* Body uživatele */}
       {userPoints.map((p, i) => (
-        <circle key={i} cx={p.x} cy={p.y} r="5" fill="#00AEEF" stroke="white" strokeWidth="2" />
+        <circle key={i} cx={p.x} cy={p.y} r="5" fill="#2596FF" stroke="white" strokeWidth="2" />
       ))}
     </svg>
   );
@@ -649,16 +649,16 @@ function CourseCard({ course }: { course: typeof COURSE_LIST[0] }) {
                 fontSize: 11,
                 fontWeight: 600,
                 padding: "4px 8px",
-                background: "#E0F2FE",
+                background: "rgba(37, 150, 255, 0.15)",
                 borderRadius: 6,
-                color: "#0369A1",
+                color: "#1F80D9",
               }}
             >
               {course.level}
             </span>
           </div>
 
-          <h3 style={{ fontSize: 18, fontWeight: 700, color: "#002D5B", margin: "0 0 8px", lineHeight: 1.3 }}>
+          <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: "0 0 8px", lineHeight: 1.3 }}>
             {course.title}
           </h3>
           <p style={{ fontSize: 13, color: "#6B7280", margin: 0, lineHeight: 1.5 }}>
@@ -671,7 +671,7 @@ function CourseCard({ course }: { course: typeof COURSE_LIST[0] }) {
             width: "100%",
             marginTop: 16,
             padding: "12px 20px",
-            background: "#00AEEF",
+            background: "#2596FF",
             color: "white",
             border: "none",
             borderRadius: 10,
@@ -681,8 +681,8 @@ function CourseCard({ course }: { course: typeof COURSE_LIST[0] }) {
             transition: "background 0.15s",
             flexShrink: 0,
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "#0095D0")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "#00AEEF")}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "#1F80D9")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "#2596FF")}
         >
           Začít studovat
         </button>

@@ -21,17 +21,30 @@ Na každé stránce musí být použita komponenta `<Header />` z výše uveden�
 
 ---
 
-## Barvy (design tokeny)
+## Barvy (design tokeny) – podle brand manuálu kapitola 3.0
 
 ```css
---color-primary: #1a9be6;        /* modrá – tlačítka, aktivní stavy, primární odkazy */
---color-primary-hover: #1587cc;  /* modrá – hover stav primárních tlačítek */
---color-text-main: #1a2b4a;      /* tmavě modrá – nadpisy, logo, hlavní text */
---color-text-secondary: #6c757d; /* šedá – metadata, popisky, druhotný text */
+/* Main Neutral Colors */
+--color-digi-sky: #040E3C;       /* Digi Sky – hlavní bannery, tmavá pozadí, hlavní nadpisy */
+--color-text-main: #040E3C;      /* = Digi Sky – nadpisy, logo, hlavní text */
+
+/* Main CTA Color */
+--color-primary: #2596FF;        /* Digi Azure – tlačítka „Začít studovat“, interaktivní prvky */
+--color-primary-hover: #1F80D9;  /* Digi Azure +15% black – hover stav primárních tlačítek */
+
+/* Accent Colors */
+--color-accent-green: #77F9D9;   /* Digi Skills – ikony úspěchu, karty „Tvé superschopnosti“ */
+--color-accent-orange: #F7981C;  /* Digi Orange – zvýraznění, karty „Prostor pro růst“ */
+
+/* Backgrounds */
+--color-breeze: #F4F5FA;         /* Digi Breeze – primární barva pozadí sekcí */
 --color-background: #ffffff;     /* bílá – pozadí stránek a karet */
+
+/* Secondary */
+--color-text-secondary: #6c757d; /* šedá – metadata, popisky, druhotný text */
 --color-border: #e9ecef;         /* světle šedá – rámečky, oddělovače */
 --color-border-input: #ced4da;   /* šedá – rámeček vstupních polí */
---color-accent: #ff7a00;         /* oranžová – FAB chat tlačítko, akcent */
+--color-accent: #F7981C;         /* Digi Orange – FAB chat tlačítko, akcent */
 --color-card-shadow: rgba(0,0,0,0.08); /* stín karet */
 ```
 
@@ -104,10 +117,18 @@ Karty mají bílé pozadí, rámeček `1px solid var(--color-border)` a stín `0
 
 ---
 
-## Typografie
+## Typografie – podle brand manuálu kapitola 2.0
 
-- Rodina písma: systémový sans-serif (nebo Inter/Roboto, pokud je použit).
-- Nadpisy stránek: tučné, barva `--color-text-main`, velikost cca `28–32px`.
-- Nadpisy sekcí: tučné, `--color-text-main`, cca `18–20px`.
-- Tělo textu: `14–16px`, `--color-text-main`.
-- Metadata / popisky: `12–13px`, `--color-text-secondary`.
+- **Hlavní font:** Montserrat (Google Fonts).
+- **Logotyp a hlavní nadpisy (H1, H2):** Montserrat Bold Italic – dynamický vzhled.
+- **Sekundární nadpisy:** Montserrat SemiBold Italic.
+- **Alternativní nadpisy:** Montserrat SemiBold nebo Montserrat Bold.
+- **Odstavce:** Montserrat Regular / Italic / Medium; zvýraznění Bold / Bold Italic.
+
+**Web hierarchy (Desktop):**
+- H1: 48/58 pt – Montserrat Bold Italic
+- H2: 32/42 pt – Montserrat Bold Italic
+- H3: 24/34 pt – Montserrat SemiBold
+- H4: 20/30 pt – Montserrat Bold
+
+**Grafické prvky:** Značka využívá sklon (slant) 11,3° u oddělovačů sekcí a dekoračních elementů – zohledni u šikmých prvků.
