@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const NAV_LINKS = [
-  { label: "Online kurzy", href: "/kurzy" },
+  { label: "Online kurzy", href: "/moje-kurzy" },
   { label: "Microlearning", href: "/microlearning" },
   { label: "Domů", href: "/" },
 ];

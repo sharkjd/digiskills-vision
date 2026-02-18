@@ -464,7 +464,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
           Kurzy vybrané přímo pro tebe
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
-          {COURSE_LIST.map((course) => (
+          {COURSE_LIST.slice(0, 3).map((course) => (
             <CourseCard key={course.id} course={course} />
           ))}
         </div>

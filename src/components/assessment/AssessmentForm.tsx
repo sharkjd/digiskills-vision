@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import ScaleSlider from "./ScaleSlider";
 import CheckboxGroup from "./CheckboxGroup";
@@ -191,16 +192,20 @@ const STEP_LABELS = [
 
 import AssessmentSummary from "./AssessmentSummary";
 
+const SLANT_ANGLE = 11.3;
+const SLANT_TAN = Math.tan((SLANT_ANGLE * Math.PI) / 180);
+const SLIDE_DISTANCE = 100;
+
 const slideVariants = {
   enter: (direction: number) => ({
-    x: direction > 0 ? 80 : -80,
-    y: direction > 0 ? 16 : -16,
+    x: direction > 0 ? SLIDE_DISTANCE : -SLIDE_DISTANCE,
+    y: direction > 0 ? SLIDE_DISTANCE * SLANT_TAN : -SLIDE_DISTANCE * SLANT_TAN,
     opacity: 0,
   }),
   center: { x: 0, y: 0, opacity: 1 },
   exit: (direction: number) => ({
-    x: direction < 0 ? 80 : -80,
-    y: direction < 0 ? 16 : -16,
+    x: direction < 0 ? SLIDE_DISTANCE : -SLIDE_DISTANCE,
+    y: direction < 0 ? SLIDE_DISTANCE * SLANT_TAN : -SLIDE_DISTANCE * SLANT_TAN,
     opacity: 0,
   }),
 };
@@ -829,11 +834,10 @@ export default function AssessmentForm() {
 }
 
 function SectionHeader({
-  icon,
   title,
   description,
 }: {
-  icon: string;
+  icon?: string;
   title: string;
   description: string;
 }) {
@@ -848,11 +852,16 @@ function SectionHeader({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: 28,
           flexShrink: 0,
         }}
       >
-        {icon}
+        <Image
+          src="/Screenshots/Symbol Dark.png"
+          alt=""
+          width={36}
+          height={36}
+          style={{ objectFit: "contain" }}
+        />
       </div>
       <div>
         <h2

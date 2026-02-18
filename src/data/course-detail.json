@@ -1,0 +1,44 @@
+{
+  "courseTitle": "1. Digitální inspirace",
+  "instructor": "Honza Dolejš",
+  "duration": "cca 3 h",
+  "activitiesCount": 13,
+  "introText": "U počítače nebo s telefonem v ruce trávíme několik hodin denně. Nepochybujeme o tom, že je používáte tak, aby sloužily svému účelu. Ale co kdybychom vám ukázali, že toho vaše zařízení umí daleko více?",
+  "usefulTip": "Najděte si rytmus, který vám sedí. Někdo studuje ráno, někdo večer, obojí je v pořádku.",
+  "curriculum": [
+    {
+      "section": "Úvod do tématu",
+      "items": [
+        { "id": 1, "type": "Video", "title": "Nástroje se mění a s tím i způsob, jak s nimi pracovat", "desc": "Vývoj je neustále vpředu, s novými nástroji můžete pracovat rychleji i chytřeji.", "color": "#A97FEF" },
+        { "id": 2, "type": "Video", "title": "Digitální mindset", "desc": "Technologie jako dobrý sluha, ale zlý pán.", "color": "#A97FEF" },
+        { "id": 3, "type": "Článek", "title": "Definujte svou cestu k digitálnímu hrdinství", "desc": "Každá změna a naučená dovednost se počítá.", "color": "#77F9D9" }
+      ]
+    },
+    {
+      "section": "Využijte potenciál svého počítače",
+      "items": [
+        { "id": 4, "type": "Video", "title": "Tipy pro práci s počítačem a prohlížečem", "desc": "Abyste mohli využívat zařízení naplno, musíte se s ním dobře seznámit.", "color": "#A97FEF" },
+        { "id": 5, "type": "Infografika", "title": "Stáhněte si checklist pro Windows 10 a 11", "desc": "Zjistěte, jak umíte ovládat svůj systém.", "color": "#77F9D9" },
+        { "id": 6, "type": "Video", "title": "Jak pracovat se snímky obrazovky", "desc": "Podívejte se, jak snadno vytvořit a sdílet snímek obrazovky.", "color": "#A97FEF" },
+        { "id": 7, "type": "Video", "title": "Nejužitečnější klávesové zkratky", "desc": "Vyzkoušejte několik nových zkratek pro Windows i Mac.", "color": "#A97FEF" },
+        { "id": 8, "type": "Úkol", "title": "Umíte Win...?", "desc": "Krátký test vašich znalostí operačního systému.", "color": "#F7981C" },
+        { "id": 9, "type": "Článek", "title": "Zdokonalte se ve psaní na PC", "desc": "Jak psát všemi deseti a ušetřit čas.", "color": "#77F9D9" }
+      ]
+    },
+    {
+      "section": "Ovládněte svůj chytrý telefon",
+      "items": [
+        { "id": 10, "type": "Video", "title": "Nepište na telefonu romány, nadiktujte je!", "desc": "Umíte opravdu využít chytré funkce svého telefonu?", "color": "#A97FEF" },
+        { "id": 11, "type": "Video", "title": "Šikovné tipy pro váš telefon", "desc": "Pomoc chytrých funkcí ve světě aplikací.", "color": "#A97FEF" },
+        { "id": 12, "type": "Článek", "title": "Zkroťte svůj telefon. Podle sebe!", "desc": "Když vás notifikace spíše ovládají, je načase se jim postavit.", "color": "#77F9D9" },
+        { "id": 13, "type": "Video", "title": "Proměňte svůj telefon ve skener", "desc": "Podívejte se, jak snadno můžete digitalizovat dokumenty.", "color": "#A97FEF" }
+      ]
+    },
+    {
+      "section": "Ověřte si své znalosti",
+      "items": [
+        { "id": 14, "type": "Úkol", "title": "ÚKOL: Vytvořte si tahák", "desc": "Pojďme nabyté znalosti smysluplně sestavit do praxe.", "color": "#F7981C" }
+      ]
+    }
+  ]
+}

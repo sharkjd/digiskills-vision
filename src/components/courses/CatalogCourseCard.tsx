@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Course } from "@/data/courses";
 
 type CatalogCourseCardProps = {
@@ -11,7 +12,8 @@ type CatalogCourseCardProps = {
 
 export default function CatalogCourseCard({ course, index }: CatalogCourseCardProps) {
   return (
-    <div
+    <Link
+      href={`/kurz/${course.id}`}
       className="bg-white rounded-xl overflow-hidden border border-gray-200 flex flex-col h-full transition-all duration-200 hover:-translate-y-1 hover:shadow-lg cursor-pointer"
       style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}
     >
@@ -68,16 +70,14 @@ export default function CatalogCourseCard({ course, index }: CatalogCourseCardPr
           >
             {course.activities} aktivit, cca {course.duration}
           </span>
-          <button
+          <span
             className="px-5 py-2 rounded-lg text-sm font-semibold text-white transition-colors"
             style={{ backgroundColor: "#2596FF" }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1F80D9")}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#2596FF")}
           >
             Zobrazit
-          </button>
+          </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

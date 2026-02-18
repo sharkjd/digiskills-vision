@@ -9,6 +9,12 @@
   --color-accent-green: #77F9D9;
   --color-accent-orange: #F7981C;
   --color-breeze: #F4F5FA;
+  
+  /* Barvy typů aktivit v kurzech */
+  --color-activity-video: #A97FEF;
+  --color-activity-article: #77F9D9;
+  --color-activity-task: #F7981C;
+  --color-activity-infographic: #77F9D9;
 }
 
 body {
