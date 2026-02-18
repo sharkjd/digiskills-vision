@@ -1031,6 +1031,14 @@ function DigiskillsIndexChart({
   );
 }
 
+const DIGCOMP_LEGEND = [
+  { short: "Informace a data", icon: "📊", color: "#FEE2E2", iconBg: "#EF4444" },
+  { short: "Digitální obsah", icon: "☁️", color: "#E0F2FE", iconBg: "#0EA5E9" },
+  { short: "Řešení problémů", icon: "🧩", color: "#D1FAE5", iconBg: "#10B981" },
+  { short: "Komunikace", icon: "💬", color: "#EDE9FE", iconBg: "#6366F1" },
+  { short: "Bezpečnost", icon: "✓", color: "#FEF3C7", iconBg: "#F59E0B" },
+];
+
 function CompanyRadarChart({
   companyScores,
   marketAvg,
@@ -1042,9 +1050,9 @@ function CompanyRadarChart({
   top30: number[];
   labels: string[];
 }) {
-  const size = 360;
+  const size = 420;
   const center = size / 2;
-  const maxRadius = 140;
+  const maxRadius = 120;
   const levels = 5;
 
   const angleStep = (2 * Math.PI) / labels.length;
@@ -1056,6 +1064,16 @@ function CompanyRadarChart({
     return {
       x: center + radius * Math.cos(angle),
       y: center + radius * Math.sin(angle),
+    };
+  };
+
+  const getLabelPosition = (index: number) => {
+    const angle = startAngle + index * angleStep;
+    const radius = maxRadius + 10;
+    return {
+      x: center + radius * Math.cos(angle),
+      y: center + radius * Math.sin(angle),
+      angle,
     };
   };
 
@@ -1071,41 +1089,96 @@ function CompanyRadarChart({
   const companyPoints = companyScores.map((score, i) => getPoint(i, score));
 
   return (
-    <svg width={size} height={size} style={{ display: "block", margin: "0 auto" }}>
-      {/* Mřížka */}
-      {Array.from({ length: levels }, (_, i) => {
-        const r = ((i + 1) / levels) * maxRadius;
-        const points = labels
-          .map((_, j) => {
-            const angle = startAngle + j * angleStep;
-            return `${center + r * Math.cos(angle)},${center + r * Math.sin(angle)}`;
-          })
-          .join(" ");
-        return <polygon key={i} points={points} fill="none" stroke="#E5E7EB" strokeWidth="1" />;
-      })}
+    <div style={{ position: "relative", width: size, height: size, margin: "0 auto" }}>
+      <svg width={size} height={size} style={{ display: "block" }}>
+        {/* Mřížka */}
+        {Array.from({ length: levels }, (_, i) => {
+          const r = ((i + 1) / levels) * maxRadius;
+          const points = labels
+            .map((_, j) => {
+              const angle = startAngle + j * angleStep;
+              return `${center + r * Math.cos(angle)},${center + r * Math.sin(angle)}`;
+            })
+            .join(" ");
+          return <polygon key={i} points={points} fill="none" stroke="#E5E7EB" strokeWidth="1" />;
+        })}
 
-      {/* Osy */}
+        {/* Osy */}
+        {labels.map((_, i) => {
+          const angle = startAngle + i * angleStep;
+          const x2 = center + maxRadius * Math.cos(angle);
+          const y2 = center + maxRadius * Math.sin(angle);
+          return <line key={i} x1={center} y1={center} x2={x2} y2={y2} stroke="#E5E7EB" strokeWidth="1" />;
+        })}
+
+        {/* Top 30 % */}
+        <path d={top30Path} fill="rgba(13, 148, 136, 0.15)" stroke="#0D9488" strokeWidth="2" />
+
+        {/* Průměr trhu */}
+        <path d={marketPath} fill="rgba(4, 14, 60, 0.08)" stroke="#040E3C" strokeWidth="2" />
+
+        {/* Naše firma */}
+        <path d={companyPath} fill="rgba(37, 150, 255, 0.25)" stroke="#2596FF" strokeWidth="3" />
+
+        {/* Body firmy */}
+        {companyPoints.map((p, i) => (
+          <circle key={i} cx={p.x} cy={p.y} r="5" fill="#2596FF" stroke="white" strokeWidth="2" />
+        ))}
+      </svg>
+
+      {/* Popisky kompetencí jako HTML elementy kolem grafu */}
       {labels.map((_, i) => {
-        const angle = startAngle + i * angleStep;
-        const x2 = center + maxRadius * Math.cos(angle);
-        const y2 = center + maxRadius * Math.sin(angle);
-        return <line key={i} x1={center} y1={center} x2={x2} y2={y2} stroke="#E5E7EB" strokeWidth="1" />;
+        const pos = getLabelPosition(i);
+        const legend = DIGCOMP_LEGEND[i];
+        
+        let transform = "translate(-50%, -50%)";
+        if (i === 0) transform = "translate(-50%, -100%)";
+        if (i === 1) transform = "translate(0%, -50%)";
+        if (i === 2) transform = "translate(0%, 0%)";
+        if (i === 3) transform = "translate(-100%, 0%)";
+        if (i === 4) transform = "translate(-100%, -50%)";
+
+        return (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              left: pos.x,
+              top: pos.y,
+              transform,
+              background: legend.color,
+              borderRadius: 20,
+              padding: "6px 12px 6px 8px",
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            <div
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: "50%",
+                background: legend.iconBg,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 14,
+                color: "white",
+                fontWeight: 700,
+              }}
+            >
+              {legend.icon}
+            </div>
+            <span style={{ fontSize: 12, fontWeight: 700, color: "#040E3C", textTransform: "uppercase" }}>
+              {legend.short}
+            </span>
+          </div>
+        );
       })}
-
-      {/* Top 30 % */}
-      <path d={top30Path} fill="rgba(13, 148, 136, 0.15)" stroke="#0D9488" strokeWidth="2" />
-
-      {/* Průměr trhu */}
-      <path d={marketPath} fill="rgba(4, 14, 60, 0.08)" stroke="#040E3C" strokeWidth="2" />
-
-      {/* Naše firma */}
-      <path d={companyPath} fill="rgba(37, 150, 255, 0.25)" stroke="#2596FF" strokeWidth="3" />
-
-      {/* Body firmy */}
-      {companyPoints.map((p, i) => (
-        <circle key={i} cx={p.x} cy={p.y} r="5" fill="#2596FF" stroke="white" strokeWidth="2" />
-      ))}
-    </svg>
+    </div>
   );
 }
 
