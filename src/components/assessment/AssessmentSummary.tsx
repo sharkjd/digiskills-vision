@@ -341,10 +341,9 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
         {/* Superschopnosti – Digi Skills #77F9D9 */}
         <div
           style={{
-            background: "linear-gradient(135deg, #F9FAFD 0%, #A0FBE4 100%)",
+            background: "#77F9D9",
             borderRadius: 16,
             padding: 24,
-            border: "1px solid #77F9D9",
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
@@ -353,7 +352,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
                 width: 40,
                 height: 40,
                 borderRadius: 12,
-                background: "#77F9D9",
+                background: "rgba(255,255,255,0.5)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -376,13 +375,12 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
           </p>
         </div>
 
-        {/* Prostor pro růst – Digi Orange #F7981C */}
+        {/* Prostor pro růst – Digi Salmon #FF7575 */}
         <div
           style={{
-            background: "linear-gradient(135deg, #FEF8F0 0%, #F9AD49 100%)",
+            background: "#FF7575",
             borderRadius: 16,
             padding: 24,
-            border: "1px solid #F7981C",
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
@@ -391,7 +389,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
                 width: 40,
                 height: 40,
                 borderRadius: 12,
-                background: "#F7981C",
+                background: "rgba(255,255,255,0.4)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
