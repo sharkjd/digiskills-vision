@@ -312,15 +312,15 @@ export default function CompanyAssessmentReport() {
             >
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 <div style={{ width: 16, height: 3, background: "#2596FF", borderRadius: 2 }} />
-                <span style={{ fontSize: 11, color: "#6B7280" }}>Naše firma</span>
+                <span style={{ fontSize: 11, color: "#374151", fontWeight: 500 }}>Naše firma</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <div style={{ width: 16, height: 3, background: "#9CA3AF", borderRadius: 2 }} />
-                <span style={{ fontSize: 11, color: "#6B7280" }}>Průměr trhu</span>
+                <div style={{ width: 16, height: 3, background: "#040E3C", borderRadius: 2 }} />
+                <span style={{ fontSize: 11, color: "#040E3C", fontWeight: 500 }}>Průměr trhu</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <div style={{ width: 16, height: 3, background: "#77F9D9", borderRadius: 2 }} />
-                <span style={{ fontSize: 11, color: "#6B7280" }}>Top 30 % trhu</span>
+                <div style={{ width: 16, height: 3, background: "#0D9488", borderRadius: 2 }} />
+                <span style={{ fontSize: 11, color: "#0D9488", fontWeight: 500 }}>Top 30 % trhu</span>
               </div>
             </div>
           </div>
@@ -356,6 +356,83 @@ export default function CompanyAssessmentReport() {
             Doporučujeme zaměřit vzdělávací investice na kurzy podporující tvorbu obsahu, automatizaci a využití AI v
             každodenní práci – v souladu s prioritami, které zaměstnanci sami uvedli v assessmentu. Níže najdete kurzy
             doporučené pro celou organizaci.
+          </p>
+        </div>
+      </div>
+
+      {/* FIREMNÍ SUPERSCHOPNOSTI vs PROSTOR PRO RŮST – pod slovní vyhodnocení */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
+        {/* Superschopnosti firmy – Digi Skills #77F9D9 */}
+        <div
+          style={{
+            background: "#77F9D9",
+            borderRadius: 16,
+            padding: 24,
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+            <div
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 12,
+                background: "rgba(255,255,255,0.5)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 20,
+              }}
+            >
+              💪
+            </div>
+            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: 0 }}>
+              Firemní superschopnosti
+            </h3>
+          </div>
+          <div style={{ fontSize: 20, fontWeight: 800, color: "#040E3C", marginBottom: 8 }}>
+            Digitální bezpečnost
+          </div>
+          <p style={{ fontSize: 14, color: "#040E3C", margin: 0, lineHeight: 1.5 }}>
+            V této oblasti je firma nad průměrem trhu. Skóre <strong>6,5</strong> ukazuje, 
+            že zaměstnanci mají solidní základ v ochraně dat a kybernetické bezpečnosti. 
+            Interní bezpečnostní kultura je zdravá.
+          </p>
+        </div>
+
+        {/* Prostor pro růst firmy – Digi Salmon #FF7575 */}
+        <div
+          style={{
+            background: "#FF7575",
+            borderRadius: 16,
+            padding: 24,
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+            <div
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 12,
+                background: "rgba(255,255,255,0.4)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 20,
+              }}
+            >
+              🚀
+            </div>
+            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: 0 }}>
+              Firemní prostor pro růst
+            </h3>
+          </div>
+          <div style={{ fontSize: 20, fontWeight: 800, color: "#040E3C", marginBottom: 8 }}>
+            Tvorba digitálního obsahu
+          </div>
+          <p style={{ fontSize: 14, color: "#040E3C", margin: 0, lineHeight: 1.5 }}>
+            Zde má firma největší potenciál se zlepšit. Aktuální skóre <strong>4,4</strong> výrazně 
+            zaostává za průměrem trhu (5,9). Cílené kurzy v této oblasti přinesou nejvyšší ROI 
+            vzdělávacích investic.
           </p>
         </div>
       </div>
@@ -820,66 +897,86 @@ function DigiskillsIndexChart({
         </div>
       </div>
 
-      {/* Hlavní pruh grafu */}
-      <div
-        style={{
-          position: "relative",
-          height: 40,
-          borderRadius: 4,
-          overflow: "visible",
-          display: "flex",
-        }}
-      >
-        {/* Šedá zóna (min → firma/průměr, co je nižší) */}
+      {/* Hlavní pruh grafu + čáry v samostatné vrstvě nad ním */}
+      <div style={{ position: "relative", height: 40 }}>
+        {/* Vrstva 1: barevný pruh */}
         <div
           style={{
-            width: `${marketMinPercent}%`,
-            background: "#E5E7EB",
-            borderRadius: "4px 0 0 4px",
-          }}
-        />
-        {/* Modrá zóna (firma/min → průměr) */}
-        <div
-          style={{
-            width: `${marketMaxPercent - marketMinPercent}%`,
-            background: "linear-gradient(to right, #E5E7EB, #2596FF 50%, #77F9D9)",
-            position: "relative",
+            position: "absolute",
+            inset: 0,
+            borderRadius: 4,
+            display: "flex",
           }}
         >
-          {/* Svislá čára pro firmu (oranžová) */}
           <div
             style={{
-              position: "absolute",
-              left: `${((companyIndex - marketMin) / (marketMax - marketMin)) * 100}%`,
-              top: -8,
-              bottom: -8,
-              width: 3,
-              background: "#F7981C",
-              borderRadius: 2,
-              zIndex: 2,
+              width: `${marketMinPercent}%`,
+              background: "#E5E7EB",
+              borderRadius: "4px 0 0 4px",
             }}
           />
-          {/* Svislá čárkovaná čára pro průměr trhu */}
           <div
             style={{
-              position: "absolute",
-              left: `${((marketAvg - marketMin) / (marketMax - marketMin)) * 100}%`,
-              top: -8,
-              bottom: -8,
-              width: 0,
-              borderLeft: "3px dashed #2596FF",
-              zIndex: 1,
+              width: `${marketMaxPercent - marketMinPercent}%`,
+              background: "linear-gradient(to right, #E5E7EB, #2596FF 50%, #77F9D9)",
+            }}
+          />
+          <div
+            style={{
+              flex: 1,
+              background: "#77F9D9",
+              borderRadius: "0 4px 4px 0",
             }}
           />
         </div>
-        {/* Zelená zóna (průměr → max) */}
+        {/* Vrstva 2: svislé čáry nad pruhem */}
         <div
           style={{
-            flex: 1,
-            background: "#77F9D9",
-            borderRadius: "0 4px 4px 0",
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            zIndex: 10,
           }}
-        />
+        >
+          {/* Čára – Vaše firma (oranžová) */}
+          <div
+            style={{
+              position: "absolute",
+              left: `${companyPercent}%`,
+              top: -8,
+              bottom: -8,
+              width: 3,
+              marginLeft: -1.5,
+              background: "#F7981C",
+              borderRadius: 2,
+            }}
+          />
+          {/* Čárkovaná čára – Průměr trhu (černá) */}
+          <div
+            style={{
+              position: "absolute",
+              left: `${marketAvgPercent}%`,
+              top: -8,
+              bottom: -8,
+              width: 0,
+              marginLeft: -1.5,
+              borderLeft: "3px dashed #040E3C",
+            }}
+          />
+          {/* Čára – Max trhu (tyrkysová, jemně) */}
+          <div
+            style={{
+              position: "absolute",
+              left: `${marketMaxPercent}%`,
+              top: -8,
+              bottom: -8,
+              width: 2,
+              marginLeft: -1,
+              background: "#0D9488",
+              borderRadius: 1,
+            }}
+          />
+        </div>
       </div>
 
       {/* Popisky pod grafem */}
@@ -996,10 +1093,10 @@ function CompanyRadarChart({
       })}
 
       {/* Top 30 % */}
-      <path d={top30Path} fill="rgba(119, 249, 217, 0.15)" stroke="#77F9D9" strokeWidth="2" />
+      <path d={top30Path} fill="rgba(13, 148, 136, 0.15)" stroke="#0D9488" strokeWidth="2" />
 
       {/* Průměr trhu */}
-      <path d={marketPath} fill="rgba(156, 163, 175, 0.15)" stroke="#9CA3AF" strokeWidth="2" />
+      <path d={marketPath} fill="rgba(4, 14, 60, 0.08)" stroke="#040E3C" strokeWidth="2" />
 
       {/* Naše firma */}
       <path d={companyPath} fill="rgba(37, 150, 255, 0.25)" stroke="#2596FF" strokeWidth="3" />
