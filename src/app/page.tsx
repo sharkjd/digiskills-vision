@@ -25,72 +25,150 @@ export default function Home() {
 
       <div
         style={{
-          background: "var(--color-background)",
-          borderRadius: "var(--radius-card)",
-          border: "1px solid var(--color-border)",
-          boxShadow: "0 2px 8px var(--color-card-shadow)",
-          padding: "32px",
-          maxWidth: 520,
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+          gap: 24,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16 }}>
-          <div
-            style={{
-              width: 52,
-              height: 52,
-              borderRadius: "50%",
-              background: "#e8f4fd",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 26,
-              flexShrink: 0,
-            }}
-          >
-            📊
-          </div>
-          <div>
-            <h2
+        {/* Digitální Assessment */}
+        <div
+          style={{
+            background: "var(--color-background)",
+            borderRadius: "var(--radius-card)",
+            border: "1px solid var(--color-border)",
+            boxShadow: "0 2px 8px var(--color-card-shadow)",
+            padding: "32px",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16 }}>
+            <div
               style={{
-                fontSize: "var(--font-size-section-title)",
-                fontWeight: 700,
-                color: "var(--color-text-main)",
-                marginBottom: 2,
+                width: 52,
+                height: 52,
+                borderRadius: "50%",
+                background: "#e8f4fd",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 26,
+                flexShrink: 0,
               }}
             >
-              Digitální Assessment
-            </h2>
-            <p style={{ fontSize: "var(--font-size-meta)", color: "var(--color-text-secondary)" }}>
-              DigComp 2.1 · 8 kroků · ~5 minut
-            </p>
+              📊
+            </div>
+            <div>
+              <h2
+                style={{
+                  fontSize: "var(--font-size-section-title)",
+                  fontWeight: 700,
+                  color: "var(--color-text-main)",
+                  marginBottom: 2,
+                }}
+              >
+                Digitální Assessment
+              </h2>
+              <p style={{ fontSize: "var(--font-size-meta)", color: "var(--color-text-secondary)" }}>
+                DigComp 2.1 · 8 kroků · ~5 minut
+              </p>
+            </div>
           </div>
+          <p
+            style={{
+              fontSize: "var(--font-size-body)",
+              color: "var(--color-text-secondary)",
+              marginBottom: 24,
+              lineHeight: 1.65,
+            }}
+          >
+            Otestujte své digitální kompetence v 5 oblastech: informační gramotnost, komunikace,
+            tvorba obsahu, bezpečnost a řešení problémů. Na základě výsledků získáte doporučené kurzy.
+          </p>
+          <Link
+            href="/assessment"
+            style={{
+              display: "inline-block",
+              padding: "10px 28px",
+              background: "var(--color-primary)",
+              color: "white",
+              borderRadius: "var(--radius-btn)",
+              fontWeight: 600,
+              fontSize: "var(--font-size-body)",
+              textDecoration: "none",
+            }}
+          >
+            Spustit assessment →
+          </Link>
         </div>
-        <p
+
+        {/* Firemní Assessment Report */}
+        <div
           style={{
-            fontSize: "var(--font-size-body)",
-            color: "var(--color-text-secondary)",
-            marginBottom: 24,
-            lineHeight: 1.65,
+            background: "var(--color-background)",
+            borderRadius: "var(--radius-card)",
+            border: "1px solid var(--color-border)",
+            boxShadow: "0 2px 8px var(--color-card-shadow)",
+            padding: "32px",
           }}
         >
-          Otestujte své digitální kompetence v 5 oblastech: informační gramotnost, komunikace,
-          tvorba obsahu, bezpečnost a řešení problémů. Na základě výsledků získáte doporučené kurzy.
-        </p>
-        <Link
-          href="/assessment"
-          style={{
-            display: "inline-block",
-            padding: "10px 28px",
-            background: "var(--color-primary)",
-            color: "white",
-            borderRadius: "var(--radius-btn)",
-            fontWeight: 600,
-            fontSize: "var(--font-size-body)",
-            textDecoration: "none",
-          }}
-        >
-          Spustit assessment →
-        </Link>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16 }}>
+            <div
+              style={{
+                width: 52,
+                height: 52,
+                borderRadius: "50%",
+                background: "#e8f4fd",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 26,
+                flexShrink: 0,
+              }}
+            >
+              🏢
+            </div>
+            <div>
+              <h2
+                style={{
+                  fontSize: "var(--font-size-section-title)",
+                  fontWeight: 700,
+                  color: "var(--color-text-main)",
+                  marginBottom: 2,
+                }}
+              >
+                Firemní Assessment Report
+              </h2>
+              <p style={{ fontSize: "var(--font-size-meta)", color: "var(--color-text-secondary)" }}>
+                Pro vedení · Agregované výsledky · Benchmark trhu
+              </p>
+            </div>
+          </div>
+          <p
+            style={{
+              fontSize: "var(--font-size-body)",
+              color: "var(--color-text-secondary)",
+              marginBottom: 24,
+              lineHeight: 1.65,
+            }}
+          >
+            Přehled digitálních kompetencí celé firmy: Digiskills Index, porovnání s trhem, talent pipeline,
+            strategické priority a doporučené firemní kurzy.
+          </p>
+          <Link
+            href="/firma/vysledky"
+            style={{
+              display: "inline-block",
+              padding: "10px 28px",
+              background: "var(--color-primary)",
+              color: "white",
+              borderRadius: "var(--radius-btn)",
+              fontWeight: 600,
+              fontSize: "var(--font-size-body)",
+              textDecoration: "none",
+            }}
+          >
+            Zobrazit report →
+          </Link>
+        </div>
       </div>
     </div>
   );
