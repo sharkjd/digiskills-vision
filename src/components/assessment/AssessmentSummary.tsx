@@ -266,9 +266,9 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
           Porovnání kompetencí dle DigComp
         </h2>
 
-        <div style={{ display: "flex", gap: 64, alignItems: "flex-start", flexWrap: "wrap", justifyContent: "space-between" }}>
-          {/* Radar Chart s legendou kolem */}
-          <div style={{ flex: "0 0 auto", marginLeft: 32 }}>
+        <div style={{ display: "flex", gap: 32, alignItems: "flex-start", flexWrap: "wrap" }}>
+          {/* Radar chart (pavouk) */}
+          <div style={{ flex: "1 1 360px", minWidth: 300 }}>
             <IndividualRadarChart
               userScores={userScores}
               companyAvg={COMPANY_AVG}
@@ -277,7 +277,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
           </div>
 
           {/* Digiskills Index chart + legenda */}
-          <div style={{ flex: "0 0 380px", minWidth: 280 }}>
+          <div style={{ flex: "1 1 360px", minWidth: 300 }}>
             <IndividualDigiskillsIndexChart
               myScore={overallScore}
               companyAvg={BENCHMARK_DATA.companyAvg}
@@ -549,8 +549,8 @@ function IndividualDigiskillsIndexChart({
   avgEmployee: number;
   bestEmployee: number;
 }) {
-  const chartMin = 3;
-  const chartMax = 10;
+  const chartMin = Math.floor(companyAvg - 1);
+  const chartMax = Math.ceil(bestEmployee + 1);
   const range = chartMax - chartMin;
 
   const myPercent = ((myScore - chartMin) / range) * 100;
@@ -559,13 +559,22 @@ function IndividualDigiskillsIndexChart({
   const bestEmployeePercent = ((bestEmployee - chartMin) / range) * 100;
 
   return (
-    <div style={{ marginBottom: 16 }}>
-      <h3 style={{ fontSize: 16, fontWeight: 700, color: "#040E3C", margin: "0 0 20px" }}>
+    <div style={{ marginBottom: 16, fontFamily: "var(--font-montserrat), Montserrat, sans-serif", maxWidth: 440, margin: "0 auto 16px" }}>
+      <h3
+        style={{
+          fontSize: 18,
+          fontWeight: 700,
+          fontStyle: "italic",
+          color: "#040E3C",
+          margin: "0 0 28px",
+          fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+        }}
+      >
         Digiskills index
       </h3>
 
       {/* Hodnoty nad grafem */}
-      <div style={{ position: "relative", height: 32, marginBottom: 4 }}>
+      <div style={{ position: "relative", height: 36, marginBottom: 8 }}>
         {/* Průměr firmy */}
         <div
           style={{
@@ -575,7 +584,16 @@ function IndividualDigiskillsIndexChart({
             textAlign: "center",
           }}
         >
-          <span style={{ fontSize: 13, color: "#6B7280" }}>{companyAvg.toFixed(2).replace(".", ",")}</span>
+          <span
+            style={{
+              fontSize: 14,
+              fontStyle: "italic",
+              color: "#6B7280",
+              fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+            }}
+          >
+            {companyAvg.toFixed(2).replace(".", ",")}
+          </span>
         </div>
         {/* Průměrný zaměstnanec */}
         <div
@@ -586,9 +604,18 @@ function IndividualDigiskillsIndexChart({
             textAlign: "center",
           }}
         >
-          <span style={{ fontSize: 13, color: "#9CA3AF" }}>{avgEmployee.toFixed(2).replace(".", ",")}</span>
+          <span
+            style={{
+              fontSize: 14,
+              fontStyle: "italic",
+              color: "#040E3C",
+              fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+            }}
+          >
+            {avgEmployee.toFixed(2).replace(".", ",")}
+          </span>
         </div>
-        {/* Já */}
+        {/* Já – hlavní dominantní hodnota */}
         <div
           style={{
             position: "absolute",
@@ -597,7 +624,15 @@ function IndividualDigiskillsIndexChart({
             textAlign: "center",
           }}
         >
-          <span style={{ fontSize: 14, fontWeight: 700, color: "#F7981C" }}>
+          <span
+            style={{
+              fontSize: 18,
+              fontWeight: 700,
+              fontStyle: "italic",
+              color: "#F7981C",
+              fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+            }}
+          >
             {myScore.toFixed(2).replace(".", ",")}
           </span>
         </div>
@@ -610,43 +645,49 @@ function IndividualDigiskillsIndexChart({
             textAlign: "center",
           }}
         >
-          <span style={{ fontSize: 13, color: "#77F9D9" }}>{bestEmployee.toFixed(2).replace(".", ",")}</span>
+          <span
+            style={{
+              fontSize: 14,
+              fontStyle: "italic",
+              color: "#6B7280",
+              fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+            }}
+          >
+            {bestEmployee.toFixed(2).replace(".", ",")}
+          </span>
         </div>
       </div>
 
-      {/* Hlavní pruh grafu + čáry v samostatné vrstvě nad ním */}
-      <div style={{ position: "relative", height: 40 }}>
-        {/* Vrstva 1: barevný pruh */}
+      {/* Hlavní pruh grafu se zkosením 11,3° – charakteristický brand prvek */}
+      <div
+        style={{
+          position: "relative",
+          height: 44,
+          transform: "skewX(-11.3deg)",
+          transformOrigin: "center center",
+        }}
+      >
+        {/* Vrstva 1: barevný pruh s gradientem Digi Azure → Digi Skills */}
         <div
           style={{
             position: "absolute",
             inset: 0,
-            borderRadius: 4,
+            borderRadius: 8,
+            overflow: "hidden",
             display: "flex",
           }}
         >
           <div
             style={{
-              width: `${companyAvgPercent}%`,
-              background: "#E5E7EB",
-              borderRadius: "4px 0 0 4px",
-            }}
-          />
-          <div
-            style={{
-              width: `${bestEmployeePercent - companyAvgPercent}%`,
-              background: "linear-gradient(to right, #E5E7EB, #2596FF 50%, #77F9D9)",
-            }}
-          />
-          <div
-            style={{
-              flex: 1,
-              background: "#77F9D9",
-              borderRadius: "0 4px 4px 0",
+              width: "100%",
+              height: "100%",
+              background: "linear-gradient(to right, #2596FF 0%, #77F9D9 100%)",
+              borderRadius: 8,
             }}
           />
         </div>
-        {/* Vrstva 2: svislé čáry nad pruhem */}
+
+        {/* Vrstva 2: svislé čáry nad pruhem (de-skewed pro rovné čáry) */}
         <div
           style={{
             position: "absolute",
@@ -655,69 +696,75 @@ function IndividualDigiskillsIndexChart({
             zIndex: 10,
           }}
         >
-          {/* Čárkovaná čára – Průměr firmy (šedá) */}
+          {/* Čárkovaná čára – Průměr firmy (Digi Sky #040E3C) */}
           <div
             style={{
               position: "absolute",
               left: `${companyAvgPercent}%`,
-              top: -8,
-              bottom: -8,
+              top: -10,
+              bottom: -10,
               width: 0,
               marginLeft: -1.5,
-              borderLeft: "3px dashed #6B7280",
+              borderLeft: "3px dashed #040E3C",
+              transform: "skewX(11.3deg)",
             }}
           />
-          {/* Čára – Průměrný zaměstnanec (světle šedá) */}
+          {/* Čára – Průměrný zaměstnanec (šedá) */}
           <div
             style={{
               position: "absolute",
               left: `${avgEmployeePercent}%`,
-              top: -8,
-              bottom: -8,
+              top: -10,
+              bottom: -10,
               width: 2,
               marginLeft: -1,
               background: "#9CA3AF",
               borderRadius: 1,
+              transform: "skewX(11.3deg)",
             }}
           />
-          {/* Čára – Já (oranžová) */}
+          {/* Čára – Já (Digi Orange #F7981C) */}
           <div
             style={{
               position: "absolute",
               left: `${myPercent}%`,
-              top: -8,
-              bottom: -8,
+              top: -10,
+              bottom: -10,
               width: 3,
               marginLeft: -1.5,
               background: "#F7981C",
               borderRadius: 2,
+              transform: "skewX(11.3deg)",
             }}
           />
-          {/* Čára – Nejlepší zaměstnanec (tyrkysová) */}
+          {/* Čára – Nejlepší zaměstnanec (Digi Skills #77F9D9) */}
           <div
             style={{
               position: "absolute",
               left: `${bestEmployeePercent}%`,
-              top: -8,
-              bottom: -8,
+              top: -10,
+              bottom: -10,
               width: 2,
               marginLeft: -1,
-              background: "#0D9488",
+              background: "#77F9D9",
               borderRadius: 1,
+              transform: "skewX(11.3deg)",
             }}
           />
         </div>
       </div>
 
-      {/* Popisky pod grafem */}
-      <div style={{ position: "relative", height: 24, marginTop: 8 }}>
+      {/* Popisky pod grafem – s dostatečným whitespace */}
+      <div style={{ position: "relative", height: 28, marginTop: 14 }}>
         <div
           style={{
             position: "absolute",
             left: `${companyAvgPercent}%`,
             transform: "translateX(-50%)",
-            fontSize: 11,
-            color: "#6B7280",
+            fontSize: 12,
+            fontStyle: "italic",
+            color: "#2596FF",
+            fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
           }}
         >
           Průměr firmy
@@ -727,8 +774,10 @@ function IndividualDigiskillsIndexChart({
             position: "absolute",
             left: `${avgEmployeePercent}%`,
             transform: "translateX(-50%)",
-            fontSize: 11,
-            color: "#9CA3AF",
+            fontSize: 12,
+            fontStyle: "italic",
+            color: "#040E3C",
+            fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
           }}
         >
           Prům. zaměstnanec
@@ -738,9 +787,11 @@ function IndividualDigiskillsIndexChart({
             position: "absolute",
             left: `${myPercent}%`,
             transform: "translateX(-50%)",
-            fontSize: 11,
-            fontWeight: 600,
+            fontSize: 13,
+            fontWeight: 700,
+            fontStyle: "italic",
             color: "#F7981C",
+            fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
           }}
         >
           Já
@@ -750,8 +801,10 @@ function IndividualDigiskillsIndexChart({
             position: "absolute",
             left: `${bestEmployeePercent}%`,
             transform: "translateX(-50%)",
-            fontSize: 11,
+            fontSize: 12,
+            fontStyle: "italic",
             color: "#77F9D9",
+            fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
           }}
         >
           Nejlepší
@@ -770,9 +823,9 @@ function IndividualRadarChart({
   companyAvg: number[];
   labels: string[];
 }) {
-  const size = 340;
+  const size = 420;
   const center = size / 2;
-  const maxRadius = 90;
+  const maxRadius = 120;
   const levels = 5;
 
   const angleStep = (2 * Math.PI) / labels.length;
