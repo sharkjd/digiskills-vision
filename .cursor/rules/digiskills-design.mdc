@@ -1,0 +1,113 @@
+---
+description: Jednotný design systém Digiskills – barvy, hlavička, patička, tlačítka, zaoblení. Vždy zachovávej tento vizuální styl.
+alwaysApply: true
+---
+
+# Digiskills Design System
+
+Tento projekt se vizuálně řídí Digiskills portálem. Vždy zachovávej níže popsaný design. Nepoužívej jiné barvy, jiný styl tlačítek ani jinou strukturu hlavičky a patičky.
+
+---
+
+## Kanonické soubory – nikdy neměň jejich strukturu ani vizuál
+
+| Komponenta | Soubor |
+|------------|--------|
+| Hlavička | `src/components/layout/Header.tsx` |
+| Patička | `src/components/layout/Footer.tsx` |
+| Design tokeny (barvy, radius, stíny) | `src/styles/design-tokens.css` |
+
+Na každé stránce musí být použita komponenta `<Header />` z výše uvedeného souboru. Totéž platí pro `<Footer />`. Nikdy je nepředělávej, nepřepisuj jejich HTML strukturu ani styly.
+
+---
+
+## Barvy (design tokeny)
+
+```css
+--color-primary: #1a9be6;        /* modrá – tlačítka, aktivní stavy, primární odkazy */
+--color-primary-hover: #1587cc;  /* modrá – hover stav primárních tlačítek */
+--color-text-main: #1a2b4a;      /* tmavě modrá – nadpisy, logo, hlavní text */
+--color-text-secondary: #6c757d; /* šedá – metadata, popisky, druhotný text */
+--color-background: #ffffff;     /* bílá – pozadí stránek a karet */
+--color-border: #e9ecef;         /* světle šedá – rámečky, oddělovače */
+--color-border-input: #ced4da;   /* šedá – rámeček vstupních polí */
+--color-accent: #ff7a00;         /* oranžová – FAB chat tlačítko, akcent */
+--color-card-shadow: rgba(0,0,0,0.08); /* stín karet */
+```
+
+**Nikdy nepoužívej jiné hodnoty barev pro tyto role.** Pokud přidáváš novou barvu, přidej ji jako token do `src/styles/design-tokens.css`.
+
+---
+
+## Hlavička (Header)
+
+Struktura zleva doprava:
+
+1. **Logo** – ikona `{}` + text „Digiskills" vedle sebe, barva `--color-text-main`, tučné.
+2. **Navigace** – odkazy „Online kurzy", „Microlearning", „Domů"; aktivní odkaz `--color-text-main` (tučně), neaktivní `--color-text-secondary`.
+3. **Verze** – text „Plná verze do 31. 12. 2030" barvou `--color-text-secondary`, velikost písma menší.
+4. **Uživatel** – tučné jméno, pod ním menší šedý popis, kruhová profilová fotka, šipka dolů (dropdown).
+
+Pozadí hlavičky: `--color-background` (bílá). Pod hlavičkou tenká linka `1px solid var(--color-border)`.
+
+```tsx
+// ✅ SPRÁVNĚ – vždy importuj hotovou komponentu
+import Header from '@/components/layout/Header';
+
+// ❌ ŠPATNĚ – nepsat vlastní header inline na stránce
+<header style={{ background: 'white' }}>...</header>
+```
+
+---
+
+## Patička (Footer)
+
+Struktura zleva doprava:
+
+- **Vlevo:** Logo `{} Digiskills` (stejný styl jako v hlavičce).
+- **Střed:** Textové odkazy – „Akce", „Blog", „Kontakt", „GDPR".
+- **Vpravo:** Ikony sociálních sítí Facebook a LinkedIn.
+
+Pozadí patičky: `--color-background`. Oddělovač od obsahu: `1px solid var(--color-border)` nahoře.
+
+---
+
+## Tlačítka
+
+### Primární (solid)
+- Pozadí: `--color-primary`, text: bílý, `border-radius: 8px`.
+- Hover: `--color-primary-hover`.
+
+### Sekundární (outline)
+- Pozadí: bílé, rámeček: `1px solid var(--color-primary)`, text: `--color-primary`, `border-radius: 8px`.
+
+```tsx
+// ✅ Primární tlačítko
+<button className="btn-primary">Správa organizace</button>
+
+// ✅ Sekundární tlačítko
+<button className="btn-secondary">Poslat odkaz na registraci</button>
+```
+
+---
+
+## Zaoblení a karty
+
+| Prvek | Border-radius |
+|-------|--------------|
+| Tlačítka | `8px` |
+| Karty / panely | `12px` |
+| Vstupní pole (input) | `6px` |
+| Profilová fotka | `50%` (kruh) |
+
+Karty mají bílé pozadí, rámeček `1px solid var(--color-border)` a stín `0 2px 8px var(--color-card-shadow)`.
+
+---
+
+## Typografie
+
+- Rodina písma: systémový sans-serif (nebo Inter/Roboto, pokud je použit).
+- Nadpisy stránek: tučné, barva `--color-text-main`, velikost cca `28–32px`.
+- Nadpisy sekcí: tučné, `--color-text-main`, cca `18–20px`.
+- Tělo textu: `14–16px`, `--color-text-main`.
+- Metadata / popisky: `12–13px`, `--color-text-secondary`.

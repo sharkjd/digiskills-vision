@@ -1,0 +1,47 @@
+---
+description: Celková vize e-learningového prototypu – k čemu slouží a jak části navazují
+alwaysApply: true
+---
+
+# Vize projektu – Digiskills prototyp
+
+Toto je **klikatelný prototyp** e-learningové platformy. Ne vše musí fungovat na 100 % – fejková data a „předstírané“ funkce jsou v pořádku. Důležité je **flow**: jak na sebe části navazují a jak to celé působí při procházení.
+
+---
+
+## 1. Assessment (první část)
+
+- **Účel:** Otestovat uživatele na pár otázek → vyhodnotit → ukázat výsledky.
+- **Kdo vyplňuje:** Všichni ve firmě (v prototypu stačí **jeden reálný průchod**; zbytek = předpřipravená fejková data).
+- **Vyhodnocení pro jednotlivce:** Grafy (digitální kompetence), dovednosti, zařazení do škály, slovní vyhodnocení. Součástí je **doporučení ~5 digitálních kurzů** (ze seznamu cca 20 kurzů, které dodá zadavatel).
+- **Vyhodnocení pro firmu:** Podobné grafické zpracování, povídání, graf srovnání firmy s jinými firmami. Pod tím **5 kurzů doporučených pro celou firmu**.
+
+---
+
+## 2. Kurzy z assessmentu (druhá část)
+
+- **Studium pro jednoho uživatele:** Obrazovka s pěti doporučenými kurzy; uživatel může „začít studovat“.
+- **Admin prostředí:** Zobrazení kurzů doporučených na základě assessmentu pro všechny uživatele. Jednoduché ovládání (tlačítka / šoupátka) na **změnu pořadí nebo výměnu kurzů**. Po potvrzení se kurzy „propíší“ pro všechny.
+- **Následná obrazovka uživatele:** Už ne jen 5 osobních kurzů, ale **5 osobních + 5 celofirmních** (celkem 10).
+- **Ukázka studia:** Jeden nafejkovaný kurz včetně **AI chatbota** uvnitř (pokud to půjde).
+
+---
+
+## 3. Tvorba kurzů (jen pro admina)
+
+- **Stránka „Tvorba kurzů“:** Nafejkovaná – láká admina k vytvoření kurzu.
+- Průběh: pár otázek (cíl kurzu, jak s ním pracovat, téma) → falešné políčko pro nahrání PDF/materiálů → po kliknutí „vygeneruje“ kurz na míru. **Stačí předstírat** – výstup může být náhodný / předpřipravený kurz.
+
+---
+
+## 4. Chatbot a Teams (volitelné)
+
+- Zmiňováno: aplikace posílá chatbotové zprávy do Teams. Může být řešeno bokem; v prototypu stačí zmínka nebo placeholder.
+
+---
+
+## Při tvorbě jakékoli části
+
+- Dávej novou funkci do **kontextu celého flow** (kam uživatel přišel, kam může jít).
+- Preferuj **konzistentní UX a návaznost** mezi assessmentem → vyhodnocením → kurzy → studiem a adminem.
+- Kde to dává smysl, používej **fejková data** místo složité reálné logiky; prototyp má být hlavně klikatelný a srozumitelný.

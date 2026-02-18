@@ -1,0 +1,12 @@
+---
+description: Nikdy nevytvářet README ani jinou dokumentaci bez výslovné žádosti uživatele
+alwaysApply: true
+---
+
+# Žádná nevyžádaná dokumentace
+
+- **Nevytvářet** README, README.md ani jiné dokumentační soubory (*.md), pokud o ně uživatel výslovně nepožádá.
+- **Nevytvářet** průvodce, changelogy, API dokumentaci, komentáře typu „jak to spustit“ ani podobné materiály, pokud o ně uživatel neřekl.
+- Dokumentaci přidávat **pouze na výslovnou žádost** (např. „napiš README“, „dokumentuj API“, „přidej návod“).
+
+Kód může obsahovat běžné komentáře v souborech (k čemu slouží funkce, složitější logika). Jde jen o to nezakládat nové dokumentační soubory ani sekce bez vyzvání.
