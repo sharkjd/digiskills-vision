@@ -281,7 +281,6 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
             <IndividualDigiskillsIndexChart
               myScore={overallScore}
               companyAvg={BENCHMARK_DATA.companyAvg}
-              avgEmployee={BENCHMARK_DATA.avgEmployee}
               bestEmployee={BENCHMARK_DATA.bestEmployee}
             />
 
@@ -341,7 +340,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
         <h2 style={{ fontSize: 20, fontWeight: 700, color: "#040E3C", margin: "0 0 24px" }}>
           Slovní vyhodnocení
         </h2>
-        <div style={{ maxWidth: 720, display: "flex", flexDirection: "column", gap: 20 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           <p style={{ margin: 0, fontSize: 16, lineHeight: 1.9, color: "#1F2937" }}>
             <strong>Gratulujeme, Honzo!</strong> Na základě tvých odpovědí jsi byl zařazen do úrovně{" "}
             <strong>Digitální expert</strong>.
@@ -541,12 +540,10 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
 function IndividualDigiskillsIndexChart({
   myScore,
   companyAvg,
-  avgEmployee,
   bestEmployee,
 }: {
   myScore: number;
   companyAvg: number;
-  avgEmployee: number;
   bestEmployee: number;
 }) {
   const chartMin = Math.floor(companyAvg - 1);
@@ -555,7 +552,6 @@ function IndividualDigiskillsIndexChart({
 
   const myPercent = ((myScore - chartMin) / range) * 100;
   const companyAvgPercent = ((companyAvg - chartMin) / range) * 100;
-  const avgEmployeePercent = ((avgEmployee - chartMin) / range) * 100;
   const bestEmployeePercent = ((bestEmployee - chartMin) / range) * 100;
 
   return (
@@ -593,26 +589,6 @@ function IndividualDigiskillsIndexChart({
             }}
           >
             {companyAvg.toFixed(2).replace(".", ",")}
-          </span>
-        </div>
-        {/* Průměrný zaměstnanec */}
-        <div
-          style={{
-            position: "absolute",
-            left: `${avgEmployeePercent}%`,
-            transform: "translateX(-50%)",
-            textAlign: "center",
-          }}
-        >
-          <span
-            style={{
-              fontSize: 14,
-              fontStyle: "italic",
-              color: "#040E3C",
-              fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
-            }}
-          >
-            {avgEmployee.toFixed(2).replace(".", ",")}
           </span>
         </div>
         {/* Já – hlavní dominantní hodnota */}
@@ -709,20 +685,6 @@ function IndividualDigiskillsIndexChart({
               transform: "skewX(11.3deg)",
             }}
           />
-          {/* Čára – Průměrný zaměstnanec (šedá) */}
-          <div
-            style={{
-              position: "absolute",
-              left: `${avgEmployeePercent}%`,
-              top: -10,
-              bottom: -10,
-              width: 2,
-              marginLeft: -1,
-              background: "#9CA3AF",
-              borderRadius: 1,
-              transform: "skewX(11.3deg)",
-            }}
-          />
           {/* Čára – Já (Digi Orange #F7981C) */}
           <div
             style={{
@@ -768,19 +730,6 @@ function IndividualDigiskillsIndexChart({
           }}
         >
           Průměr firmy
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            left: `${avgEmployeePercent}%`,
-            transform: "translateX(-50%)",
-            fontSize: 12,
-            fontStyle: "italic",
-            color: "#040E3C",
-            fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
-          }}
-        >
-          Prům. zaměstnanec
         </div>
         <div
           style={{
