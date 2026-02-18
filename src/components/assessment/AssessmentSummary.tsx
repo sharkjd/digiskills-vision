@@ -3,8 +3,11 @@
 import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import { useRecommendedCourses } from "@/context/RecommendedCoursesContext";
 import { COURSE_LIST, Course } from "@/data/courses";
+
+const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
 
 type SectionData = {
   q1: number;
@@ -248,7 +251,12 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
             {/* Legenda kompetencí */}
             <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 24 }}>
               {DIGCOMP_LABELS.map((label, i) => (
-                <div key={label} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <motion.div
+                  key={label}
+                  whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.08)" }}
+                  transition={HOVER_TRANSITION}
+                  style={{ display: "flex", alignItems: "center", gap: 12 }}
+                >
                   <div
                     style={{
                       width: 8,
@@ -262,7 +270,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
                   <span style={{ fontSize: 13, fontWeight: 700, color: "#040E3C", minWidth: 32 }}>
                     {userScores[i].toFixed(1)}
                   </span>
-                </div>
+                </motion.div>
               ))}
             </div>
 
@@ -327,7 +335,9 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
       {/* SILNÉ STRÁNKY vs PŘÍLEŽITOSTI – Digi Skills a Digi Orange */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
         {/* Superschopnosti – Digi Skills #77F9D9 */}
-        <div
+        <motion.div
+          whileHover={{ scale: 1.03 }}
+          transition={HOVER_TRANSITION}
           style={{
             background: "#77F9D9",
             borderRadius: 16,
@@ -360,10 +370,12 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
             <strong>{userScores[strongestIndex].toFixed(1)}</strong> ukazuje, že máš solidní základ pro
             mentoring kolegů.
           </p>
-        </div>
+        </motion.div>
 
         {/* Prostor pro růst – Digi Salmon #FF7575 */}
-        <div
+        <motion.div
+          whileHover={{ scale: 1.03 }}
+          transition={HOVER_TRANSITION}
           style={{
             background: "#FF7575",
             borderRadius: 16,
@@ -395,7 +407,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
             Zde máš největší potenciál se zlepšit. Aktuální skóre{" "}
             <strong>{userScores[weakestIndex].toFixed(1)}</strong> – s cílenými kurzy se rychle posuneš dál.
           </p>
-        </div>
+        </motion.div>
       </div>
 
       {/* APLIKACE K ROZVOJI – Digi Breeze pozadí */}
@@ -415,8 +427,10 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
         </p>
         <div style={{ display: "flex", gap: 16 }}>
           {RECOMMENDED_APPS.map((app) => (
-            <div
+            <motion.div
               key={app.name}
+              whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
+              transition={HOVER_TRANSITION}
               style={{
                 display: "flex",
                 flexDirection: "column",
@@ -429,16 +443,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
                 border: "1px solid #E5E7EB",
                 flex: 1,
                 minWidth: 0,
-                transition: "transform 0.15s, box-shadow 0.15s",
                 cursor: "pointer",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
               }}
             >
               <div style={{ width: 48, height: 48, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -453,7 +458,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
               <span style={{ fontSize: 12, fontWeight: 600, color: "#374151", textAlign: "center" }}>
                 {app.name}
               </span>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -491,8 +496,10 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
             Tvé výsledky byly uloženy. Kurzy na tebe čekají.
           </p>
         </div>
-        <button
+        <motion.button
           onClick={handleContinue}
+          whileHover={{ scale: 1.02, boxShadow: "0 8px 20px rgba(37,150,255,0.45)" }}
+          transition={HOVER_TRANSITION}
           style={{
             background: "white",
             color: "#2596FF",
@@ -502,19 +509,12 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
             fontSize: 16,
             fontWeight: 700,
             cursor: "pointer",
-            transition: "all 0.15s",
           }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "#F4F5FA";
-            e.currentTarget.style.transform = "translateY(-2px)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "white";
-            e.currentTarget.style.transform = "translateY(0)";
-          }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "#F4F5FA")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "white")}
         >
           Pokračovat ke kurzům
-        </button>
+        </motion.button>
       </div>
     </div>
   );
@@ -860,35 +860,46 @@ function IndividualRadarChart({
               left: pos.x + offset,
               top: pos.y + offset,
               transform,
-              background: legend.color,
-              borderRadius: 20,
-              padding: "6px 12px 6px 8px",
               display: "flex",
+              justifyContent: "center",
               alignItems: "center",
-              gap: 8,
-              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-              whiteSpace: "nowrap",
             }}
           >
-            <div
+            <motion.div
+              whileHover={{ scale: 1.03, boxShadow: "0 4px 16px rgba(37, 150, 255, 0.12)" }}
+              transition={HOVER_TRANSITION}
               style={{
-                width: 28,
-                height: 28,
-                borderRadius: "50%",
-                background: legend.iconBg,
+                background: legend.color,
+                borderRadius: 20,
+                padding: "6px 12px 6px 8px",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
-                fontSize: 14,
-                color: "white",
-                fontWeight: 700,
+                gap: 8,
+                boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+                whiteSpace: "nowrap",
+                cursor: "default",
               }}
             >
-              {legend.icon}
-            </div>
-            <span style={{ fontSize: 12, fontWeight: 700, color: "#040E3C", textTransform: "uppercase" }}>
-              {legend.short}
-            </span>
+              <div
+                style={{
+                  width: 28,
+                  height: 28,
+                  borderRadius: "50%",
+                  background: legend.iconBg,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 14,
+                  color: "white",
+                  fontWeight: 700,
+                }}
+              >
+                {legend.icon}
+              </div>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#040E3C", textTransform: "uppercase" }}>
+                {legend.short}
+              </span>
+            </motion.div>
           </div>
         );
       })}
@@ -898,25 +909,18 @@ function IndividualRadarChart({
 
 function CourseCard({ course }: { course: Course }) {
   return (
-    <div
+    <motion.div
+      whileHover={{ y: -8, scale: 1.02, boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)" }}
+      transition={HOVER_TRANSITION}
       style={{
         background: "white",
         borderRadius: 16,
         overflow: "hidden",
         border: "1px solid #E5E7EB",
-        transition: "transform 0.2s, box-shadow 0.2s",
         cursor: "pointer",
         display: "flex",
         flexDirection: "column",
         height: "100%",
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "translateY(-4px)";
-        e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.1)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.boxShadow = "none";
       }}
     >
       <div
@@ -973,7 +977,9 @@ function CourseCard({ course }: { course: Course }) {
           </p>
         </div>
 
-        <button
+        <motion.button
+          whileHover={{ boxShadow: "0 4px 12px rgba(37,150,255,0.35)" }}
+          transition={HOVER_TRANSITION}
           style={{
             width: "100%",
             marginTop: 16,
@@ -985,15 +991,14 @@ function CourseCard({ course }: { course: Course }) {
             fontSize: 14,
             fontWeight: 700,
             cursor: "pointer",
-            transition: "background 0.15s",
             flexShrink: 0,
           }}
           onMouseEnter={(e) => (e.currentTarget.style.background = "#1F80D9")}
           onMouseLeave={(e) => (e.currentTarget.style.background = "#2596FF")}
         >
           Začít studovat
-        </button>
+        </motion.button>
       </div>
-    </div>
+    </motion.div>
   );
 }

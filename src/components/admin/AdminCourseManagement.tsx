@@ -10,6 +10,7 @@ import { useRecommendedCourses } from "@/context/RecommendedCoursesContext";
 
 const DEPLOY_DURATION_MS = 2000;
 const INITIAL_COURSE_COUNT = 6;
+const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
 
 function normalizeSearch(s: string) {
   return s
@@ -116,11 +117,13 @@ function ReplaceCourseModal({ slotIndex, currentCourse, selectedCourseIds, onSel
           ) : (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {filtered.map((course) => (
-                <button
+                <motion.button
                   key={course.id}
                   type="button"
                   onClick={() => onSelect(course)}
-                  className="flex overflow-hidden rounded-lg border bg-white text-left shadow-sm transition-all hover:border-blue-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
+                  transition={HOVER_TRANSITION}
+                  className="flex overflow-hidden rounded-lg border bg-white text-left shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                   style={{ borderColor: "var(--color-border)" }}
                 >
                   <div className="relative h-24 w-28 flex-shrink-0 bg-gray-100">
@@ -140,7 +143,7 @@ function ReplaceCourseModal({ slotIndex, currentCourse, selectedCourseIds, onSel
                       {course.duration} · {course.level}
                     </span>
                   </div>
-                </button>
+                </motion.button>
               ))}
             </div>
           )}
@@ -162,7 +165,8 @@ function AdminCourseTile({ course, index, onReplace }: AdminCourseTileProps) {
       layout
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25, ease: "easeOut" }}
+      whileHover={{ y: -8, scale: 1.02, boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)" }}
+      transition={HOVER_TRANSITION}
       className="relative flex flex-col overflow-hidden rounded-lg border bg-white shadow-md"
       style={{
         borderColor: "var(--color-border)",
@@ -270,7 +274,12 @@ export default function AdminCourseManagement() {
         }}
       >
         <div className="mx-auto max-w-7xl">
-          <header className="mb-10 rounded-lg border bg-white p-8 shadow-md" style={{ borderColor: "var(--color-border)" }}>
+          <motion.header
+            whileHover={{ y: -4, boxShadow: "0 12px 32px rgba(0,0,0,0.1)" }}
+            transition={HOVER_TRANSITION}
+            className="mb-10 rounded-lg border bg-white p-8 shadow-md"
+            style={{ borderColor: "var(--color-border)" }}
+          >
             <div
               className="mb-4 h-2 w-40 rounded-full"
               style={{
@@ -285,7 +294,7 @@ export default function AdminCourseManagement() {
             <p className="max-w-4xl text-base leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
               Na základě výsledků assessmentu (Index 5,49) jsme vybrali tyto klíčové kurzy pro rozvoj vaší organizace.
             </p>
-          </header>
+          </motion.header>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
             {selectedCourses.map((course, index) => (
@@ -299,8 +308,9 @@ export default function AdminCourseManagement() {
         <div className="mx-auto flex max-w-7xl items-center justify-end">
           <motion.button
             type="button"
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ scale: 1.02, boxShadow: "0 8px 24px rgba(37, 150, 255, 0.45)" }}
             whileTap={{ scale: 0.98 }}
+            transition={HOVER_TRANSITION}
             onClick={handleAssignCourses}
             className="rounded-lg px-8 py-4 text-sm font-bold text-white shadow-md disabled:cursor-not-allowed disabled:opacity-70"
             style={{
