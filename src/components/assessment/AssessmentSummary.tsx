@@ -42,6 +42,21 @@ const DIGCOMP_LABELS = [
 
 const COMPANY_AVG = [6.4, 5.4, 4.4, 6.5, 4.7];
 
+const DIGCOMP_LEGEND = [
+  { short: "Informace a data", icon: "📊", color: "#FEE2E2", iconBg: "#EF4444" },
+  { short: "Komunikace", icon: "💬", color: "#EDE9FE", iconBg: "#6366F1" },
+  { short: "Digitální obsah", icon: "☁️", color: "#E0F2FE", iconBg: "#0EA5E9" },
+  { short: "Bezpečnost", icon: "✓", color: "#FEF3C7", iconBg: "#F59E0B" },
+  { short: "Řešení problémů", icon: "🧩", color: "#D1FAE5", iconBg: "#10B981" },
+];
+
+const BENCHMARK_DATA = {
+  myScore: 7.3,
+  companyAvg: 5.52,
+  bestEmployee: 9.2,
+  avgEmployee: 6.1,
+};
+
 const RECOMMENDED_APPS = [
   { name: "Power Automate", icon: "/logos/Microsoft_Power_Automate.svg.png" },
   { name: "Power BI", icon: "/logos/PowerBI.png" },
@@ -243,23 +258,35 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
         style={{
           background: "white",
           borderRadius: 16,
-          padding: "28px 28px 12px 28px",
+          padding: "28px",
           border: "1px solid #E5E7EB",
         }}
       >
-        <h2 style={{ fontSize: 20, fontWeight: 700, color: "#040E3C", margin: "0 0 24px" }}>
-          Porovnání kompetencí dle kategorií DigComp
+        <h2 style={{ fontSize: 20, fontWeight: 700, color: "#040E3C", margin: "0 0 24px", fontStyle: "italic" }}>
+          Porovnání kompetencí dle DigComp
         </h2>
 
-        <div style={{ display: "flex", gap: 32, alignItems: "center", flexWrap: "wrap" }}>
-          {/* Radar Chart */}
-          <div style={{ flex: "1 1 300px", minWidth: 280 }}>
-            <RadarChart userScores={userScores} companyAvg={COMPANY_AVG} labels={DIGCOMP_LABELS} />
+        <div style={{ display: "flex", gap: 64, alignItems: "flex-start", flexWrap: "wrap", justifyContent: "center" }}>
+          {/* Radar Chart s legendou kolem */}
+          <div style={{ flex: "0 0 auto" }}>
+            <IndividualRadarChart
+              userScores={userScores}
+              companyAvg={COMPANY_AVG}
+              labels={DIGCOMP_LABELS}
+            />
           </div>
 
-          {/* Legenda */}
-          <div style={{ flex: "1 1 200px" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {/* Digiskills Index chart + legenda */}
+          <div style={{ flex: "0 1 380px", minWidth: 280 }}>
+            <IndividualDigiskillsIndexChart
+              myScore={overallScore}
+              companyAvg={BENCHMARK_DATA.companyAvg}
+              avgEmployee={BENCHMARK_DATA.avgEmployee}
+              bestEmployee={BENCHMARK_DATA.bestEmployee}
+            />
+
+            {/* Legenda kompetencí */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 24 }}>
               {DIGCOMP_LABELS.map((label, i) => (
                 <div key={label} style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <div
@@ -271,8 +298,8 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
                       flexShrink: 0,
                     }}
                   />
-                  <span style={{ fontSize: 14, color: "#374151", flex: 1 }}>{label}</span>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: "#040E3C" }}>
+                  <span style={{ fontSize: 13, color: "#374151", flex: 1 }}>{label}</span>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: "#040E3C", minWidth: 32 }}>
                     {userScores[i].toFixed(1)}
                   </span>
                 </div>
@@ -282,19 +309,20 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
             <div
               style={{
                 display: "flex",
-                gap: 20,
-                marginTop: 20,
+                gap: 16,
+                marginTop: 24,
                 paddingTop: 16,
                 borderTop: "1px solid #E5E7EB",
+                flexWrap: "wrap",
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <div style={{ width: 16, height: 3, background: "#2596FF", borderRadius: 2 }} />
-                <span style={{ fontSize: 12, color: "#6B7280" }}>Můj výsledek</span>
+                <div style={{ width: 16, height: 3, background: "#F7981C", borderRadius: 2 }} />
+                <span style={{ fontSize: 11, color: "#374151", fontWeight: 500 }}>Můj výsledek</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 <div style={{ width: 16, height: 3, background: "#9CA3AF", borderRadius: 2 }} />
-                <span style={{ fontSize: 12, color: "#6B7280" }}>Průměr firmy</span>
+                <span style={{ fontSize: 11, color: "#6B7280", fontWeight: 500 }}>Průměr firmy</span>
               </div>
             </div>
           </div>
@@ -510,7 +538,230 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
   );
 }
 
-function RadarChart({
+function IndividualDigiskillsIndexChart({
+  myScore,
+  companyAvg,
+  avgEmployee,
+  bestEmployee,
+}: {
+  myScore: number;
+  companyAvg: number;
+  avgEmployee: number;
+  bestEmployee: number;
+}) {
+  const chartMin = 3;
+  const chartMax = 10;
+  const range = chartMax - chartMin;
+
+  const myPercent = ((myScore - chartMin) / range) * 100;
+  const companyAvgPercent = ((companyAvg - chartMin) / range) * 100;
+  const avgEmployeePercent = ((avgEmployee - chartMin) / range) * 100;
+  const bestEmployeePercent = ((bestEmployee - chartMin) / range) * 100;
+
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <h3 style={{ fontSize: 16, fontWeight: 700, color: "#040E3C", margin: "0 0 20px" }}>
+        Digiskills index
+      </h3>
+
+      {/* Hodnoty nad grafem */}
+      <div style={{ position: "relative", height: 32, marginBottom: 4 }}>
+        {/* Průměr firmy */}
+        <div
+          style={{
+            position: "absolute",
+            left: `${companyAvgPercent}%`,
+            transform: "translateX(-50%)",
+            textAlign: "center",
+          }}
+        >
+          <span style={{ fontSize: 13, color: "#6B7280" }}>{companyAvg.toFixed(2).replace(".", ",")}</span>
+        </div>
+        {/* Průměrný zaměstnanec */}
+        <div
+          style={{
+            position: "absolute",
+            left: `${avgEmployeePercent}%`,
+            transform: "translateX(-50%)",
+            textAlign: "center",
+          }}
+        >
+          <span style={{ fontSize: 13, color: "#9CA3AF" }}>{avgEmployee.toFixed(2).replace(".", ",")}</span>
+        </div>
+        {/* Já */}
+        <div
+          style={{
+            position: "absolute",
+            left: `${myPercent}%`,
+            transform: "translateX(-50%)",
+            textAlign: "center",
+          }}
+        >
+          <span style={{ fontSize: 14, fontWeight: 700, color: "#F7981C" }}>
+            {myScore.toFixed(2).replace(".", ",")}
+          </span>
+        </div>
+        {/* Nejlepší zaměstnanec */}
+        <div
+          style={{
+            position: "absolute",
+            left: `${bestEmployeePercent}%`,
+            transform: "translateX(-50%)",
+            textAlign: "center",
+          }}
+        >
+          <span style={{ fontSize: 13, color: "#77F9D9" }}>{bestEmployee.toFixed(2).replace(".", ",")}</span>
+        </div>
+      </div>
+
+      {/* Hlavní pruh grafu + čáry v samostatné vrstvě nad ním */}
+      <div style={{ position: "relative", height: 40 }}>
+        {/* Vrstva 1: barevný pruh */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            borderRadius: 4,
+            display: "flex",
+          }}
+        >
+          <div
+            style={{
+              width: `${companyAvgPercent}%`,
+              background: "#E5E7EB",
+              borderRadius: "4px 0 0 4px",
+            }}
+          />
+          <div
+            style={{
+              width: `${bestEmployeePercent - companyAvgPercent}%`,
+              background: "linear-gradient(to right, #E5E7EB, #2596FF 50%, #77F9D9)",
+            }}
+          />
+          <div
+            style={{
+              flex: 1,
+              background: "#77F9D9",
+              borderRadius: "0 4px 4px 0",
+            }}
+          />
+        </div>
+        {/* Vrstva 2: svislé čáry nad pruhem */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            zIndex: 10,
+          }}
+        >
+          {/* Čárkovaná čára – Průměr firmy (šedá) */}
+          <div
+            style={{
+              position: "absolute",
+              left: `${companyAvgPercent}%`,
+              top: -8,
+              bottom: -8,
+              width: 0,
+              marginLeft: -1.5,
+              borderLeft: "3px dashed #6B7280",
+            }}
+          />
+          {/* Čára – Průměrný zaměstnanec (světle šedá) */}
+          <div
+            style={{
+              position: "absolute",
+              left: `${avgEmployeePercent}%`,
+              top: -8,
+              bottom: -8,
+              width: 2,
+              marginLeft: -1,
+              background: "#9CA3AF",
+              borderRadius: 1,
+            }}
+          />
+          {/* Čára – Já (oranžová) */}
+          <div
+            style={{
+              position: "absolute",
+              left: `${myPercent}%`,
+              top: -8,
+              bottom: -8,
+              width: 3,
+              marginLeft: -1.5,
+              background: "#F7981C",
+              borderRadius: 2,
+            }}
+          />
+          {/* Čára – Nejlepší zaměstnanec (tyrkysová) */}
+          <div
+            style={{
+              position: "absolute",
+              left: `${bestEmployeePercent}%`,
+              top: -8,
+              bottom: -8,
+              width: 2,
+              marginLeft: -1,
+              background: "#0D9488",
+              borderRadius: 1,
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Popisky pod grafem */}
+      <div style={{ position: "relative", height: 24, marginTop: 8 }}>
+        <div
+          style={{
+            position: "absolute",
+            left: `${companyAvgPercent}%`,
+            transform: "translateX(-50%)",
+            fontSize: 11,
+            color: "#6B7280",
+          }}
+        >
+          Průměr firmy
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            left: `${avgEmployeePercent}%`,
+            transform: "translateX(-50%)",
+            fontSize: 11,
+            color: "#9CA3AF",
+          }}
+        >
+          Prům. zaměstnanec
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            left: `${myPercent}%`,
+            transform: "translateX(-50%)",
+            fontSize: 11,
+            fontWeight: 600,
+            color: "#F7981C",
+          }}
+        >
+          Já
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            left: `${bestEmployeePercent}%`,
+            transform: "translateX(-50%)",
+            fontSize: 11,
+            color: "#77F9D9",
+          }}
+        >
+          Nejlepší
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function IndividualRadarChart({
   userScores,
   companyAvg,
   labels,
@@ -519,9 +770,9 @@ function RadarChart({
   companyAvg: number[];
   labels: string[];
 }) {
-  const size = 360;
+  const size = 340;
   const center = size / 2;
-  const maxRadius = 140;
+  const maxRadius = 90;
   const levels = 5;
 
   const angleStep = (2 * Math.PI) / labels.length;
@@ -536,54 +787,114 @@ function RadarChart({
     };
   };
 
-  const userPoints = userScores.map((score, i) => getPoint(i, score));
-  const companyPoints = companyAvg.map((score, i) => getPoint(i, score));
+  const getLabelPosition = (index: number) => {
+    const angle = startAngle + index * angleStep;
+    const radius = maxRadius + 10;
+    return {
+      x: center + radius * Math.cos(angle),
+      y: center + radius * Math.sin(angle),
+      angle,
+    };
+  };
 
-  const userPath = userPoints.map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`)).join(" ") + " Z";
-  const companyPath =
-    companyPoints.map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`)).join(" ") + " Z";
+  const createPath = (scores: number[]) => {
+    const points = scores.map((score, i) => getPoint(i, score));
+    return points.map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`)).join(" ") + " Z";
+  };
+
+  const userPath = createPath(userScores);
+  const companyPath = createPath(companyAvg);
+
+  const userPoints = userScores.map((score, i) => getPoint(i, score));
 
   return (
-    <svg width={size} height={size} style={{ display: "block", margin: "0 auto" }}>
-      {/* Pozadí – mřížka */}
-      {Array.from({ length: levels }, (_, i) => {
-        const r = ((i + 1) / levels) * maxRadius;
-        const points = labels
-          .map((_, j) => {
-            const angle = startAngle + j * angleStep;
-            return `${center + r * Math.cos(angle)},${center + r * Math.sin(angle)}`;
-          })
-          .join(" ");
+    <div style={{ position: "relative", width: size, height: size, margin: "0 auto" }}>
+      <svg width={size} height={size} style={{ display: "block" }}>
+        {/* Mřížka */}
+        {Array.from({ length: levels }, (_, i) => {
+          const r = ((i + 1) / levels) * maxRadius;
+          const points = labels
+            .map((_, j) => {
+              const angle = startAngle + j * angleStep;
+              return `${center + r * Math.cos(angle)},${center + r * Math.sin(angle)}`;
+            })
+            .join(" ");
+          return <polygon key={i} points={points} fill="none" stroke="#E5E7EB" strokeWidth="1" />;
+        })}
+
+        {/* Osy */}
+        {labels.map((_, i) => {
+          const angle = startAngle + i * angleStep;
+          const x2 = center + maxRadius * Math.cos(angle);
+          const y2 = center + maxRadius * Math.sin(angle);
+          return <line key={i} x1={center} y1={center} x2={x2} y2={y2} stroke="#E5E7EB" strokeWidth="1" />;
+        })}
+
+        {/* Průměr firmy */}
+        <path d={companyPath} fill="rgba(156, 163, 175, 0.2)" stroke="#9CA3AF" strokeWidth="2" />
+
+        {/* Uživatelské skóre – Digi Orange */}
+        <path d={userPath} fill="rgba(247, 152, 28, 0.25)" stroke="#F7981C" strokeWidth="3" />
+
+        {/* Body uživatele */}
+        {userPoints.map((p, i) => (
+          <circle key={i} cx={p.x} cy={p.y} r="5" fill="#F7981C" stroke="white" strokeWidth="2" />
+        ))}
+      </svg>
+
+      {/* Popisky kompetencí jako HTML elementy kolem grafu */}
+      {labels.map((_, i) => {
+        const pos = getLabelPosition(i);
+        const legend = DIGCOMP_LEGEND[i];
+        
+        let transform = "translate(-50%, -50%)";
+        if (i === 0) transform = "translate(-50%, -100%)";
+        if (i === 1) transform = "translate(0%, -50%)";
+        if (i === 2) transform = "translate(0%, 0%)";
+        if (i === 3) transform = "translate(-100%, 0%)";
+        if (i === 4) transform = "translate(-100%, -50%)";
+
         return (
-          <polygon
+          <div
             key={i}
-            points={points}
-            fill="none"
-            stroke="#E5E7EB"
-            strokeWidth="1"
-          />
+            style={{
+              position: "absolute",
+              left: pos.x,
+              top: pos.y,
+              transform,
+              background: legend.color,
+              borderRadius: 20,
+              padding: "6px 12px 6px 8px",
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            <div
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: "50%",
+                background: legend.iconBg,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 14,
+                color: "white",
+                fontWeight: 700,
+              }}
+            >
+              {legend.icon}
+            </div>
+            <span style={{ fontSize: 12, fontWeight: 700, color: "#040E3C", textTransform: "uppercase" }}>
+              {legend.short}
+            </span>
+          </div>
         );
       })}
-
-      {/* Osy */}
-      {labels.map((_, i) => {
-        const angle = startAngle + i * angleStep;
-        const x2 = center + maxRadius * Math.cos(angle);
-        const y2 = center + maxRadius * Math.sin(angle);
-        return <line key={i} x1={center} y1={center} x2={x2} y2={y2} stroke="#E5E7EB" strokeWidth="1" />;
-      })}
-
-      {/* Průměr firmy */}
-      <path d={companyPath} fill="rgba(156, 163, 175, 0.2)" stroke="#9CA3AF" strokeWidth="2" />
-
-      {/* Uživatelské skóre – Digi Azure */}
-      <path d={userPath} fill="rgba(37, 150, 255, 0.25)" stroke="#2596FF" strokeWidth="3" />
-
-      {/* Body uživatele */}
-      {userPoints.map((p, i) => (
-        <circle key={i} cx={p.x} cy={p.y} r="5" fill="#2596FF" stroke="white" strokeWidth="2" />
-      ))}
-    </svg>
+    </div>
   );
 }
 
