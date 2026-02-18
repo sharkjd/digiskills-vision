@@ -268,7 +268,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
 
         <div style={{ display: "flex", gap: 32, alignItems: "flex-start", flexWrap: "wrap" }}>
           {/* Radar chart (pavouk) */}
-          <div style={{ flex: "1 1 360px", minWidth: 300 }}>
+          <div style={{ flex: "1 1 420px", minWidth: 380, overflow: "visible" }}>
             <IndividualRadarChart
               userScores={userScores}
               companyAvg={COMPANY_AVG}
@@ -772,9 +772,9 @@ function IndividualRadarChart({
   companyAvg: number[];
   labels: string[];
 }) {
-  const size = 420;
+  const size = 320;
   const center = size / 2;
-  const maxRadius = 120;
+  const maxRadius = 90;
   const levels = 5;
 
   const angleStep = (2 * Math.PI) / labels.length;
@@ -809,9 +809,22 @@ function IndividualRadarChart({
 
   const userPoints = userScores.map((score, i) => getPoint(i, score));
 
+  const containerSize = size + 140;
+  const offset = 70;
+  
   return (
-    <div style={{ position: "relative", width: size, height: size, margin: "0 auto" }}>
-      <svg width={size} height={size} style={{ display: "block" }}>
+    <div style={{ position: "relative", width: containerSize, height: containerSize, margin: "0 auto" }}>
+      <svg 
+        width={size} 
+        height={size} 
+        style={{ 
+          display: "block", 
+          overflow: "visible",
+          position: "absolute",
+          left: offset,
+          top: offset,
+        }}
+      >
         {/* Mřížka */}
         {Array.from({ length: levels }, (_, i) => {
           const r = ((i + 1) / levels) * maxRadius;
@@ -861,8 +874,8 @@ function IndividualRadarChart({
             key={i}
             style={{
               position: "absolute",
-              left: pos.x,
-              top: pos.y,
+              left: pos.x + offset,
+              top: pos.y + offset,
               transform,
               background: legend.color,
               borderRadius: 20,

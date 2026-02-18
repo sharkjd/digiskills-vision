@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import ScaleSlider from "./ScaleSlider";
 import CheckboxGroup from "./CheckboxGroup";
 
@@ -36,7 +37,6 @@ type FormData = {
   ai: { score: number; tools: string[] };
 };
 
-/** Předvyplněná data pro náhled – realistický příklad vyplněného assessmentu */
 const INITIAL_DATA: FormData = {
   name: "Honza Dolejš",
   email: "honza.dolejs@digiskills.cz",
@@ -191,10 +191,38 @@ const STEP_LABELS = [
 
 import AssessmentSummary from "./AssessmentSummary";
 
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 80 : -80,
+    y: direction > 0 ? 16 : -16,
+    opacity: 0,
+  }),
+  center: { x: 0, y: 0, opacity: 1 },
+  exit: (direction: number) => ({
+    x: direction < 0 ? 80 : -80,
+    y: direction < 0 ? 16 : -16,
+    opacity: 0,
+  }),
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.05 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+};
+
 export default function AssessmentForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>(INITIAL_DATA);
   const [phase, setPhase] = useState<"form" | "loading" | "report">("form");
+  const [direction, setDirection] = useState(1);
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -226,6 +254,7 @@ export default function AssessmentForm() {
       if (phase !== "form") return;
 
       if (currentStep < TOTAL_STEPS - 1) {
+        setDirection(1);
         setCurrentStep((s) => Math.min(s + 1, TOTAL_STEPS - 1));
         return;
       }
@@ -246,393 +275,558 @@ export default function AssessmentForm() {
     }));
   };
 
+  const goNext = () => {
+    setDirection(1);
+    setCurrentStep((s) => Math.min(s + 1, TOTAL_STEPS - 1));
+  };
+
+  const goBack = () => {
+    setDirection(-1);
+    setCurrentStep((s) => s - 1);
+  };
+
   const currentSection = currentStep >= 1 && currentStep <= 5 ? SECTIONS[currentStep - 1] : null;
   const isReport = phase === "report";
   const isLoading = phase === "loading";
 
   return (
-    <div ref={containerRef} style={{ maxWidth: 1020, margin: "0 auto", padding: "40px 24px" }}>
-      {/* Page header */}
-      <div style={{ marginBottom: 32 }}>
-        <h1
-          style={{
-            fontSize: "var(--font-size-page-title)",
-            fontWeight: 700,
-            color: "var(--color-text-main)",
-            marginBottom: 6,
-          }}
-        >
-          Digitální Assessment
-        </h1>
-        <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--font-size-body)" }}>
-          {isReport
-            ? "Vyhodnocení výsledků · osobní report"
-            : `Mapování digitálních kompetencí DigComp 2.1 · Krok ${currentStep + 1} z ${TOTAL_STEPS}`}
-        </p>
-      </div>
+    <div
+      ref={containerRef}
+      style={{
+        minHeight: "100vh",
+        background: isReport ? "transparent" : "#F4F5FA",
+        padding: "40px 24px",
+      }}
+    >
+      <div style={{ maxWidth: 1020, margin: "0 auto" }}>
+        {/* Page header */}
+        <div style={{ marginBottom: 32 }}>
+          <h1
+            style={{
+              fontSize: 32,
+              fontWeight: 700,
+              fontStyle: "italic",
+              color: "#040E3C",
+              marginBottom: 8,
+            }}
+          >
+            Digitální Assessment
+          </h1>
+          <p style={{ color: "#6B7280", fontSize: 15 }}>
+            {isReport
+              ? "Vyhodnocení výsledků · osobní report"
+              : `Mapování digitálních kompetencí DigComp 2.1 · Krok ${currentStep + 1} z ${TOTAL_STEPS}`}
+          </p>
+        </div>
 
-      {/* Progress bar */}
-      <div
-        style={{
-          background: "var(--color-border)",
-          borderRadius: 999,
-          height: 8,
-          marginBottom: 20,
-          overflow: "hidden",
-        }}
-      >
+        {/* Progress bar */}
         <div
           style={{
-            width: `${progress}%`,
-            height: "100%",
-            background: "var(--color-primary)",
+            background: "#E5E7EB",
             borderRadius: 999,
-            transition: "width 0.35s ease",
-          }}
-        />
-      </div>
-
-      {/* Step indicator */}
-      <div
-        style={{
-          display: "flex",
-          gap: 6,
-          marginBottom: 32,
-          flexWrap: "wrap",
-          alignItems: "center",
-        }}
-      >
-        {Array.from({ length: TOTAL_STEPS }, (_, i) => {
-          const isActive = !isReport && i === currentStep;
-          const isDone = isReport || i < currentStep;
-          return (
-            <div
-              key={i}
-              style={{
-                width: 28,
-                height: 28,
-                borderRadius: "50%",
-                background: isDone || isActive ? "var(--color-primary)" : "var(--color-border)",
-                color: isDone || isActive ? "white" : "var(--color-text-secondary)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: 11,
-                fontWeight: 700,
-                flexShrink: 0,
-              }}
-            >
-              {isDone ? "✓" : i + 1}
-            </div>
-          );
-        })}
-        <span
-          style={{
-            fontSize: "var(--font-size-meta)",
-            color: "var(--color-text-secondary)",
-            marginLeft: 8,
-            fontWeight: 500,
+            height: 8,
+            marginBottom: 20,
+            overflow: "hidden",
           }}
         >
-          {isReport ? "Vyhodnocení" : STEP_LABELS[currentStep]}
-        </span>
-      </div>
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${progress}%` }}
+            transition={{ type: "spring", stiffness: 80, damping: 15 }}
+            style={{
+              height: "100%",
+              background: "#2596FF",
+              borderRadius: 999,
+            }}
+          />
+        </div>
 
-      {/* Step content card */}
-      <div
-        style={{
-          background: isReport ? "transparent" : "var(--color-background)",
-          borderRadius: isReport ? 0 : "var(--radius-card)",
-          border: isReport ? "none" : "1px solid var(--color-border)",
-          boxShadow: isReport ? "none" : "0 2px 8px var(--color-card-shadow)",
-          padding: isReport ? 0 : "32px",
-          marginBottom: 24,
-        }}
-      >
-        {isLoading && (
-          <div style={{ display: "grid", placeItems: "center", padding: "48px 0", gap: 14 }}>
-            <div className="ds-spinner" aria-label="Načítání" />
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontWeight: 700, marginBottom: 4 }}>Vyhodnocujeme výsledky…</div>
-              <div style={{ color: "var(--color-text-secondary)", fontSize: "var(--font-size-meta)" }}>
-                Zabere to jen chvilku
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Step 0: Identifikace */}
-        {!isLoading && !isReport && currentStep === 0 && (
-          <div>
-            <SectionHeader icon="👤" title="Úvodní identifikace" description="Ověřte a doplňte své základní údaje." />
-
-            <div style={{ marginBottom: 20 }}>
-              <FieldLabel>Celé jméno</FieldLabel>
-              <input
-                type="text"
-                value={formData.name}
-                onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
-                style={inputStyle}
-              />
-            </div>
-
-            <div style={{ marginBottom: 28 }}>
-              <FieldLabel>Pracovní e-mail</FieldLabel>
-              <input
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
-                style={inputStyle}
-              />
-            </div>
-
-            <div style={{ marginBottom: 28 }}>
-              <p
+        {/* Step indicator */}
+        <div
+          style={{
+            display: "flex",
+            gap: 8,
+            marginBottom: 32,
+            flexWrap: "wrap",
+            alignItems: "center",
+          }}
+        >
+          {Array.from({ length: TOTAL_STEPS }, (_, i) => {
+            const isActive = !isReport && i === currentStep;
+            const isDone = isReport || i < currentStep;
+            return (
+              <motion.div
+                key={i}
+                animate={{
+                  scale: isActive ? 1.1 : 1,
+                  backgroundColor: isDone || isActive ? "#2596FF" : "white",
+                  borderColor: isDone || isActive ? "#2596FF" : "#E5E7EB",
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 style={{
-                  fontSize: "var(--font-size-body)",
-                  fontWeight: 600,
-                  color: "var(--color-text-main)",
-                  marginBottom: 14,
+                  width: 32,
+                  height: 32,
+                  borderRadius: "50%",
+                  border: "2px solid",
+                  color: isDone || isActive ? "white" : "#6B7280",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 12,
+                  fontWeight: 700,
+                  flexShrink: 0,
                 }}
               >
-                Vaše pracovní zařazení
-              </p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {ROLES.map((role) => {
-                  const isSelected = formData.role === role;
-                  return (
-                    <label key={role} style={checkboxLabelStyle(isSelected)}>
-                      <input
-                        type="radio"
-                        name="role"
-                        value={role}
-                        checked={isSelected}
-                        onChange={() => setFormData((p) => ({ ...p, role }))}
-                        style={checkboxInputStyle}
-                      />
-                      <span style={{ fontSize: "var(--font-size-body)", color: "var(--color-text-main)" }}>
-                        {role}
-                      </span>
-                    </label>
-                  );
-                })}
-              </div>
-            </div>
-
-            <ScaleSlider
-              label="Váš celkový vztah k digitálním technologiím (1 = vyhýbám se jim, 10 = jsem technologický nadšenec)"
-              value={formData.digitalRelationship}
-              onChange={(v) => setFormData((p) => ({ ...p, digitalRelationship: v }))}
-            />
-          </div>
-        )}
-
-        {/* Steps 1–5: Kompetence */}
-        {!isLoading && !isReport && currentStep >= 1 && currentStep <= 5 && currentSection && (
-          <div>
-            <SectionHeader
-              icon={currentSection.icon}
-              title={`${currentStep}. ${currentSection.title}`}
-              description={currentSection.description}
-            />
-            <ScaleSlider
-              label={currentSection.q1}
-              value={formData[currentSection.key].q1}
-              onChange={(v) => updateSection(currentSection.key, "q1", v)}
-            />
-            <ScaleSlider
-              label={currentSection.q2}
-              value={formData[currentSection.key].q2}
-              onChange={(v) => updateSection(currentSection.key, "q2", v)}
-            />
-            <CheckboxGroup
-              label={currentSection.toolsLabel}
-              options={currentSection.tools}
-              selected={formData[currentSection.key].tools}
-              onChange={(tools) => updateSection(currentSection.key, "tools", tools)}
-            />
-          </div>
-        )}
-
-        {/* Step 6: AI Bonus */}
-        {!isLoading && !isReport && currentStep === 6 && (
-          <div>
-            <SectionHeader
-              icon="🤖"
-              title="Bonus: Umělá inteligence (AI)"
-              description="Nepovinná sekce zaměřená na znalost a používání AI nástrojů."
-            />
-            <ScaleSlider
-              label="Znalost AI: Jak se považujete za pokročilé v používání generativní AI (např. psaní promptů, generování textů či obrázků)?"
-              value={formData.ai.score}
-              onChange={(v) => setFormData((p) => ({ ...p, ai: { ...p.ai, score: v } }))}
-            />
-            <CheckboxGroup
-              label="Které AI funkce v Microsoftu znáte nebo používáte?"
-              options={AI_TOOLS}
-              selected={formData.ai.tools}
-              onChange={(tools) => setFormData((p) => ({ ...p, ai: { ...p.ai, tools } }))}
-            />
-          </div>
-        )}
-
-        {/* Step 7: Odeslání (report se ukáže až po odeslání) */}
-        {!isLoading && !isReport && currentStep === 7 && (
-          <div>
-            <SectionHeader
-              icon="✅"
-              title="Před odesláním"
-              description="Po kliknutí na „Odeslat“ se vygeneruje vyhodnocení a zobrazí se report."
-            />
-            <div
-              style={{
-                background: "var(--color-background)",
-                borderRadius: "var(--radius-card)",
-                border: "1px solid var(--color-border)",
-                boxShadow: "0 2px 8px var(--color-card-shadow)",
-                padding: 18,
-              }}
-            >
-              <div style={{ display: "grid", gap: 10 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-                  <span style={{ color: "var(--color-text-secondary)", fontSize: "var(--font-size-meta)" }}>
-                    Jméno
-                  </span>
-                  <span style={{ fontWeight: 700 }}>{formData.name || "—"}</span>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-                  <span style={{ color: "var(--color-text-secondary)", fontSize: "var(--font-size-meta)" }}>
-                    E-mail
-                  </span>
-                  <span style={{ fontWeight: 700 }}>{formData.email || "—"}</span>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-                  <span style={{ color: "var(--color-text-secondary)", fontSize: "var(--font-size-meta)" }}>
-                    Zařazení
-                  </span>
-                  <span style={{ fontWeight: 700 }}>{formData.role || "—"}</span>
-                </div>
-              </div>
-            </div>
-            <p style={{ marginTop: 14, color: "var(--color-text-secondary)", fontSize: "var(--font-size-meta)" }}>
-              Tip: pro rychlé pokračování můžeš použít klávesu Enter.
-            </p>
-          </div>
-        )}
-
-        {isReport && <AssessmentSummary formData={formData} SECTIONS={SECTIONS} />}
-      </div>
-
-      {/* Navigation */}
-      {!isLoading && !isReport && (
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <button
-            onClick={() => setCurrentStep((s) => s - 1)}
-            disabled={currentStep === 0}
+                {isDone ? (
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path
+                      d="M2.5 7L5.5 10L11.5 4"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                ) : (
+                  i + 1
+                )}
+              </motion.div>
+            );
+          })}
+          <span
             style={{
-              padding: "10px 24px",
-              borderRadius: "var(--radius-btn)",
-              border: `1px solid ${currentStep === 0 ? "var(--color-border)" : "var(--color-primary)"}`,
-              background: "var(--color-background)",
-              color: currentStep === 0 ? "var(--color-text-secondary)" : "var(--color-primary)",
-              fontSize: "var(--font-size-body)",
+              fontSize: 13,
+              color: "#6B7280",
+              marginLeft: 12,
               fontWeight: 600,
-              cursor: currentStep === 0 ? "not-allowed" : "pointer",
-              transition: "all 0.15s ease",
             }}
           >
-            ← Zpět
-          </button>
+            {isReport ? "Vyhodnocení" : STEP_LABELS[currentStep]}
+          </span>
+        </div>
 
-          {currentStep < TOTAL_STEPS - 1 ? (
-            <button
-              onClick={() => setCurrentStep((s) => s + 1)}
-              style={{
-                padding: "10px 32px",
-                borderRadius: "var(--radius-btn)",
-                border: "none",
-                background: "var(--color-primary)",
-                color: "white",
-                fontSize: "var(--font-size-body)",
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: "background 0.15s ease",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "var(--color-primary-hover)")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "var(--color-primary)")}
+        {/* Step content card */}
+        <div
+          style={{
+            background: isReport ? "transparent" : "white",
+            borderRadius: isReport ? 0 : 20,
+            border: "none",
+            boxShadow: isReport ? "none" : "0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04)",
+            padding: isReport ? 0 : "40px 48px",
+            marginBottom: 24,
+            overflow: "hidden",
+          }}
+        >
+          {isLoading && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              style={{ display: "grid", placeItems: "center", padding: "48px 0", gap: 14 }}
             >
-              Dále →
-            </button>
-          ) : (
-            <button
-              onClick={submitAssessment}
-              style={{
-                padding: "10px 32px",
-                borderRadius: "var(--radius-btn)",
-                border: "none",
-                background: "var(--color-primary)",
-                color: "white",
-                fontSize: "var(--font-size-body)",
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: "background 0.15s ease",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "var(--color-primary-hover)")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "var(--color-primary)")}
-            >
-              Odeslat assessment ✓
-            </button>
+              <div className="ds-spinner" aria-label="Načítání" />
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontWeight: 700, marginBottom: 4, color: "#040E3C" }}>Vyhodnocujeme výsledky…</div>
+                <div style={{ color: "#6B7280", fontSize: 13 }}>
+                  Zabere to jen chvilku
+                </div>
+              </div>
+            </motion.div>
           )}
-        </div>
-      )}
 
-      {isReport && (
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
-          <button
-            onClick={() => {
-              setPhase("form");
-              setCurrentStep(TOTAL_STEPS - 1);
-            }}
-            style={{
-              padding: "10px 24px",
-              borderRadius: "var(--radius-btn)",
-              border: "1px solid var(--color-primary)",
-              background: "var(--color-background)",
-              color: "var(--color-primary)",
-              fontSize: "var(--font-size-body)",
-              fontWeight: 600,
-              cursor: "pointer",
-              transition: "all 0.15s ease",
-            }}
-          >
-            ← Upravit odpovědi
-          </button>
+          <AnimatePresence mode="wait" custom={direction}>
+            {/* Step 0: Identifikace */}
+            {!isLoading && !isReport && currentStep === 0 && (
+              <motion.div
+                key="step-0"
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+              >
+                <motion.div variants={containerVariants} initial="hidden" animate="visible">
+                  <motion.div variants={itemVariants}>
+                    <SectionHeader icon="👤" title="Úvodní identifikace" description="Ověřte a doplňte své základní údaje." />
+                  </motion.div>
 
-          <button
-            onClick={() => router.push("/")}
-            style={{
-              padding: "10px 32px",
-              borderRadius: "var(--radius-btn)",
-              border: "none",
-              background: "var(--color-primary)",
-              color: "white",
-              fontSize: "var(--font-size-body)",
-              fontWeight: 600,
-              cursor: "pointer",
-              transition: "background 0.15s ease",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "var(--color-primary-hover)")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "var(--color-primary)")}
-          >
-            Pokračovat →
-          </button>
+                  <motion.div variants={itemVariants} style={{ marginBottom: 20 }}>
+                    <FieldLabel>Celé jméno</FieldLabel>
+                    <input
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
+                      style={inputStyle}
+                    />
+                  </motion.div>
+
+                  <motion.div variants={itemVariants} style={{ marginBottom: 28 }}>
+                    <FieldLabel>Pracovní e-mail</FieldLabel>
+                    <input
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
+                      style={inputStyle}
+                    />
+                  </motion.div>
+
+                  <motion.div variants={itemVariants} style={{ marginBottom: 28 }}>
+                    <p
+                      style={{
+                        fontSize: 15,
+                        fontWeight: 600,
+                        color: "#040E3C",
+                        marginBottom: 14,
+                      }}
+                    >
+                      Vaše pracovní zařazení
+                    </p>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                      {ROLES.map((role) => {
+                        const isSelected = formData.role === role;
+                        return (
+                          <SelectableCard
+                            key={role}
+                            isSelected={isSelected}
+                            onClick={() => setFormData((p) => ({ ...p, role }))}
+                          >
+                            <input
+                              type="radio"
+                              name="role"
+                              value={role}
+                              checked={isSelected}
+                              onChange={() => setFormData((p) => ({ ...p, role }))}
+                              style={{ display: "none" }}
+                            />
+                            <span style={{ fontSize: 15, color: "#040E3C" }}>{role}</span>
+                          </SelectableCard>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+
+                  <motion.div variants={itemVariants}>
+                    <ScaleSlider
+                      label="Váš celkový vztah k digitálním technologiím (1 = vyhýbám se jim, 10 = jsem technologický nadšenec)"
+                      value={formData.digitalRelationship}
+                      onChange={(v) => setFormData((p) => ({ ...p, digitalRelationship: v }))}
+                    />
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+            )}
+
+            {/* Steps 1–5: Kompetence */}
+            {!isLoading && !isReport && currentStep >= 1 && currentStep <= 5 && currentSection && (
+              <motion.div
+                key={`step-${currentStep}`}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+              >
+                <motion.div variants={containerVariants} initial="hidden" animate="visible">
+                  <motion.div variants={itemVariants}>
+                    <SectionHeader
+                      icon={currentSection.icon}
+                      title={`${currentStep}. ${currentSection.title}`}
+                      description={currentSection.description}
+                    />
+                  </motion.div>
+                  <motion.div variants={itemVariants}>
+                    <ScaleSlider
+                      label={currentSection.q1}
+                      value={formData[currentSection.key].q1}
+                      onChange={(v) => updateSection(currentSection.key, "q1", v)}
+                    />
+                  </motion.div>
+                  <motion.div variants={itemVariants}>
+                    <ScaleSlider
+                      label={currentSection.q2}
+                      value={formData[currentSection.key].q2}
+                      onChange={(v) => updateSection(currentSection.key, "q2", v)}
+                    />
+                  </motion.div>
+                  <motion.div variants={itemVariants}>
+                    <CheckboxGroup
+                      label={currentSection.toolsLabel}
+                      options={currentSection.tools}
+                      selected={formData[currentSection.key].tools}
+                      onChange={(tools) => updateSection(currentSection.key, "tools", tools)}
+                    />
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+            )}
+
+            {/* Step 6: AI Bonus */}
+            {!isLoading && !isReport && currentStep === 6 && (
+              <motion.div
+                key="step-6"
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+              >
+                <motion.div variants={containerVariants} initial="hidden" animate="visible">
+                  <motion.div variants={itemVariants}>
+                    <SectionHeader
+                      icon="🤖"
+                      title="Bonus: Umělá inteligence (AI)"
+                      description="Nepovinná sekce zaměřená na znalost a používání AI nástrojů."
+                    />
+                  </motion.div>
+                  <motion.div variants={itemVariants}>
+                    <ScaleSlider
+                      label="Znalost AI: Jak se považujete za pokročilé v používání generativní AI (např. psaní promptů, generování textů či obrázků)?"
+                      value={formData.ai.score}
+                      onChange={(v) => setFormData((p) => ({ ...p, ai: { ...p.ai, score: v } }))}
+                    />
+                  </motion.div>
+                  <motion.div variants={itemVariants}>
+                    <CheckboxGroup
+                      label="Které AI funkce v Microsoftu znáte nebo používáte?"
+                      options={AI_TOOLS}
+                      selected={formData.ai.tools}
+                      onChange={(tools) => setFormData((p) => ({ ...p, ai: { ...p.ai, tools } }))}
+                    />
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+            )}
+
+            {/* Step 7: Odeslání */}
+            {!isLoading && !isReport && currentStep === 7 && (
+              <motion.div
+                key="step-7"
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+              >
+                <motion.div variants={containerVariants} initial="hidden" animate="visible">
+                  <motion.div variants={itemVariants}>
+                    <SectionHeader
+                      icon="✅"
+                      title="Před odesláním"
+                      description="Po kliknutí na Odeslat se vygeneruje vyhodnocení a zobrazí se report."
+                    />
+                  </motion.div>
+                  <motion.div variants={itemVariants}>
+                    <div
+                      style={{
+                        background: "#F4F5FA",
+                        borderRadius: 16,
+                        padding: 24,
+                      }}
+                    >
+                      <div style={{ display: "grid", gap: 16 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+                          <span style={{ color: "#6B7280", fontSize: 13 }}>Jméno</span>
+                          <span style={{ fontWeight: 700, color: "#040E3C" }}>{formData.name || "—"}</span>
+                        </div>
+                        <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+                          <span style={{ color: "#6B7280", fontSize: 13 }}>E-mail</span>
+                          <span style={{ fontWeight: 700, color: "#040E3C" }}>{formData.email || "—"}</span>
+                        </div>
+                        <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+                          <span style={{ color: "#6B7280", fontSize: 13 }}>Zařazení</span>
+                          <span style={{ fontWeight: 700, color: "#040E3C" }}>{formData.role || "—"}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                  <motion.p
+                    variants={itemVariants}
+                    style={{ marginTop: 16, color: "#6B7280", fontSize: 13 }}
+                  >
+                    Tip: pro rychlé pokračování můžeš použít klávesu Enter.
+                  </motion.p>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {isReport && <AssessmentSummary formData={formData} SECTIONS={SECTIONS} />}
         </div>
-      )}
+
+        {/* Navigation */}
+        {!isLoading && !isReport && (
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <motion.button
+              whileHover={{ scale: currentStep === 0 ? 1 : 1.02 }}
+              whileTap={{ scale: currentStep === 0 ? 1 : 0.98 }}
+              onClick={goBack}
+              disabled={currentStep === 0}
+              style={{
+                padding: "14px 24px",
+                borderRadius: 12,
+                border: "none",
+                background: "transparent",
+                color: currentStep === 0 ? "#9CA3AF" : "#040E3C",
+                fontSize: 16,
+                fontWeight: 600,
+                cursor: currentStep === 0 ? "not-allowed" : "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path
+                  d="M12.5 15L7.5 10L12.5 5"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Zpět
+            </motion.button>
+
+            {currentStep < TOTAL_STEPS - 1 ? (
+              <motion.button
+                whileHover={{ scale: 1.02, boxShadow: "0 6px 20px rgba(37, 150, 255, 0.4)" }}
+                whileTap={{ scale: 0.98 }}
+                onClick={goNext}
+                style={{
+                  padding: "14px 32px",
+                  borderRadius: 12,
+                  border: "none",
+                  background: "#2596FF",
+                  color: "white",
+                  fontSize: 16,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  boxShadow: "0 4px 12px rgba(37, 150, 255, 0.3)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                }}
+              >
+                Dále
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M7.5 5L12.5 10L7.5 15"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </motion.button>
+            ) : (
+              <motion.button
+                whileHover={{ scale: 1.02, boxShadow: "0 6px 20px rgba(37, 150, 255, 0.4)" }}
+                whileTap={{ scale: 0.98 }}
+                onClick={submitAssessment}
+                style={{
+                  padding: "14px 32px",
+                  borderRadius: 12,
+                  border: "none",
+                  background: "#2596FF",
+                  color: "white",
+                  fontSize: 16,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  boxShadow: "0 4px 12px rgba(37, 150, 255, 0.3)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                }}
+              >
+                Odeslat assessment
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M4 10L8 14L16 6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </motion.button>
+            )}
+          </div>
+        )}
+
+        {isReport && (
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => {
+                setPhase("form");
+                setCurrentStep(TOTAL_STEPS - 1);
+              }}
+              style={{
+                padding: "14px 24px",
+                borderRadius: 12,
+                border: "none",
+                background: "transparent",
+                color: "#040E3C",
+                fontSize: 16,
+                fontWeight: 600,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path
+                  d="M12.5 15L7.5 10L12.5 5"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Upravit odpovědi
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.02, boxShadow: "0 6px 20px rgba(37, 150, 255, 0.4)" }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => router.push("/")}
+              style={{
+                padding: "14px 32px",
+                borderRadius: 12,
+                border: "none",
+                background: "#2596FF",
+                color: "white",
+                fontSize: 16,
+                fontWeight: 700,
+                cursor: "pointer",
+                boxShadow: "0 4px 12px rgba(37, 150, 255, 0.3)",
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+              }}
+            >
+              Pokračovat
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path
+                  d="M7.5 5L12.5 10L7.5 15"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </motion.button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
-
-// --- Pomocné sub-komponenty ---
 
 function SectionHeader({
   icon,
@@ -644,20 +838,35 @@ function SectionHeader({
   description: string;
 }) {
   return (
-    <div style={{ display: "flex", alignItems: "flex-start", gap: 14, marginBottom: 28 }}>
-      <span style={{ fontSize: 34, lineHeight: 1 }}>{icon}</span>
+    <div style={{ display: "flex", alignItems: "flex-start", gap: 16, marginBottom: 32 }}>
+      <div
+        style={{
+          width: 56,
+          height: 56,
+          borderRadius: 16,
+          background: "rgba(37, 150, 255, 0.12)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: 28,
+          flexShrink: 0,
+        }}
+      >
+        {icon}
+      </div>
       <div>
         <h2
           style={{
-            fontSize: "var(--font-size-section-title)",
+            fontSize: 24,
             fontWeight: 700,
-            color: "var(--color-text-main)",
-            marginBottom: 4,
+            fontStyle: "italic",
+            color: "#040E3C",
+            marginBottom: 6,
           }}
         >
           {title}
         </h2>
-        <p style={{ fontSize: "var(--font-size-meta)", color: "var(--color-text-secondary)" }}>
+        <p style={{ fontSize: 15, color: "#6B7280", lineHeight: 1.5 }}>
           {description}
         </p>
       </div>
@@ -670,9 +879,9 @@ function FieldLabel({ children }: { children: React.ReactNode }) {
     <label
       style={{
         display: "block",
-        fontSize: "var(--font-size-body)",
+        fontSize: 15,
         fontWeight: 600,
-        color: "var(--color-text-main)",
+        color: "#040E3C",
         marginBottom: 8,
       }}
     >
@@ -681,33 +890,51 @@ function FieldLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
+function SelectableCard({
+  children,
+  isSelected,
+  onClick,
+}: {
+  children: React.ReactNode;
+  isSelected: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <motion.div
+      whileHover={{ scale: 1.02, boxShadow: "0 4px 16px rgba(37, 150, 255, 0.12)" }}
+      whileTap={{ scale: 0.98 }}
+      animate={
+        isSelected
+          ? { boxShadow: "0 0 0 2px rgba(37, 150, 255, 0.3)" }
+          : { boxShadow: "0 0 0 0 rgba(37, 150, 255, 0)" }
+      }
+      transition={{ duration: 0.2 }}
+      onClick={onClick}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 16,
+        padding: "16px 20px",
+        borderRadius: 12,
+        border: isSelected ? "2px solid #2596FF" : "1px solid #E5E7EB",
+        background: isSelected ? "rgba(37, 150, 255, 0.05)" : "white",
+        cursor: "pointer",
+        transition: "border-color 0.15s ease, background 0.15s ease",
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 const inputStyle: React.CSSProperties = {
   width: "100%",
-  padding: "10px 14px",
-  borderRadius: "var(--radius-input)",
-  border: "1px solid var(--color-border-input)",
-  fontSize: "var(--font-size-body)",
-  color: "var(--color-text-main)",
+  padding: "14px 16px",
+  borderRadius: 12,
+  border: "1px solid #E5E7EB",
+  fontSize: 15,
+  color: "#040E3C",
   outline: "none",
   boxSizing: "border-box",
+  transition: "border-color 0.15s ease, box-shadow 0.15s ease",
 };
-
-const checkboxInputStyle: React.CSSProperties = {
-  accentColor: "var(--color-primary)",
-  width: 18,
-  height: 18,
-  cursor: "pointer",
-  flexShrink: 0,
-};
-
-const checkboxLabelStyle = (isSelected: boolean): React.CSSProperties => ({
-  display: "flex",
-  alignItems: "center",
-  gap: 12,
-  padding: "12px 16px",
-  borderRadius: "var(--radius-input)",
-  border: `1px solid ${isSelected ? "var(--color-primary)" : "var(--color-border)"}`,
-  background: isSelected ? "#f0f8ff" : "var(--color-background)",
-  cursor: "pointer",
-  transition: "border-color 0.15s ease, background 0.15s ease",
-});
