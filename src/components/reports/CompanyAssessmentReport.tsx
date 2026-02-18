@@ -380,10 +380,9 @@ export default function CompanyAssessmentReport() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: 20,
               }}
             >
-              💪
+              <Image src="/Screenshots/Symbol Dark.png" alt="" width={28} height={28} style={{ objectFit: "contain" }} />
             </div>
             <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: 0 }}>
               Firemní superschopnosti
@@ -417,10 +416,9 @@ export default function CompanyAssessmentReport() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: 20,
               }}
             >
-              🚀
+              <Image src="/Screenshots/Symbol Dark.png" alt="" width={28} height={28} style={{ objectFit: "contain" }} />
             </div>
             <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: 0 }}>
               Firemní prostor pro růst

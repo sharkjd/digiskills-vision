@@ -2,6 +2,9 @@
 
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useRecommendedCourses } from "@/context/RecommendedCoursesContext";
+import { COURSE_LIST, Course } from "@/data/courses";
 
 type SectionData = {
   q1: number;
@@ -65,56 +68,6 @@ const RECOMMENDED_APPS = [
   { name: "Forms", icon: "/logos/Forms.png" },
 ];
 
-const COURSE_LIST = [
-  {
-    id: 1,
-    title: "Efektivní spolupráce v Microsoft Teams",
-    description: "Naučte se pokročilé techniky pro týmovou komunikaci a online schůzky.",
-    image: "/courses/teams.webp",
-    duration: "2 hodiny",
-    level: "Středně pokročilý",
-  },
-  {
-    id: 2,
-    title: "Automatizace s Power Automate",
-    description: "Zjednodušte rutinní úkoly a ušetřete hodiny práce týdně.",
-    image: "/courses/Automatizace.webp",
-    duration: "3 hodiny",
-    level: "Pokročilý",
-  },
-  {
-    id: 3,
-    title: "Základy práce s AI nástroji",
-    description: "Objevte, jak vám Copilot a další AI nástroje pomohou být produktivnější.",
-    image: "/courses/AI.webp",
-    duration: "1.5 hodiny",
-    level: "Začátečník",
-  },
-  {
-    id: 4,
-    title: "Excel a analýza dat",
-    description: "Pracujte s tabulkami, grafy a vzorci efektivně a přehledně.",
-    image: "/courses/excel.webp",
-    duration: "2.5 hodiny",
-    level: "Středně pokročilý",
-  },
-  {
-    id: 5,
-    title: "Kybernetická bezpečnost v každodenní praxi",
-    description: "Chraňte data, rozpoznávejte hrozby a bezpečně pracujte online.",
-    image: "/courses/security.png",
-    duration: "1.5 hodiny",
-    level: "Začátečník",
-  },
-  {
-    id: 6,
-    title: "Prezentace a vizualizace dat",
-    description: "Vytvářejte srozumitelné prezentace a grafy, které zaujmou.",
-    image: "/courses/Vizualizace.webp",
-    duration: "2 hodiny",
-    level: "Středně pokročilý",
-  },
-];
 
 function getLevelLabel(score: number): { label: string; description: string } {
   if (score < 5) return { label: "Digitální nováček", description: "Základní digitální dovednosti" };
@@ -137,6 +90,9 @@ function getAIFeedback(score: number): string {
 }
 
 export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSummaryProps) {
+  const router = useRouter();
+  const { setRecommendedCourses } = useRecommendedCourses();
+  
   const sectionKeys = ["information", "communication", "content", "security", "problemsolving"] as const;
 
   const userScores = sectionKeys.map((key) => {
@@ -147,6 +103,11 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
   const overallScore = userScores.reduce((a, b) => a + b, 0) / userScores.length;
   const levelInfo = getLevelLabel(overallScore);
   const aiFeedback = getAIFeedback(overallScore);
+  
+  const handleContinue = () => {
+    setRecommendedCourses(COURSE_LIST.slice(0, 6));
+    router.push("/moje-kurzy");
+  };
 
   const strongestIndex = userScores.indexOf(Math.max(...userScores));
   const weakestIndex = userScores.indexOf(Math.min(...userScores));
@@ -383,10 +344,9 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: 20,
               }}
             >
-              💪
+              <Image src="/Screenshots/Symbol Dark.png" alt="" width={28} height={28} style={{ objectFit: "contain" }} />
             </div>
             <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: 0 }}>
               Tvé superschopnosti
@@ -420,10 +380,9 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: 20,
               }}
             >
-              🚀
+              <Image src="/Screenshots/Symbol Dark.png" alt="" width={28} height={28} style={{ objectFit: "contain" }} />
             </div>
             <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: 0 }}>
               Prostor pro růst
@@ -532,6 +491,30 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
             Tvé výsledky byly uloženy. Kurzy na tebe čekají.
           </p>
         </div>
+        <button
+          onClick={handleContinue}
+          style={{
+            background: "white",
+            color: "#2596FF",
+            border: "none",
+            borderRadius: 10,
+            padding: "14px 32px",
+            fontSize: 16,
+            fontWeight: 700,
+            cursor: "pointer",
+            transition: "all 0.15s",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "#F4F5FA";
+            e.currentTarget.style.transform = "translateY(-2px)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "white";
+            e.currentTarget.style.transform = "translateY(0)";
+          }}
+        >
+          Pokračovat ke kurzům
+        </button>
       </div>
     </div>
   );
@@ -913,7 +896,7 @@ function IndividualRadarChart({
   );
 }
 
-function CourseCard({ course }: { course: typeof COURSE_LIST[0] }) {
+function CourseCard({ course }: { course: Course }) {
   return (
     <div
       style={{
