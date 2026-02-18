@@ -8,7 +8,7 @@ const COMPANY_DATA = {
   period: "18. 11. – 5. 12. 2025",
   respondents: 2534,
   companyIndex: 6.59,
-  marketAvg: 5.52,
+  marketAvg: 5.01,
   marketMax: 8.15,
   marketMin: 3.02,
 };
@@ -842,13 +842,22 @@ function DigiskillsIndexChart({
   const marketMaxPercent = ((marketMax - chartMin) / range) * 100;
 
   return (
-    <div style={{ marginBottom: 16 }}>
-      <h3 style={{ fontSize: 16, fontWeight: 700, color: "#040E3C", margin: "0 0 20px" }}>
+    <div style={{ marginBottom: 16, fontFamily: "var(--font-montserrat), Montserrat, sans-serif", maxWidth: 440, margin: "0 auto 16px" }}>
+      <h3
+        style={{
+          fontSize: 18,
+          fontWeight: 700,
+          fontStyle: "italic",
+          color: "#040E3C",
+          margin: "0 0 28px",
+          fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+        }}
+      >
         Digiskills index
       </h3>
 
       {/* Hodnoty nad grafem */}
-      <div style={{ position: "relative", height: 32, marginBottom: 4 }}>
+      <div style={{ position: "relative", height: 36, marginBottom: 8 }}>
         {/* Min trhu */}
         <div
           style={{
@@ -858,19 +867,15 @@ function DigiskillsIndexChart({
             textAlign: "center",
           }}
         >
-          <span style={{ fontSize: 13, color: "#6B7280" }}>{marketMin.toFixed(2).replace(".", ",")}</span>
-        </div>
-        {/* Vaše firma */}
-        <div
-          style={{
-            position: "absolute",
-            left: `${companyPercent}%`,
-            transform: "translateX(-50%)",
-            textAlign: "center",
-          }}
-        >
-          <span style={{ fontSize: 14, fontWeight: 700, color: "#F7981C" }}>
-            {companyIndex.toFixed(2).replace(".", ",")}
+          <span
+            style={{
+              fontSize: 14,
+              fontStyle: "italic",
+              color: "#6B7280",
+              fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+            }}
+          >
+            {marketMin.toFixed(2).replace(".", ",")}
           </span>
         </div>
         {/* Průměr trhu */}
@@ -882,7 +887,37 @@ function DigiskillsIndexChart({
             textAlign: "center",
           }}
         >
-          <span style={{ fontSize: 13, color: "#6B7280" }}>{marketAvg.toFixed(2).replace(".", ",")}</span>
+          <span
+            style={{
+              fontSize: 14,
+              fontStyle: "italic",
+              color: "#040E3C",
+              fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+            }}
+          >
+            {marketAvg.toFixed(2).replace(".", ",")}
+          </span>
+        </div>
+        {/* Vaše firma – hlavní dominantní hodnota */}
+        <div
+          style={{
+            position: "absolute",
+            left: `${companyPercent}%`,
+            transform: "translateX(-50%)",
+            textAlign: "center",
+          }}
+        >
+          <span
+            style={{
+              fontSize: 18,
+              fontWeight: 700,
+              fontStyle: "italic",
+              color: "#F7981C",
+              fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+            }}
+          >
+            {companyIndex.toFixed(2).replace(".", ",")}
+          </span>
         </div>
         {/* Max trhu */}
         <div
@@ -893,43 +928,49 @@ function DigiskillsIndexChart({
             textAlign: "center",
           }}
         >
-          <span style={{ fontSize: 13, color: "#77F9D9" }}>{marketMax.toFixed(2).replace(".", ",")}</span>
+          <span
+            style={{
+              fontSize: 14,
+              fontStyle: "italic",
+              color: "#6B7280",
+              fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+            }}
+          >
+            {marketMax.toFixed(2).replace(".", ",")}
+          </span>
         </div>
       </div>
 
-      {/* Hlavní pruh grafu + čáry v samostatné vrstvě nad ním */}
-      <div style={{ position: "relative", height: 40 }}>
-        {/* Vrstva 1: barevný pruh */}
+      {/* Hlavní pruh grafu se zkosením 11,3° – charakteristický brand prvek */}
+      <div
+        style={{
+          position: "relative",
+          height: 44,
+          transform: "skewX(-11.3deg)",
+          transformOrigin: "center center",
+        }}
+      >
+        {/* Vrstva 1: barevný pruh s gradientem Digi Azure → Digi Skills */}
         <div
           style={{
             position: "absolute",
             inset: 0,
-            borderRadius: 4,
+            borderRadius: 8,
+            overflow: "hidden",
             display: "flex",
           }}
         >
           <div
             style={{
-              width: `${marketMinPercent}%`,
-              background: "#E5E7EB",
-              borderRadius: "4px 0 0 4px",
-            }}
-          />
-          <div
-            style={{
-              width: `${marketMaxPercent - marketMinPercent}%`,
-              background: "linear-gradient(to right, #E5E7EB, #2596FF 50%, #77F9D9)",
-            }}
-          />
-          <div
-            style={{
-              flex: 1,
-              background: "#77F9D9",
-              borderRadius: "0 4px 4px 0",
+              width: "100%",
+              height: "100%",
+              background: "linear-gradient(to right, #2596FF 0%, #77F9D9 100%)",
+              borderRadius: 8,
             }}
           />
         </div>
-        {/* Vrstva 2: svislé čáry nad pruhem */}
+
+        {/* Vrstva 2: svislé čáry nad pruhem (de-skewed pro rovné čáry) */}
         <div
           style={{
             position: "absolute",
@@ -938,56 +979,61 @@ function DigiskillsIndexChart({
             zIndex: 10,
           }}
         >
-          {/* Čára – Vaše firma (oranžová) */}
-          <div
-            style={{
-              position: "absolute",
-              left: `${companyPercent}%`,
-              top: -8,
-              bottom: -8,
-              width: 3,
-              marginLeft: -1.5,
-              background: "#F7981C",
-              borderRadius: 2,
-            }}
-          />
-          {/* Čárkovaná čára – Průměr trhu (černá) */}
+          {/* Čárkovaná čára – Průměr trhu (Digi Sky #040E3C) */}
           <div
             style={{
               position: "absolute",
               left: `${marketAvgPercent}%`,
-              top: -8,
-              bottom: -8,
+              top: -10,
+              bottom: -10,
               width: 0,
               marginLeft: -1.5,
               borderLeft: "3px dashed #040E3C",
+              transform: "skewX(11.3deg)",
             }}
           />
-          {/* Čára – Max trhu (tyrkysová, jemně) */}
+          {/* Čára – Vaše firma (Digi Orange #F7981C) */}
+          <div
+            style={{
+              position: "absolute",
+              left: `${companyPercent}%`,
+              top: -10,
+              bottom: -10,
+              width: 3,
+              marginLeft: -1.5,
+              background: "#F7981C",
+              borderRadius: 2,
+              transform: "skewX(11.3deg)",
+            }}
+          />
+          {/* Čára – Max trhu (Digi Skills #77F9D9) */}
           <div
             style={{
               position: "absolute",
               left: `${marketMaxPercent}%`,
-              top: -8,
-              bottom: -8,
+              top: -10,
+              bottom: -10,
               width: 2,
               marginLeft: -1,
-              background: "#0D9488",
+              background: "#77F9D9",
               borderRadius: 1,
+              transform: "skewX(11.3deg)",
             }}
           />
         </div>
       </div>
 
-      {/* Popisky pod grafem */}
-      <div style={{ position: "relative", height: 24, marginTop: 8 }}>
+      {/* Popisky pod grafem – s dostatečným whitespace */}
+      <div style={{ position: "relative", height: 28, marginTop: 14 }}>
         <div
           style={{
             position: "absolute",
             left: `${marketMinPercent}%`,
             transform: "translateX(-50%)",
-            fontSize: 11,
-            color: "#9CA3AF",
+            fontSize: 12,
+            fontStyle: "italic",
+            color: "#2596FF",
+            fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
           }}
         >
           Min trhu
@@ -995,22 +1041,12 @@ function DigiskillsIndexChart({
         <div
           style={{
             position: "absolute",
-            left: `${companyPercent}%`,
-            transform: "translateX(-50%)",
-            fontSize: 11,
-            fontWeight: 600,
-            color: "#F7981C",
-          }}
-        >
-          Vaše firma
-        </div>
-        <div
-          style={{
-            position: "absolute",
             left: `${marketAvgPercent}%`,
             transform: "translateX(-50%)",
-            fontSize: 11,
-            color: "#6B7280",
+            fontSize: 12,
+            fontStyle: "italic",
+            color: "#040E3C",
+            fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
           }}
         >
           Průměr trhu
@@ -1018,10 +1054,26 @@ function DigiskillsIndexChart({
         <div
           style={{
             position: "absolute",
+            left: `${companyPercent}%`,
+            transform: "translateX(-50%)",
+            fontSize: 13,
+            fontWeight: 700,
+            fontStyle: "italic",
+            color: "#F7981C",
+            fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+          }}
+        >
+          Vaše firma
+        </div>
+        <div
+          style={{
+            position: "absolute",
             left: `${marketMaxPercent}%`,
             transform: "translateX(-50%)",
-            fontSize: 11,
+            fontSize: 12,
+            fontStyle: "italic",
             color: "#77F9D9",
+            fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
           }}
         >
           Max trhu
