@@ -3,6 +3,9 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
+
+const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
 
 const COMPANY_DATA = {
   name: "VIG CZ",
@@ -160,7 +163,9 @@ export default function CompanyAssessmentReport() {
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20 }}>
           {/* Firemní Index */}
-          <div
+          <motion.div
+            whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.15)" }}
+            transition={HOVER_TRANSITION}
             style={{
               background: "rgba(255,255,255,0.1)",
               borderRadius: 12,
@@ -197,10 +202,12 @@ export default function CompanyAssessmentReport() {
             </div>
             <div style={{ fontSize: 14, fontWeight: 600 }}>Firemní Digiskills Index</div>
             <div style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>Max. trhu: {COMPANY_DATA.marketMax}</div>
-          </div>
+          </motion.div>
 
           {/* Srovnání s benchmarkem */}
-          <div
+          <motion.div
+            whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.15)" }}
+            transition={HOVER_TRANSITION}
             style={{
               background: "rgba(255,255,255,0.1)",
               borderRadius: 12,
@@ -225,10 +232,12 @@ export default function CompanyAssessmentReport() {
             <div style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>
               Trh: {COMPANY_DATA.marketAvg} • Vy: {COMPANY_DATA.companyIndex}
             </div>
-          </div>
+          </motion.div>
 
           {/* Počet respondentů */}
-          <div
+          <motion.div
+            whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.15)" }}
+            transition={HOVER_TRANSITION}
             style={{
               background: "rgba(255,255,255,0.1)",
               borderRadius: 12,
@@ -242,7 +251,7 @@ export default function CompanyAssessmentReport() {
             <div style={{ fontSize: 40, fontWeight: 800 }}>{COMPANY_DATA.respondents.toLocaleString("cs-CZ")}</div>
             <div style={{ fontSize: 14, fontWeight: 600, marginTop: 8 }}>Zapojených zaměstnanců</div>
             <div style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>Období: {COMPANY_DATA.period}</div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
@@ -282,7 +291,16 @@ export default function CompanyAssessmentReport() {
             {/* Legenda kompetencí */}
             <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 24 }}>
               {DIGCOMP_LABELS.map((label, i) => (
-                <div key={label} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <motion.div
+                  key={label}
+                  whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.08)" }}
+                  transition={HOVER_TRANSITION}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                  }}
+                >
                   <div
                     style={{
                       width: 8,
@@ -297,7 +315,7 @@ export default function CompanyAssessmentReport() {
                   <span style={{ fontSize: 13, fontWeight: 700, color: "#040E3C", minWidth: 32 }}>
                     {DIGCOMP_SCORES.company[i].toFixed(1)}
                   </span>
-                </div>
+                </motion.div>
               ))}
             </div>
 
@@ -364,7 +382,9 @@ export default function CompanyAssessmentReport() {
       {/* FIREMNÍ SUPERSCHOPNOSTI vs PROSTOR PRO RŮST – pod slovní vyhodnocení */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
         {/* Superschopnosti firmy – Digi Skills #77F9D9 */}
-        <div
+        <motion.div
+          whileHover={{ scale: 1.03 }}
+          transition={HOVER_TRANSITION}
           style={{
             background: "#77F9D9",
             borderRadius: 16,
@@ -397,10 +417,12 @@ export default function CompanyAssessmentReport() {
             že zaměstnanci mají solidní základ v ochraně dat a kybernetické bezpečnosti. 
             Interní bezpečnostní kultura je zdravá.
           </p>
-        </div>
+        </motion.div>
 
         {/* Prostor pro růst firmy – Digi Salmon #FF7575 */}
-        <div
+        <motion.div
+          whileHover={{ scale: 1.03 }}
+          transition={HOVER_TRANSITION}
           style={{
             background: "#FF7575",
             borderRadius: 16,
@@ -433,7 +455,7 @@ export default function CompanyAssessmentReport() {
             zaostává za průměrem trhu (5,9). Cílené kurzy v této oblasti přinesou nejvyšší ROI 
             vzdělávacích investic.
           </p>
-        </div>
+        </motion.div>
       </div>
 
       {/* TALENT PIPELINE - HISTOGRAM */}
@@ -472,22 +494,16 @@ export default function CompanyAssessmentReport() {
                 }}
               >
                 <span style={{ fontSize: 11, fontWeight: 600, color: "#374151" }}>{item.count}</span>
-                <div
+                <motion.div
+                  whileHover={{ opacity: 0.85, scaleY: 1.02 }}
+                  transition={HOVER_TRANSITION}
                   style={{
                     width: "100%",
                     height,
                     background: color,
                     borderRadius: "6px 6px 0 0",
-                    transition: "transform 0.2s, opacity 0.2s",
                     cursor: "pointer",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.opacity = "0.8";
-                    e.currentTarget.style.transform = "scaleY(1.02)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.opacity = "1";
-                    e.currentTarget.style.transform = "scaleY(1)";
+                    transformOrigin: "bottom",
                   }}
                 />
                 <span style={{ fontSize: 12, color: "#6B7280", fontWeight: 600 }}>{item.level}</span>
@@ -498,8 +514,10 @@ export default function CompanyAssessmentReport() {
 
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "center", marginTop: 20 }}>
           {LEVEL_GROUPS.map((group) => (
-            <div
+            <motion.div
               key={group.name}
+              whileHover={{ y: -2 }}
+              transition={HOVER_TRANSITION}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -513,7 +531,7 @@ export default function CompanyAssessmentReport() {
               <span style={{ fontSize: 12, color: "#374151" }}>{group.name}</span>
               <span style={{ fontSize: 12, fontWeight: 700, color: "#040E3C" }}>{group.percent}%</span>
               <span style={{ fontSize: 11, color: "#6B7280" }}>(top 30%: {group.top30}%)</span>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -616,23 +634,16 @@ export default function CompanyAssessmentReport() {
           }}
         >
           {M365_PROFICIENCY.map((app) => (
-            <div
+            <motion.div
               key={app.app}
+              whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
+              transition={HOVER_TRANSITION}
               style={{
                 background: "#F4F5FA",
                 borderRadius: 12,
                 padding: 16,
                 textAlign: "center",
-                transition: "transform 0.15s, box-shadow 0.15s",
                 cursor: "pointer",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
               }}
             >
               <div
@@ -729,7 +740,7 @@ export default function CompanyAssessmentReport() {
               >
                 {app.proficiency.toFixed(1)}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -745,32 +756,34 @@ export default function CompanyAssessmentReport() {
               Na základě assessmentu doporučujeme tyto vzdělávací priority
             </p>
           </div>
-          <Link
-            href="/admin/kurzy"
-            style={{
-              display: "inline-block",
-              padding: "10px 20px",
-              background: "transparent",
-              border: "2px solid #2596FF",
-              borderRadius: 8,
-              color: "#2596FF",
-              fontSize: 14,
-              fontWeight: 600,
-              cursor: "pointer",
-              transition: "all 0.15s",
-              textDecoration: "none",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "#2596FF";
-              e.currentTarget.style.color = "white";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "transparent";
-              e.currentTarget.style.color = "#2596FF";
-            }}
-          >
-            Upravit výběr (Admin)
-          </Link>
+          <motion.div style={{ display: "inline-block" }} whileHover={{ scale: 1.02 }} transition={HOVER_TRANSITION}>
+            <Link
+              href="/admin/kurzy"
+              style={{
+                display: "inline-block",
+                padding: "10px 20px",
+                background: "transparent",
+                border: "2px solid #2596FF",
+                borderRadius: 8,
+                color: "#2596FF",
+                fontSize: 14,
+                fontWeight: 600,
+                cursor: "pointer",
+                transition: "all 0.15s",
+                textDecoration: "none",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "#2596FF";
+                e.currentTarget.style.color = "white";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "transparent";
+                e.currentTarget.style.color = "#2596FF";
+              }}
+            >
+              Upravit výběr (Admin)
+            </Link>
+          </motion.div>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
@@ -801,26 +814,25 @@ export default function CompanyAssessmentReport() {
             Přiřaďte kurzy zaměstnancům a sledujte jejich pokrok v reálném čase.
           </p>
         </div>
-        <Link
-          href="/admin/kurzy"
-          style={{
-            display: "inline-block",
-            padding: "14px 28px",
-            background: "white",
-            border: "none",
-            borderRadius: 10,
-            color: "#2596FF",
-            fontSize: 15,
-            fontWeight: 700,
-            cursor: "pointer",
-            transition: "transform 0.15s",
-            textDecoration: "none",
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
-          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-        >
-          Přejít do Admin panelu
-        </Link>
+        <motion.div style={{ display: "inline-block" }} whileHover={{ scale: 1.02, boxShadow: "0 8px 20px rgba(37,150,255,0.45)" }} transition={HOVER_TRANSITION}>
+          <Link
+            href="/admin/kurzy"
+            style={{
+              display: "inline-block",
+              padding: "14px 28px",
+              background: "white",
+              border: "none",
+              borderRadius: 10,
+              color: "#2596FF",
+              fontSize: 15,
+              fontWeight: 700,
+              cursor: "pointer",
+              textDecoration: "none",
+            }}
+          >
+            Přejít do Admin panelu
+          </Link>
+        </motion.div>
       </div>
     </div>
   );
@@ -1203,35 +1215,46 @@ function CompanyRadarChart({
               left: pos.x,
               top: pos.y,
               transform,
-              background: legend.color,
-              borderRadius: 20,
-              padding: "6px 12px 6px 8px",
               display: "flex",
+              justifyContent: "center",
               alignItems: "center",
-              gap: 8,
-              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-              whiteSpace: "nowrap",
             }}
           >
-            <div
+            <motion.div
+              whileHover={{ scale: 1.03, boxShadow: "0 4px 16px rgba(37, 150, 255, 0.12)" }}
+              transition={HOVER_TRANSITION}
               style={{
-                width: 28,
-                height: 28,
-                borderRadius: "50%",
-                background: legend.iconBg,
+                background: legend.color,
+                borderRadius: 20,
+                padding: "6px 12px 6px 8px",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
-                fontSize: 14,
-                color: "white",
-                fontWeight: 700,
+                gap: 8,
+                boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+                whiteSpace: "nowrap",
+                cursor: "default",
               }}
             >
-              {legend.icon}
-            </div>
-            <span style={{ fontSize: 12, fontWeight: 700, color: "#040E3C", textTransform: "uppercase" }}>
-              {legend.short}
-            </span>
+              <div
+                style={{
+                  width: 28,
+                  height: 28,
+                  borderRadius: "50%",
+                  background: legend.iconBg,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 14,
+                  color: "white",
+                  fontWeight: 700,
+                }}
+              >
+                {legend.icon}
+              </div>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#040E3C", textTransform: "uppercase" }}>
+                {legend.short}
+              </span>
+            </motion.div>
           </div>
         );
       })}
@@ -1247,26 +1270,19 @@ function CompanyCourseCard({
   index: number;
 }) {
   return (
-    <div
+    <motion.div
+      whileHover={{ y: -8, scale: 1.02, boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)" }}
+      transition={HOVER_TRANSITION}
       style={{
         background: "white",
         borderRadius: 16,
         overflow: "hidden",
         border: "1px solid #E5E7EB",
-        transition: "transform 0.2s, box-shadow 0.2s",
         cursor: "pointer",
         display: "flex",
         flexDirection: "column",
         height: "100%",
         position: "relative",
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "translateY(-4px)";
-        e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.1)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.boxShadow = "none";
       }}
     >
       {/* Priority Badge */}
@@ -1341,7 +1357,9 @@ function CompanyCourseCard({
           </p>
         </div>
 
-        <button
+        <motion.button
+          whileHover={{ boxShadow: "0 4px 12px rgba(4,14,60,0.25)" }}
+          transition={HOVER_TRANSITION}
           style={{
             width: "100%",
             marginTop: 16,
@@ -1353,15 +1371,14 @@ function CompanyCourseCard({
             fontSize: 14,
             fontWeight: 700,
             cursor: "pointer",
-            transition: "background 0.15s",
             flexShrink: 0,
           }}
           onMouseEnter={(e) => (e.currentTarget.style.background = "#2596FF")}
           onMouseLeave={(e) => (e.currentTarget.style.background = "#040E3C")}
         >
           Přiřadit zaměstnancům
-        </button>
+        </motion.button>
       </div>
-    </div>
+    </motion.div>
   );
 }
