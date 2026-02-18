@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import ScaleSlider from "./ScaleSlider";
 import CheckboxGroup from "./CheckboxGroup";
@@ -195,10 +195,34 @@ export default function AssessmentForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>(INITIAL_DATA);
   const router = useRouter();
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentStep]);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "Enter") return;
+      if (e.defaultPrevented) return;
+      if (e.repeat) return;
+      if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+      if (!containerRef.current) return;
+      if (e.target && !containerRef.current.contains(e.target as Node)) return;
+
+      e.preventDefault();
+
+      if (currentStep < TOTAL_STEPS - 1) {
+        setCurrentStep((s) => Math.min(s + 1, TOTAL_STEPS - 1));
+        return;
+      }
+
+      router.push("/");
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [currentStep, router]);
 
   const progress = Math.round((currentStep / (TOTAL_STEPS - 1)) * 100);
 
@@ -216,7 +240,7 @@ export default function AssessmentForm() {
   const currentSection = currentStep >= 1 && currentStep <= 5 ? SECTIONS[currentStep - 1] : null;
 
   return (
-    <div style={{ maxWidth: 1200, margin: "0 auto", padding: "40px 24px" }}>
+    <div ref={containerRef} style={{ maxWidth: 1020, margin: "0 auto", padding: "40px 24px" }}>
       {/* Page header */}
       <div style={{ marginBottom: 32 }}>
         <h1
