@@ -339,7 +339,7 @@ export default function CompanyAssessmentReport() {
         <h2 style={{ fontSize: 20, fontWeight: 700, color: "var(--color-text-main)", margin: "0 0 24px" }}>
           Slovní vyhodnocení
         </h2>
-        <div style={{ maxWidth: 720, display: "flex", flexDirection: "column", gap: 20 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           <p style={{ margin: 0, fontSize: 16, lineHeight: 1.9, color: "#1F2937" }}>
             <strong>{COMPANY_DATA.name}</strong> dosáhla v hodnoceném období celkového Digiskills Indexu{" "}
             <strong>{COMPANY_DATA.companyIndex.toFixed(2)}</strong>, což je mírně nad průměrem trhu{" "}
