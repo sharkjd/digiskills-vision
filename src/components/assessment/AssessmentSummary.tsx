@@ -243,7 +243,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
         style={{
           background: "white",
           borderRadius: 16,
-          padding: 28,
+          padding: "28px 28px 12px 28px",
           border: "1px solid #E5E7EB",
         }}
       >
@@ -304,7 +304,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
       {/* SLOVNÍ VYHODNOCENÍ */}
       <div
         style={{
-          background: "white",
+          background: "#F8FAFC",
           borderRadius: 16,
           padding: "32px 36px",
           border: "1px solid #E5E7EB",
