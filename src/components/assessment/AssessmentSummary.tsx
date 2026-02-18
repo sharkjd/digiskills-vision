@@ -74,6 +74,30 @@ const COURSE_LIST = [
     duration: "1.5 hodiny",
     level: "Začátečník",
   },
+  {
+    id: 4,
+    title: "Excel a analýza dat",
+    description: "Pracujte s tabulkami, grafy a vzorci efektivně a přehledně.",
+    image: "/courses/excel.jpg",
+    duration: "2.5 hodiny",
+    level: "Středně pokročilý",
+  },
+  {
+    id: 5,
+    title: "Kybernetická bezpečnost v každodenní praxi",
+    description: "Chraňte data, rozpoznávejte hrozby a bezpečně pracujte online.",
+    image: "/courses/security.jpg",
+    duration: "1.5 hodiny",
+    level: "Začátečník",
+  },
+  {
+    id: 6,
+    title: "Prezentace a vizualizace dat",
+    description: "Vytvářejte srozumitelné prezentace a grafy, které zaujmou.",
+    image: "/courses/presentation.jpg",
+    duration: "2 hodiny",
+    level: "Středně pokročilý",
+  },
 ];
 
 function getLevelLabel(score: number): { label: string; description: string } {
@@ -558,7 +582,7 @@ function CourseCard({ course }: { course: typeof COURSE_LIST[0] }) {
             fontSize: 28,
           }}
         >
-          {course.id === 1 ? "👥" : course.id === 2 ? "⚡" : "🤖"}
+          {course.id === 1 ? "👥" : course.id === 2 ? "⚡" : course.id === 3 ? "🤖" : course.id === 4 ? "📊" : course.id === 5 ? "🔒" : "📈"}
         </div>
       </div>
 

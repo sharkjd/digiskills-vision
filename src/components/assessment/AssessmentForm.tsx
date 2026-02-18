@@ -216,7 +216,7 @@ export default function AssessmentForm() {
   const currentSection = currentStep >= 1 && currentStep <= 5 ? SECTIONS[currentStep - 1] : null;
 
   return (
-    <div style={{ maxWidth: 760, margin: "0 auto", padding: "40px 24px" }}>
+    <div style={{ maxWidth: 1200, margin: "0 auto", padding: "40px 24px" }}>
       {/* Page header */}
       <div style={{ marginBottom: 32 }}>
         <h1

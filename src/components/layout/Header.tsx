@@ -14,7 +14,7 @@ const NAV_LINKS = [
 const MOCK_USER = {
   name: "Honza Dolejš",
   organization: "Digiskills",
-  avatar: null as string | null,
+  avatar: "/images/avatar-honza-v2.png" as string | null,
   licenseExpiry: "31. 12. 2030",
 };
 
@@ -46,8 +46,8 @@ export default function Header() {
           <Image
             src="/images/digiskills-logo.png"
             alt="Digiskills"
-            width={140}
-            height={36}
+            width={160}
+            height={40}
             priority
             style={{ objectFit: "contain" }}
           />
@@ -58,7 +58,7 @@ export default function Header() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 8,
+            gap: 16,
             flex: 1,
             justifyContent: "center",
           }}
@@ -73,9 +73,9 @@ export default function Header() {
                   padding: "6px 14px",
                   borderRadius: 6,
                   fontSize: 15,
-                  fontWeight: isActive ? 700 : 400,
+                  fontWeight: isActive ? 800 : 500,
                   color: isActive
-                    ? "var(--color-text-main)"
+                    ? "var(--color-primary)"
                     : "var(--color-text-secondary)",
                   textDecoration: "none",
                   transition: "color 0.15s",
@@ -87,8 +87,9 @@ export default function Header() {
           })}
           <span
             style={{
-              marginLeft: 16,
+              marginLeft: 24,
               fontSize: "var(--font-size-meta)",
+              fontWeight: 500,
               color: "var(--color-text-secondary)",
               whiteSpace: "nowrap",
             }}
@@ -113,7 +114,31 @@ export default function Header() {
             aria-haspopup="true"
             aria-expanded={dropdownOpen}
           >
-            {/* Avatar */}
+            {/* Jméno + org (vlevo) */}
+            <div style={{ textAlign: "right" }}>
+              <div
+                style={{
+                  fontSize: 14,
+                  fontWeight: 800,
+                  color: "var(--color-text-main)",
+                  lineHeight: 1.2,
+                }}
+              >
+                {MOCK_USER.name}
+              </div>
+              <div
+                style={{
+                  fontSize: "var(--font-size-meta)",
+                  color: "var(--color-text-secondary)",
+                  fontWeight: 500,
+                  lineHeight: 1.2,
+                }}
+              >
+                {MOCK_USER.organization}
+              </div>
+            </div>
+
+            {/* Avatar (vpravo od textu) */}
             <div
               style={{
                 width: 38,
@@ -136,37 +161,22 @@ export default function Header() {
                   style={{ objectFit: "cover" }}
                 />
               ) : (
-                <Image
-                  src="/images/digiskills-symbol.png"
-                  alt="Uživatel"
-                  width={24}
-                  height={24}
-                  style={{ objectFit: "contain", opacity: 0.5 }}
-                />
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  style={{ color: "var(--color-text-secondary)", opacity: 0.6 }}
+                >
+                  <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
+                  <path
+                    d="M4 20c0-4 4-6 8-6s8 2 8 6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
               )}
-            </div>
-
-            {/* Jméno + org */}
-            <div style={{ textAlign: "left" }}>
-              <div
-                style={{
-                  fontSize: 14,
-                  fontWeight: 700,
-                  color: "var(--color-text-main)",
-                  lineHeight: 1.2,
-                }}
-              >
-                {MOCK_USER.name}
-              </div>
-              <div
-                style={{
-                  fontSize: "var(--font-size-meta)",
-                  color: "var(--color-text-secondary)",
-                  lineHeight: 1.2,
-                }}
-              >
-                {MOCK_USER.organization}
-              </div>
             </div>
 
             {/* Šipka dolů */}
