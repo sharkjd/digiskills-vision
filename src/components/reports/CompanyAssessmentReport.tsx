@@ -7,7 +7,7 @@ const COMPANY_DATA = {
   name: "VIG CZ",
   period: "18. 11. – 5. 12. 2025",
   respondents: 2534,
-  companyIndex: 5.49,
+  companyIndex: 6.59,
   marketAvg: 5.52,
   marketMax: 8.15,
   marketMin: 3.02,
@@ -258,7 +258,8 @@ export default function CompanyAssessmentReport() {
           Porovnání kompetencí dle DigComp
         </h2>
 
-        <div style={{ display: "flex", gap: 32, alignItems: "center", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: 32, alignItems: "flex-start", flexWrap: "wrap" }}>
+          {/* Radar chart (pavouk) */}
           <div style={{ flex: "1 1 360px", minWidth: 300 }}>
             <CompanyRadarChart
               companyScores={DIGCOMP_SCORES.company}
@@ -268,8 +269,17 @@ export default function CompanyAssessmentReport() {
             />
           </div>
 
-          <div style={{ flex: "1 1 260px" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {/* Digiskills Index chart + legend */}
+          <div style={{ flex: "1 1 360px", minWidth: 300 }}>
+            <DigiskillsIndexChart
+              companyIndex={COMPANY_DATA.companyIndex}
+              marketAvg={COMPANY_DATA.marketAvg}
+              marketMin={COMPANY_DATA.marketMin}
+              marketMax={COMPANY_DATA.marketMax}
+            />
+
+            {/* Legenda kompetencí */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 24 }}>
               {DIGCOMP_LABELS.map((label, i) => (
                 <div key={label} style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <div
@@ -332,7 +342,7 @@ export default function CompanyAssessmentReport() {
         <div style={{ maxWidth: 720, display: "flex", flexDirection: "column", gap: 20 }}>
           <p style={{ margin: 0, fontSize: 16, lineHeight: 1.9, color: "#1F2937" }}>
             <strong>{COMPANY_DATA.name}</strong> dosáhla v hodnoceném období celkového Digiskills Indexu{" "}
-            <strong>{COMPANY_DATA.companyIndex.toFixed(2)}</strong>, což je mírně pod průměrem trhu{" "}
+            <strong>{COMPANY_DATA.companyIndex.toFixed(2)}</strong>, což je mírně nad průměrem trhu{" "}
             ({COMPANY_DATA.marketAvg.toFixed(2)}). S více než {COMPANY_DATA.respondents.toLocaleString("cs-CZ")} zapojenými
             zaměstnanci jde o solidní základ pro cílené rozvíjení digitálních kompetencí.
           </p>
@@ -729,6 +739,196 @@ export default function CompanyAssessmentReport() {
         >
           Přejít do Admin panelu
         </button>
+      </div>
+    </div>
+  );
+}
+
+function DigiskillsIndexChart({
+  companyIndex,
+  marketAvg,
+  marketMin,
+  marketMax,
+}: {
+  companyIndex: number;
+  marketAvg: number;
+  marketMin: number;
+  marketMax: number;
+}) {
+  const chartMin = Math.floor(marketMin);
+  const chartMax = Math.ceil(marketMax + 1);
+  const range = chartMax - chartMin;
+
+  const companyPercent = ((companyIndex - chartMin) / range) * 100;
+  const marketAvgPercent = ((marketAvg - chartMin) / range) * 100;
+  const marketMinPercent = ((marketMin - chartMin) / range) * 100;
+  const marketMaxPercent = ((marketMax - chartMin) / range) * 100;
+
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <h3 style={{ fontSize: 16, fontWeight: 700, color: "#040E3C", margin: "0 0 20px" }}>
+        Digiskills index
+      </h3>
+
+      {/* Hodnoty nad grafem */}
+      <div style={{ position: "relative", height: 32, marginBottom: 4 }}>
+        {/* Min trhu */}
+        <div
+          style={{
+            position: "absolute",
+            left: `${marketMinPercent}%`,
+            transform: "translateX(-50%)",
+            textAlign: "center",
+          }}
+        >
+          <span style={{ fontSize: 13, color: "#6B7280" }}>{marketMin.toFixed(2).replace(".", ",")}</span>
+        </div>
+        {/* Vaše firma */}
+        <div
+          style={{
+            position: "absolute",
+            left: `${companyPercent}%`,
+            transform: "translateX(-50%)",
+            textAlign: "center",
+          }}
+        >
+          <span style={{ fontSize: 14, fontWeight: 700, color: "#F7981C" }}>
+            {companyIndex.toFixed(2).replace(".", ",")}
+          </span>
+        </div>
+        {/* Průměr trhu */}
+        <div
+          style={{
+            position: "absolute",
+            left: `${marketAvgPercent}%`,
+            transform: "translateX(-50%)",
+            textAlign: "center",
+          }}
+        >
+          <span style={{ fontSize: 13, color: "#6B7280" }}>{marketAvg.toFixed(2).replace(".", ",")}</span>
+        </div>
+        {/* Max trhu */}
+        <div
+          style={{
+            position: "absolute",
+            left: `${marketMaxPercent}%`,
+            transform: "translateX(-50%)",
+            textAlign: "center",
+          }}
+        >
+          <span style={{ fontSize: 13, color: "#77F9D9" }}>{marketMax.toFixed(2).replace(".", ",")}</span>
+        </div>
+      </div>
+
+      {/* Hlavní pruh grafu */}
+      <div
+        style={{
+          position: "relative",
+          height: 40,
+          borderRadius: 4,
+          overflow: "visible",
+          display: "flex",
+        }}
+      >
+        {/* Šedá zóna (min → firma/průměr, co je nižší) */}
+        <div
+          style={{
+            width: `${marketMinPercent}%`,
+            background: "#E5E7EB",
+            borderRadius: "4px 0 0 4px",
+          }}
+        />
+        {/* Modrá zóna (firma/min → průměr) */}
+        <div
+          style={{
+            width: `${marketMaxPercent - marketMinPercent}%`,
+            background: "linear-gradient(to right, #E5E7EB, #2596FF 50%, #77F9D9)",
+            position: "relative",
+          }}
+        >
+          {/* Svislá čára pro firmu (oranžová) */}
+          <div
+            style={{
+              position: "absolute",
+              left: `${((companyIndex - marketMin) / (marketMax - marketMin)) * 100}%`,
+              top: -8,
+              bottom: -8,
+              width: 3,
+              background: "#F7981C",
+              borderRadius: 2,
+              zIndex: 2,
+            }}
+          />
+          {/* Svislá čárkovaná čára pro průměr trhu */}
+          <div
+            style={{
+              position: "absolute",
+              left: `${((marketAvg - marketMin) / (marketMax - marketMin)) * 100}%`,
+              top: -8,
+              bottom: -8,
+              width: 0,
+              borderLeft: "3px dashed #2596FF",
+              zIndex: 1,
+            }}
+          />
+        </div>
+        {/* Zelená zóna (průměr → max) */}
+        <div
+          style={{
+            flex: 1,
+            background: "#77F9D9",
+            borderRadius: "0 4px 4px 0",
+          }}
+        />
+      </div>
+
+      {/* Popisky pod grafem */}
+      <div style={{ position: "relative", height: 24, marginTop: 8 }}>
+        <div
+          style={{
+            position: "absolute",
+            left: `${marketMinPercent}%`,
+            transform: "translateX(-50%)",
+            fontSize: 11,
+            color: "#9CA3AF",
+          }}
+        >
+          Min trhu
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            left: `${companyPercent}%`,
+            transform: "translateX(-50%)",
+            fontSize: 11,
+            fontWeight: 600,
+            color: "#F7981C",
+          }}
+        >
+          Vaše firma
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            left: `${marketAvgPercent}%`,
+            transform: "translateX(-50%)",
+            fontSize: 11,
+            color: "#6B7280",
+          }}
+        >
+          Průměr trhu
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            left: `${marketMaxPercent}%`,
+            transform: "translateX(-50%)",
+            fontSize: 11,
+            color: "#77F9D9",
+          }}
+        >
+          Max trhu
+        </div>
       </div>
     </div>
   );
