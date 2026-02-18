@@ -266,9 +266,9 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
           Porovnání kompetencí dle DigComp
         </h2>
 
-        <div style={{ display: "flex", gap: 64, alignItems: "flex-start", flexWrap: "wrap", justifyContent: "center" }}>
+        <div style={{ display: "flex", gap: 64, alignItems: "flex-start", flexWrap: "wrap", justifyContent: "space-between" }}>
           {/* Radar Chart s legendou kolem */}
-          <div style={{ flex: "0 0 auto" }}>
+          <div style={{ flex: "0 0 auto", marginLeft: 32 }}>
             <IndividualRadarChart
               userScores={userScores}
               companyAvg={COMPANY_AVG}
@@ -277,7 +277,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
           </div>
 
           {/* Digiskills Index chart + legenda */}
-          <div style={{ flex: "0 1 380px", minWidth: 280 }}>
+          <div style={{ flex: "0 0 380px", minWidth: 280 }}>
             <IndividualDigiskillsIndexChart
               myScore={overallScore}
               companyAvg={BENCHMARK_DATA.companyAvg}
