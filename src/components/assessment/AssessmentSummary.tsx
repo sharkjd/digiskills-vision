@@ -165,7 +165,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
           >
             {levelInfo.label}
           </div>
-          <h1 style={{ fontSize: 28, fontWeight: 800, margin: "0 0 8px" }}>
+          <h1 style={{ fontSize: 32, fontWeight: 800, margin: "0 0 8px" }}>
             Výsledky vašeho assessmentu
           </h1>
           <p style={{ fontSize: 15, opacity: 0.85, margin: "0 0 20px", maxWidth: 480, lineHeight: 1.6 }}>
@@ -194,9 +194,9 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
         </div>
 
         {/* Kruhový ukazatel Digiskills Index */}
-        <div style={{ textAlign: "center" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
           <div style={{ position: "relative", width: 140, height: 140 }}>
-            <svg width="140" height="140" viewBox="0 0 140 140">
+            <svg width="140" height="140" viewBox="0 0 140 140" style={{ display: "block" }}>
               <circle
                 cx="70"
                 cy="70"
@@ -232,6 +232,9 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
             </div>
           </div>
           <div style={{ marginTop: 8, fontSize: 13, fontWeight: 600 }}>Digiskills Index</div>
+          <div style={{ marginTop: 12, fontSize: 12, opacity: 0.7 }}>
+            Pořadí ve firmě: 3. místo z 47 zaměstnanců
+          </div>
         </div>
       </div>
 
@@ -244,7 +247,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
           border: "1px solid #E5E7EB",
         }}
       >
-        <h2 style={{ fontSize: 18, fontWeight: 700, color: "#002D5B", margin: "0 0 24px" }}>
+        <h2 style={{ fontSize: 20, fontWeight: 700, color: "#002D5B", margin: "0 0 24px" }}>
           Porovnání kompetencí dle kategorií DigComp
         </h2>
 
@@ -307,7 +310,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
           border: "1px solid #E5E7EB",
         }}
       >
-        <h2 style={{ fontSize: 18, fontWeight: 700, color: "#002D5B", margin: "0 0 24px" }}>
+        <h2 style={{ fontSize: 20, fontWeight: 700, color: "#002D5B", margin: "0 0 24px" }}>
           Slovní vyhodnocení
         </h2>
         <div style={{ maxWidth: 720, display: "flex", flexDirection: "column", gap: 20 }}>
@@ -359,7 +362,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
             >
               💪
             </div>
-            <h3 style={{ fontSize: 16, fontWeight: 700, color: "#065F46", margin: 0 }}>
+            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#065F46", margin: 0 }}>
               Tvé superschopnosti
             </h3>
           </div>
@@ -397,7 +400,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
             >
               🚀
             </div>
-            <h3 style={{ fontSize: 16, fontWeight: 700, color: "#92400E", margin: 0 }}>
+            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#92400E", margin: 0 }}>
               Prostor pro růst
             </h3>
           </div>
@@ -420,7 +423,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
           border: "1px solid #E5E7EB",
         }}
       >
-        <h3 style={{ fontSize: 16, fontWeight: 700, color: "#002D5B", margin: "0 0 16px" }}>
+        <h3 style={{ fontSize: 18, fontWeight: 700, color: "#002D5B", margin: "0 0 16px" }}>
           Aplikace k rozvoji
         </h3>
         <p style={{ fontSize: 14, color: "#6B7280", margin: "0 0 20px" }}>
@@ -473,7 +476,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
 
       {/* DOPORUČENÉ KURZY */}
       <div>
-        <h2 style={{ fontSize: 20, fontWeight: 700, color: "#002D5B", margin: "0 0 20px" }}>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: "#002D5B", margin: "0 0 20px" }}>
           Kurzy vybrané přímo pro tebe
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
@@ -497,7 +500,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
         }}
       >
         <div style={{ color: "white" }}>
-          <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 6px" }}>
+          <h3 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 6px" }}>
             Připraven posunout se dál?
           </h3>
           <p style={{ fontSize: 14, margin: 0, opacity: 0.9 }}>
@@ -655,7 +658,7 @@ function CourseCard({ course }: { course: typeof COURSE_LIST[0] }) {
             </span>
           </div>
 
-          <h3 style={{ fontSize: 16, fontWeight: 700, color: "#002D5B", margin: "0 0 8px", lineHeight: 1.3 }}>
+          <h3 style={{ fontSize: 18, fontWeight: 700, color: "#002D5B", margin: "0 0 8px", lineHeight: 1.3 }}>
             {course.title}
           </h3>
           <p style={{ fontSize: 13, color: "#6B7280", margin: 0, lineHeight: 1.5 }}>
