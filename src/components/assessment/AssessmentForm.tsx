@@ -186,7 +186,7 @@ const STEP_LABELS = [
   "Bezpečnost",
   "Řešení problémů",
   "AI Bonus",
-  "Shrnutí",
+  "Odeslání",
 ];
 
 import AssessmentSummary from "./AssessmentSummary";
@@ -194,12 +194,23 @@ import AssessmentSummary from "./AssessmentSummary";
 export default function AssessmentForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>(INITIAL_DATA);
+  const [phase, setPhase] = useState<"form" | "loading" | "report">("form");
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement | null>(null);
 
+  const submitAssessment = () => {
+    if (phase !== "form") return;
+    setPhase("loading");
+
+    window.setTimeout(() => {
+      setPhase("report");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 900);
+  };
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [currentStep]);
+  }, [currentStep, phase]);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -212,17 +223,19 @@ export default function AssessmentForm() {
 
       e.preventDefault();
 
+      if (phase !== "form") return;
+
       if (currentStep < TOTAL_STEPS - 1) {
         setCurrentStep((s) => Math.min(s + 1, TOTAL_STEPS - 1));
         return;
       }
 
-      router.push("/");
+      submitAssessment();
     };
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [currentStep, router]);
+  }, [currentStep, phase]);
 
   const progress = Math.round((currentStep / (TOTAL_STEPS - 1)) * 100);
 
@@ -233,11 +246,9 @@ export default function AssessmentForm() {
     }));
   };
 
-  const handleSubmit = () => {
-    router.push("/");
-  };
-
   const currentSection = currentStep >= 1 && currentStep <= 5 ? SECTIONS[currentStep - 1] : null;
+  const isReport = phase === "report";
+  const isLoading = phase === "loading";
 
   return (
     <div ref={containerRef} style={{ maxWidth: 1020, margin: "0 auto", padding: "40px 24px" }}>
@@ -254,7 +265,9 @@ export default function AssessmentForm() {
           Digitální Assessment
         </h1>
         <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--font-size-body)" }}>
-          Mapování digitálních kompetencí DigComp 2.1 · Krok {currentStep + 1} z {TOTAL_STEPS}
+          {isReport
+            ? "Vyhodnocení výsledků · osobní report"
+            : `Mapování digitálních kompetencí DigComp 2.1 · Krok ${currentStep + 1} z ${TOTAL_STEPS}`}
         </p>
       </div>
 
@@ -289,31 +302,30 @@ export default function AssessmentForm() {
           alignItems: "center",
         }}
       >
-        {Array.from({ length: TOTAL_STEPS }, (_, i) => (
-          <div
-            key={i}
-            style={{
-              width: 28,
-              height: 28,
-              borderRadius: "50%",
-              background:
-                i < currentStep
-                  ? "var(--color-primary)"
-                  : i === currentStep
-                  ? "var(--color-primary)"
-                  : "var(--color-border)",
-              color: i <= currentStep ? "white" : "var(--color-text-secondary)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 11,
-              fontWeight: 700,
-              flexShrink: 0,
-            }}
-          >
-            {i < currentStep ? "✓" : i + 1}
-          </div>
-        ))}
+        {Array.from({ length: TOTAL_STEPS }, (_, i) => {
+          const isActive = !isReport && i === currentStep;
+          const isDone = isReport || i < currentStep;
+          return (
+            <div
+              key={i}
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: "50%",
+                background: isDone || isActive ? "var(--color-primary)" : "var(--color-border)",
+                color: isDone || isActive ? "white" : "var(--color-text-secondary)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 11,
+                fontWeight: 700,
+                flexShrink: 0,
+              }}
+            >
+              {isDone ? "✓" : i + 1}
+            </div>
+          );
+        })}
         <span
           style={{
             fontSize: "var(--font-size-meta)",
@@ -322,23 +334,35 @@ export default function AssessmentForm() {
             fontWeight: 500,
           }}
         >
-          {STEP_LABELS[currentStep]}
+          {isReport ? "Vyhodnocení" : STEP_LABELS[currentStep]}
         </span>
       </div>
 
       {/* Step content card */}
       <div
         style={{
-          background: currentStep === 7 ? "transparent" : "var(--color-background)",
-          borderRadius: currentStep === 7 ? 0 : "var(--radius-card)",
-          border: currentStep === 7 ? "none" : "1px solid var(--color-border)",
-          boxShadow: currentStep === 7 ? "none" : "0 2px 8px var(--color-card-shadow)",
-          padding: currentStep === 7 ? 0 : "32px",
+          background: isReport ? "transparent" : "var(--color-background)",
+          borderRadius: isReport ? 0 : "var(--radius-card)",
+          border: isReport ? "none" : "1px solid var(--color-border)",
+          boxShadow: isReport ? "none" : "0 2px 8px var(--color-card-shadow)",
+          padding: isReport ? 0 : "32px",
           marginBottom: 24,
         }}
       >
+        {isLoading && (
+          <div style={{ display: "grid", placeItems: "center", padding: "48px 0", gap: 14 }}>
+            <div className="ds-spinner" aria-label="Načítání" />
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontWeight: 700, marginBottom: 4 }}>Vyhodnocujeme výsledky…</div>
+              <div style={{ color: "var(--color-text-secondary)", fontSize: "var(--font-size-meta)" }}>
+                Zabere to jen chvilku
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Step 0: Identifikace */}
-        {currentStep === 0 && (
+        {!isLoading && !isReport && currentStep === 0 && (
           <div>
             <SectionHeader icon="👤" title="Úvodní identifikace" description="Ověřte a doplňte své základní údaje." />
 
@@ -404,7 +428,7 @@ export default function AssessmentForm() {
         )}
 
         {/* Steps 1–5: Kompetence */}
-        {currentStep >= 1 && currentStep <= 5 && currentSection && (
+        {!isLoading && !isReport && currentStep >= 1 && currentStep <= 5 && currentSection && (
           <div>
             <SectionHeader
               icon={currentSection.icon}
@@ -431,7 +455,7 @@ export default function AssessmentForm() {
         )}
 
         {/* Step 6: AI Bonus */}
-        {currentStep === 6 && (
+        {!isLoading && !isReport && currentStep === 6 && (
           <div>
             <SectionHeader
               icon="🤖"
@@ -452,33 +476,140 @@ export default function AssessmentForm() {
           </div>
         )}
 
-        {/* Step 7: Shrnutí */}
-        {currentStep === 7 && <AssessmentSummary formData={formData} SECTIONS={SECTIONS} />}
+        {/* Step 7: Odeslání (report se ukáže až po odeslání) */}
+        {!isLoading && !isReport && currentStep === 7 && (
+          <div>
+            <SectionHeader
+              icon="✅"
+              title="Před odesláním"
+              description="Po kliknutí na „Odeslat“ se vygeneruje vyhodnocení a zobrazí se report."
+            />
+            <div
+              style={{
+                background: "var(--color-background)",
+                borderRadius: "var(--radius-card)",
+                border: "1px solid var(--color-border)",
+                boxShadow: "0 2px 8px var(--color-card-shadow)",
+                padding: 18,
+              }}
+            >
+              <div style={{ display: "grid", gap: 10 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+                  <span style={{ color: "var(--color-text-secondary)", fontSize: "var(--font-size-meta)" }}>
+                    Jméno
+                  </span>
+                  <span style={{ fontWeight: 700 }}>{formData.name || "—"}</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+                  <span style={{ color: "var(--color-text-secondary)", fontSize: "var(--font-size-meta)" }}>
+                    E-mail
+                  </span>
+                  <span style={{ fontWeight: 700 }}>{formData.email || "—"}</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+                  <span style={{ color: "var(--color-text-secondary)", fontSize: "var(--font-size-meta)" }}>
+                    Zařazení
+                  </span>
+                  <span style={{ fontWeight: 700 }}>{formData.role || "—"}</span>
+                </div>
+              </div>
+            </div>
+            <p style={{ marginTop: 14, color: "var(--color-text-secondary)", fontSize: "var(--font-size-meta)" }}>
+              Tip: pro rychlé pokračování můžeš použít klávesu Enter.
+            </p>
+          </div>
+        )}
+
+        {isReport && <AssessmentSummary formData={formData} SECTIONS={SECTIONS} />}
       </div>
 
       {/* Navigation */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <button
-          onClick={() => setCurrentStep((s) => s - 1)}
-          disabled={currentStep === 0}
-          style={{
-            padding: "10px 24px",
-            borderRadius: "var(--radius-btn)",
-            border: `1px solid ${currentStep === 0 ? "var(--color-border)" : "var(--color-primary)"}`,
-            background: "var(--color-background)",
-            color: currentStep === 0 ? "var(--color-text-secondary)" : "var(--color-primary)",
-            fontSize: "var(--font-size-body)",
-            fontWeight: 600,
-            cursor: currentStep === 0 ? "not-allowed" : "pointer",
-            transition: "all 0.15s ease",
-          }}
-        >
-          ← Zpět
-        </button>
+      {!isLoading && !isReport && (
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <button
+            onClick={() => setCurrentStep((s) => s - 1)}
+            disabled={currentStep === 0}
+            style={{
+              padding: "10px 24px",
+              borderRadius: "var(--radius-btn)",
+              border: `1px solid ${currentStep === 0 ? "var(--color-border)" : "var(--color-primary)"}`,
+              background: "var(--color-background)",
+              color: currentStep === 0 ? "var(--color-text-secondary)" : "var(--color-primary)",
+              fontSize: "var(--font-size-body)",
+              fontWeight: 600,
+              cursor: currentStep === 0 ? "not-allowed" : "pointer",
+              transition: "all 0.15s ease",
+            }}
+          >
+            ← Zpět
+          </button>
 
-        {currentStep < TOTAL_STEPS - 1 ? (
+          {currentStep < TOTAL_STEPS - 1 ? (
+            <button
+              onClick={() => setCurrentStep((s) => s + 1)}
+              style={{
+                padding: "10px 32px",
+                borderRadius: "var(--radius-btn)",
+                border: "none",
+                background: "var(--color-primary)",
+                color: "white",
+                fontSize: "var(--font-size-body)",
+                fontWeight: 600,
+                cursor: "pointer",
+                transition: "background 0.15s ease",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "var(--color-primary-hover)")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "var(--color-primary)")}
+            >
+              Dále →
+            </button>
+          ) : (
+            <button
+              onClick={submitAssessment}
+              style={{
+                padding: "10px 32px",
+                borderRadius: "var(--radius-btn)",
+                border: "none",
+                background: "var(--color-primary)",
+                color: "white",
+                fontSize: "var(--font-size-body)",
+                fontWeight: 600,
+                cursor: "pointer",
+                transition: "background 0.15s ease",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "var(--color-primary-hover)")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "var(--color-primary)")}
+            >
+              Odeslat assessment ✓
+            </button>
+          )}
+        </div>
+      )}
+
+      {isReport && (
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
           <button
-            onClick={() => setCurrentStep((s) => s + 1)}
+            onClick={() => {
+              setPhase("form");
+              setCurrentStep(TOTAL_STEPS - 1);
+            }}
+            style={{
+              padding: "10px 24px",
+              borderRadius: "var(--radius-btn)",
+              border: "1px solid var(--color-primary)",
+              background: "var(--color-background)",
+              color: "var(--color-primary)",
+              fontSize: "var(--font-size-body)",
+              fontWeight: 600,
+              cursor: "pointer",
+              transition: "all 0.15s ease",
+            }}
+          >
+            ← Upravit odpovědi
+          </button>
+
+          <button
+            onClick={() => router.push("/")}
             style={{
               padding: "10px 32px",
               borderRadius: "var(--radius-btn)",
@@ -493,29 +624,10 @@ export default function AssessmentForm() {
             onMouseEnter={(e) => (e.currentTarget.style.background = "var(--color-primary-hover)")}
             onMouseLeave={(e) => (e.currentTarget.style.background = "var(--color-primary)")}
           >
-            Dále →
+            Pokračovat →
           </button>
-        ) : (
-          <button
-            onClick={handleSubmit}
-            style={{
-              padding: "10px 32px",
-              borderRadius: "var(--radius-btn)",
-              border: "none",
-              background: "var(--color-primary)",
-              color: "white",
-              fontSize: "var(--font-size-body)",
-              fontWeight: 600,
-              cursor: "pointer",
-              transition: "background 0.15s ease",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "var(--color-primary-hover)")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "var(--color-primary)")}
-          >
-            Odeslat assessment ✓
-          </button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

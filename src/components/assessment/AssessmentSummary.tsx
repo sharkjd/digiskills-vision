@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 
 type SectionData = {
   q1: number;
@@ -42,11 +43,11 @@ const DIGCOMP_LABELS = [
 const COMPANY_AVG = [6.4, 5.4, 4.4, 6.5, 4.7];
 
 const RECOMMENDED_APPS = [
-  { name: "Power Automate", icon: "/icons/power-automate.svg", fallback: "⚡" },
-  { name: "Power BI", icon: "/icons/power-bi.svg", fallback: "📊" },
-  { name: "OneNote", icon: "/icons/onenote.svg", fallback: "📓" },
-  { name: "Planner", icon: "/icons/planner.svg", fallback: "📋" },
-  { name: "Forms", icon: "/icons/forms.svg", fallback: "📝" },
+  { name: "Power Automate", icon: "/logos/Microsoft_Power_Automate.svg.png" },
+  { name: "Power BI", icon: "/logos/PowerBI.png" },
+  { name: "OneNote", icon: "/logos/OneNote.png" },
+  { name: "Planner", icon: "/logos/Planner.png" },
+  { name: "Forms", icon: "/logos/Forms.png" },
 ];
 
 const COURSE_LIST = [
@@ -54,7 +55,7 @@ const COURSE_LIST = [
     id: 1,
     title: "Efektivní spolupráce v Microsoft Teams",
     description: "Naučte se pokročilé techniky pro týmovou komunikaci a online schůzky.",
-    image: "/courses/teams.jpg",
+    image: "/courses/teams.webp",
     duration: "2 hodiny",
     level: "Středně pokročilý",
   },
@@ -62,7 +63,7 @@ const COURSE_LIST = [
     id: 2,
     title: "Automatizace s Power Automate",
     description: "Zjednodušte rutinní úkoly a ušetřete hodiny práce týdně.",
-    image: "/courses/automate.jpg",
+    image: "/courses/Automatizace.webp",
     duration: "3 hodiny",
     level: "Pokročilý",
   },
@@ -70,7 +71,7 @@ const COURSE_LIST = [
     id: 3,
     title: "Základy práce s AI nástroji",
     description: "Objevte, jak vám Copilot a další AI nástroje pomohou být produktivnější.",
-    image: "/courses/ai.jpg",
+    image: "/courses/AI.webp",
     duration: "1.5 hodiny",
     level: "Začátečník",
   },
@@ -78,7 +79,7 @@ const COURSE_LIST = [
     id: 4,
     title: "Excel a analýza dat",
     description: "Pracujte s tabulkami, grafy a vzorci efektivně a přehledně.",
-    image: "/courses/excel.jpg",
+    image: "/courses/excel.webp",
     duration: "2.5 hodiny",
     level: "Středně pokročilý",
   },
@@ -86,7 +87,7 @@ const COURSE_LIST = [
     id: 5,
     title: "Kybernetická bezpečnost v každodenní praxi",
     description: "Chraňte data, rozpoznávejte hrozby a bezpečně pracujte online.",
-    image: "/courses/security.jpg",
+    image: "/courses/security.png",
     duration: "1.5 hodiny",
     level: "Začátečník",
   },
@@ -94,7 +95,7 @@ const COURSE_LIST = [
     id: 6,
     title: "Prezentace a vizualizace dat",
     description: "Vytvářejte srozumitelné prezentace a grafy, které zaujmou.",
-    image: "/courses/presentation.jpg",
+    image: "/courses/Vizualizace.webp",
     duration: "2 hodiny",
     level: "Středně pokročilý",
   },
@@ -297,6 +298,41 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
         </div>
       </div>
 
+      {/* SLOVNÍ VYHODNOCENÍ */}
+      <div
+        style={{
+          background: "white",
+          borderRadius: 16,
+          padding: "32px 36px",
+          border: "1px solid #E5E7EB",
+        }}
+      >
+        <h2 style={{ fontSize: 18, fontWeight: 700, color: "#002D5B", margin: "0 0 24px" }}>
+          Slovní vyhodnocení
+        </h2>
+        <div style={{ maxWidth: 720, display: "flex", flexDirection: "column", gap: 20 }}>
+          <p style={{ margin: 0, fontSize: 16, lineHeight: 1.9, color: "#1F2937" }}>
+            <strong>Gratulujeme, Honzo!</strong> Na základě tvých odpovědí jsi byl zařazen do úrovně{" "}
+            <strong>Digitální expert</strong>.
+          </p>
+          <p style={{ margin: 0, fontSize: 16, lineHeight: 1.9, color: "#1F2937" }}>
+            Tvůj celkový <strong>Digiskills Index 7,3</strong> ukazuje, že v digitálním prostředí se pohybuješ s
+            vysokou mírou jistoty a efektivity.
+          </p>
+          <p style={{ margin: 0, fontSize: 16, lineHeight: 1.9, color: "#1F2937" }}>
+            Tvou nejsilnější doménou je <strong>Zpracování informací a dat</strong>, kde tvé skóre{" "}
+            <strong>(7,5)</strong> výrazně převyšuje průměr firmy i trhu, což z tebe dělá ideálního mentora pro
+            tvůj tým.
+          </p>
+          <p style={{ margin: 0, fontSize: 16, lineHeight: 1.9, color: "#1F2937" }}>
+            Pro tvůj další profesní růst vidíme největší potenciál v oblasti{" "}
+            <strong>Tvorby digitálního obsahu</strong>. Zaměřením se na moderní formáty a pokročilé nástroje pro
+            vizualizaci můžeš své stávající znalosti posunout na strategickou úroveň a ještě více zefektivnit
+            svou každodenní agendu.
+          </p>
+        </div>
+      </div>
+
       {/* SILNÉ STRÁNKY vs PŘÍLEŽITOSTI */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
         {/* Superschopnosti */}
@@ -390,7 +426,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
         <p style={{ fontSize: 14, color: "#6B7280", margin: "0 0 20px" }}>
           Podle tvých odpovědí jsme identifikovali nástroje, kde máš prostor pro zlepšení:
         </p>
-        <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: 16 }}>
           {RECOMMENDED_APPS.map((app) => (
             <div
               key={app.name}
@@ -398,12 +434,14 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                justifyContent: "center",
                 gap: 8,
                 padding: "16px 20px",
                 background: "white",
                 borderRadius: 12,
                 border: "1px solid #E5E7EB",
-                minWidth: 90,
+                flex: 1,
+                minWidth: 0,
                 transition: "transform 0.15s, box-shadow 0.15s",
                 cursor: "pointer",
               }}
@@ -416,7 +454,15 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
                 e.currentTarget.style.boxShadow = "none";
               }}
             >
-              <div style={{ fontSize: 28 }}>{app.fallback}</div>
+              <div style={{ width: 48, height: 48, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Image
+                  src={app.icon}
+                  alt={app.name}
+                  width={48}
+                  height={48}
+                  style={{ objectFit: "contain" }}
+                />
+              </div>
               <span style={{ fontSize: 12, fontWeight: 600, color: "#374151", textAlign: "center" }}>
                 {app.name}
               </span>
@@ -472,9 +518,9 @@ function RadarChart({
   companyAvg: number[];
   labels: string[];
 }) {
-  const size = 260;
+  const size = 360;
   const center = size / 2;
-  const maxRadius = 100;
+  const maxRadius = 140;
   const levels = 5;
 
   const angleStep = (2 * Math.PI) / labels.length;
@@ -550,6 +596,9 @@ function CourseCard({ course }: { course: typeof COURSE_LIST[0] }) {
         border: "1px solid #E5E7EB",
         transition: "transform 0.2s, box-shadow 0.2s",
         cursor: "pointer",
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = "translateY(-4px)";
@@ -560,70 +609,64 @@ function CourseCard({ course }: { course: typeof COURSE_LIST[0] }) {
         e.currentTarget.style.boxShadow = "none";
       }}
     >
-      {/* Placeholder obrázek */}
       <div
         style={{
           height: 140,
-          background: "linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          flexShrink: 0,
+          position: "relative",
+          background: "#F1F5F9",
         }}
       >
-        <div
-          style={{
-            width: 60,
-            height: 60,
-            borderRadius: 16,
-            background: "rgba(0,174,239,0.2)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 28,
-          }}
-        >
-          {course.id === 1 ? "👥" : course.id === 2 ? "⚡" : course.id === 3 ? "🤖" : course.id === 4 ? "📊" : course.id === 5 ? "🔒" : "📈"}
-        </div>
+        <Image
+          src={course.image}
+          alt={course.title}
+          fill
+          style={{ objectFit: "cover" }}
+          sizes="(max-width: 768px) 100vw, 280px"
+        />
       </div>
 
-      <div style={{ padding: 20 }}>
-        <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-          <span
-            style={{
-              fontSize: 11,
-              fontWeight: 600,
-              padding: "4px 8px",
-              background: "#F3F4F6",
-              borderRadius: 6,
-              color: "#6B7280",
-            }}
-          >
-            {course.duration}
-          </span>
-          <span
-            style={{
-              fontSize: 11,
-              fontWeight: 600,
-              padding: "4px 8px",
-              background: "#E0F2FE",
-              borderRadius: 6,
-              color: "#0369A1",
-            }}
-          >
-            {course.level}
-          </span>
-        </div>
+      <div style={{ padding: 20, display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                padding: "4px 8px",
+                background: "#F3F4F6",
+                borderRadius: 6,
+                color: "#6B7280",
+              }}
+            >
+              {course.duration}
+            </span>
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                padding: "4px 8px",
+                background: "#E0F2FE",
+                borderRadius: 6,
+                color: "#0369A1",
+              }}
+            >
+              {course.level}
+            </span>
+          </div>
 
-        <h3 style={{ fontSize: 16, fontWeight: 700, color: "#002D5B", margin: "0 0 8px", lineHeight: 1.3 }}>
-          {course.title}
-        </h3>
-        <p style={{ fontSize: 13, color: "#6B7280", margin: "0 0 16px", lineHeight: 1.5 }}>
-          {course.description}
-        </p>
+          <h3 style={{ fontSize: 16, fontWeight: 700, color: "#002D5B", margin: "0 0 8px", lineHeight: 1.3 }}>
+            {course.title}
+          </h3>
+          <p style={{ fontSize: 13, color: "#6B7280", margin: 0, lineHeight: 1.5 }}>
+            {course.description}
+          </p>
+        </div>
 
         <button
           style={{
             width: "100%",
+            marginTop: 16,
             padding: "12px 20px",
             background: "#00AEEF",
             color: "white",
@@ -633,6 +676,7 @@ function CourseCard({ course }: { course: typeof COURSE_LIST[0] }) {
             fontWeight: 700,
             cursor: "pointer",
             transition: "background 0.15s",
+            flexShrink: 0,
           }}
           onMouseEnter={(e) => (e.currentTarget.style.background = "#0095D0")}
           onMouseLeave={(e) => (e.currentTarget.style.background = "#00AEEF")}

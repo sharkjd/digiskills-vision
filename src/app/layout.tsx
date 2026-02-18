@@ -12,6 +12,9 @@ const geistSans = Geist({
 export const metadata: Metadata = {
   title: "Digiskills",
   description: "Digiskills vzdělávací portál",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
