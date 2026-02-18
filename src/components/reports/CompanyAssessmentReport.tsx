@@ -56,17 +56,18 @@ const IMPROVEMENT_PRIORITIES = [
 ];
 
 const M365_PROFICIENCY = [
-  { app: "Outlook", usage: 9.1, proficiency: 7.6, color: "#0078D4" },
-  { app: "Word", usage: 8.2, proficiency: 7.7, color: "#2B579A" },
-  { app: "Excel", usage: 8.0, proficiency: 7.2, color: "#217346" },
-  { app: "Teams", usage: 7.4, proficiency: 6.3, color: "#6264A7" },
-  { app: "OneDrive", usage: 7.0, proficiency: 5.7, color: "#0078D4" },
-  { app: "SharePoint", usage: 5.7, proficiency: 4.7, color: "#038387" },
+  { app: "Outlook", usage: 9.1, proficiency: 7.6, icon: "/logos/Outlook.png", color: "#0078D4" },
+  { app: "Word", usage: 8.2, proficiency: 7.7, icon: "/logos/Word.png", color: "#2B579A" },
+  { app: "Excel", usage: 8.0, proficiency: 7.2, icon: "/logos/Excel.png", color: "#217346" },
+  { app: "Teams", usage: 7.4, proficiency: 6.3, icon: "/logos/Teams.png", color: "#6264A7" },
+  { app: "OneDrive", usage: 7.0, proficiency: 5.7, icon: "/logos/OneDrive.png", color: "#0078D4" },
+  { app: "SharePoint", usage: 5.7, proficiency: 4.7, icon: "/logos/SharePoint.png", color: "#038387" },
   { app: "OneNote", usage: 4.7, proficiency: 4.3, icon: "/logos/OneNote.png", color: "#7719AA" },
-  { app: "ToDo", usage: 4.5, proficiency: 4.2, color: "#3C78D8" },
+  { app: "ToDo", usage: 4.5, proficiency: 4.2, icon: "/logos/ToDo.png", color: "#3C78D8" },
   { app: "Power BI", usage: 2.9, proficiency: 2.6, icon: "/logos/PowerBI.png", color: "#F2C811" },
   { app: "Forms", usage: 2.7, proficiency: 2.7, icon: "/logos/Forms.png", color: "#035A5A" },
   { app: "Planner", usage: 2.3, proficiency: 2.2, icon: "/logos/Planner.png", color: "#31752F" },
+  { app: "Copilot", usage: 3.8, proficiency: 3.2, icon: "/logos/Copilot.png", color: "#2596FF" },
 ];
 
 const RECOMMENDED_COURSES = [
@@ -316,6 +317,39 @@ export default function CompanyAssessmentReport() {
         </div>
       </div>
 
+      {/* SLOVNÍ VYHODNOCENÍ – separátní box */}
+      <div
+        style={{
+          background: "var(--color-breeze)",
+          borderRadius: 16,
+          padding: "32px 36px",
+          border: "1px solid var(--color-border)",
+        }}
+      >
+        <h2 style={{ fontSize: 20, fontWeight: 700, color: "var(--color-text-main)", margin: "0 0 24px" }}>
+          Slovní vyhodnocení
+        </h2>
+        <div style={{ maxWidth: 720, display: "flex", flexDirection: "column", gap: 20 }}>
+          <p style={{ margin: 0, fontSize: 16, lineHeight: 1.9, color: "#1F2937" }}>
+            <strong>{COMPANY_DATA.name}</strong> dosáhla v hodnoceném období celkového Digiskills Indexu{" "}
+            <strong>{COMPANY_DATA.companyIndex.toFixed(2)}</strong>, což je mírně pod průměrem trhu{" "}
+            ({COMPANY_DATA.marketAvg.toFixed(2)}). S více než {COMPANY_DATA.respondents.toLocaleString("cs-CZ")} zapojenými
+            zaměstnanci jde o solidní základ pro cílené rozvíjení digitálních kompetencí.
+          </p>
+          <p style={{ margin: 0, fontSize: 16, lineHeight: 1.9, color: "#1F2937" }}>
+            Nejsilnější oblastí firmy je <strong>Digitální bezpečnost</strong> (skóre {DIGCOMP_SCORES.company[4].toFixed(1)})
+            a <strong>Zpracování informací a dat</strong> ({DIGCOMP_SCORES.company[0].toFixed(1)}). Naopak největší
+            prostor pro růst představuje <strong>Tvorba digitálního obsahu</strong> ({DIGCOMP_SCORES.company[1].toFixed(1)})
+            a <strong>Řešení problémů</strong> ({DIGCOMP_SCORES.company[2].toFixed(1)}), kde firma zaostává za průměrem trhu.
+          </p>
+          <p style={{ margin: 0, fontSize: 16, lineHeight: 1.9, color: "#1F2937" }}>
+            Doporučujeme zaměřit vzdělávací investice na kurzy podporující tvorbu obsahu, automatizaci a využití AI v
+            každodenní práci – v souladu s prioritami, které zaměstnanci sami uvedli v assessmentu. Níže najdete kurzy
+            doporučené pro celou organizaci.
+          </p>
+        </div>
+      </div>
+
       {/* TALENT PIPELINE - HISTOGRAM */}
       <div
         style={{
@@ -490,8 +524,9 @@ export default function CompanyAssessmentReport() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))",
+            gridTemplateColumns: "repeat(6, 1fr)",
             gap: 16,
+            width: "100%",
           }}
         >
           {M365_PROFICIENCY.map((app) => (
