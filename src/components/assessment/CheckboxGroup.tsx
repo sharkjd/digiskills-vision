@@ -21,22 +21,22 @@ export default function CheckboxGroup({ label, options, selected, onChange }: Ch
   return (
     <div
       style={{
-        marginTop: 32,
-        paddingTop: 28,
+        marginTop: 18,
+        paddingTop: 18,
         borderTop: "1px solid #E5E7EB",
       }}
     >
       <p
         style={{
-          fontSize: 15,
+          fontSize: 13,
           color: "#040E3C",
           fontWeight: 600,
-          marginBottom: 16,
+          marginBottom: 10,
         }}
       >
         {label}
       </p>
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {options.map((option) => {
           const isChecked = selected.includes(option);
           return (
@@ -53,9 +53,9 @@ export default function CheckboxGroup({ label, options, selected, onChange }: Ch
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: 16,
-                padding: "16px 20px",
-                borderRadius: 12,
+                gap: 12,
+                padding: "10px 14px",
+                borderRadius: 10,
                 border: isChecked ? "2px solid #2596FF" : "1px solid #E5E7EB",
                 background: isChecked ? "rgba(37, 150, 255, 0.05)" : "white",
                 cursor: "pointer",
@@ -69,9 +69,9 @@ export default function CheckboxGroup({ label, options, selected, onChange }: Ch
                   borderColor: isChecked ? "#2596FF" : "#D1D5DB",
                 }}
                 style={{
-                  width: 22,
-                  height: 22,
-                  borderRadius: 6,
+                  width: 18,
+                  height: 18,
+                  borderRadius: 5,
                   border: "2px solid",
                   display: "flex",
                   alignItems: "center",
@@ -87,8 +87,8 @@ export default function CheckboxGroup({ label, options, selected, onChange }: Ch
                     opacity: isChecked ? 1 : 0,
                   }}
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  width="14"
-                  height="14"
+                  width="11"
+                  height="11"
                   viewBox="0 0 14 14"
                   fill="none"
                 >
@@ -111,7 +111,7 @@ export default function CheckboxGroup({ label, options, selected, onChange }: Ch
 
               <span
                 style={{
-                  fontSize: 15,
+                  fontSize: 13,
                   color: "#040E3C",
                   flex: 1,
                 }}

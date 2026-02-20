@@ -219,7 +219,7 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: 12 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
 };
 
@@ -300,24 +300,24 @@ export default function AssessmentForm() {
       style={{
         minHeight: "100vh",
         background: isReport ? "transparent" : "#F4F5FA",
-        padding: "40px 24px",
+        padding: "24px 20px",
       }}
     >
       <div style={{ maxWidth: 1020, margin: "0 auto" }}>
         {/* Page header */}
-        <div style={{ marginBottom: 32 }}>
+        <div style={{ marginBottom: 20 }}>
           <h1
             style={{
-              fontSize: 32,
+              fontSize: 24,
               fontWeight: 700,
               fontStyle: "italic",
               color: "#040E3C",
-              marginBottom: 8,
+              marginBottom: 4,
             }}
           >
             Digitální Assessment
           </h1>
-          <p style={{ color: "#6B7280", fontSize: 15 }}>
+          <p style={{ color: "#6B7280", fontSize: 13 }}>
             {isReport
               ? "Vyhodnocení výsledků · osobní report"
               : `Mapování digitálních kompetencí DigComp 2.1 · Krok ${currentStep + 1} z ${TOTAL_STEPS}`}
@@ -329,8 +329,8 @@ export default function AssessmentForm() {
           style={{
             background: "#E5E7EB",
             borderRadius: 999,
-            height: 8,
-            marginBottom: 20,
+            height: 6,
+            marginBottom: 14,
             overflow: "hidden",
           }}
         >
@@ -350,8 +350,8 @@ export default function AssessmentForm() {
         <div
           style={{
             display: "flex",
-            gap: 8,
-            marginBottom: 32,
+            gap: 6,
+            marginBottom: 18,
             flexWrap: "wrap",
             alignItems: "center",
           }}
@@ -369,21 +369,21 @@ export default function AssessmentForm() {
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 style={{
-                  width: 32,
-                  height: 32,
+                  width: 26,
+                  height: 26,
                   borderRadius: "50%",
                   border: "2px solid",
                   color: isDone || isActive ? "white" : "#6B7280",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontSize: 12,
+                  fontSize: 11,
                   fontWeight: 700,
                   flexShrink: 0,
                 }}
               >
                 {isDone ? (
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
                     <path
                       d="M2.5 7L5.5 10L11.5 4"
                       stroke="currentColor"
@@ -400,9 +400,9 @@ export default function AssessmentForm() {
           })}
           <span
             style={{
-              fontSize: 13,
+              fontSize: 12,
               color: "#6B7280",
-              marginLeft: 12,
+              marginLeft: 10,
               fontWeight: 600,
             }}
           >
@@ -417,8 +417,8 @@ export default function AssessmentForm() {
             borderRadius: isReport ? 0 : 20,
             border: "none",
             boxShadow: isReport ? "none" : "0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04)",
-            padding: isReport ? 0 : "40px 48px",
-            marginBottom: 24,
+            padding: isReport ? 0 : "24px 32px",
+            marginBottom: 18,
             overflow: "hidden",
           }}
         >
@@ -426,12 +426,12 @@ export default function AssessmentForm() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              style={{ display: "grid", placeItems: "center", padding: "48px 0", gap: 14 }}
+              style={{ display: "grid", placeItems: "center", padding: "32px 0", gap: 10 }}
             >
               <div className="ds-spinner" aria-label="Načítání" />
               <div style={{ textAlign: "center" }}>
-                <div style={{ fontWeight: 700, marginBottom: 4, color: "#040E3C" }}>Vyhodnocujeme výsledky…</div>
-                <div style={{ color: "#6B7280", fontSize: 13 }}>
+                <div style={{ fontWeight: 700, marginBottom: 4, color: "#040E3C", fontSize: 14 }}>Vyhodnocujeme výsledky…</div>
+                <div style={{ color: "#6B7280", fontSize: 12 }}>
                   Zabere to jen chvilku
                 </div>
               </div>
@@ -455,7 +455,7 @@ export default function AssessmentForm() {
                     <SectionHeader icon="👤" title="Úvodní identifikace" description="Ověřte a doplňte své základní údaje." />
                   </motion.div>
 
-                  <motion.div variants={itemVariants} style={{ marginBottom: 20 }}>
+                  <motion.div variants={itemVariants} style={{ marginBottom: 14 }}>
                     <FieldLabel>Celé jméno</FieldLabel>
                     <input
                       type="text"
@@ -465,7 +465,7 @@ export default function AssessmentForm() {
                     />
                   </motion.div>
 
-                  <motion.div variants={itemVariants} style={{ marginBottom: 28 }}>
+                  <motion.div variants={itemVariants} style={{ marginBottom: 18 }}>
                     <FieldLabel>Pracovní e-mail</FieldLabel>
                     <input
                       type="email"
@@ -475,18 +475,18 @@ export default function AssessmentForm() {
                     />
                   </motion.div>
 
-                  <motion.div variants={itemVariants} style={{ marginBottom: 28 }}>
+                  <motion.div variants={itemVariants} style={{ marginBottom: 18 }}>
                     <p
                       style={{
-                        fontSize: 15,
+                        fontSize: 13,
                         fontWeight: 600,
                         color: "#040E3C",
-                        marginBottom: 14,
+                        marginBottom: 10,
                       }}
                     >
                       Vaše pracovní zařazení
                     </p>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                       {ROLES.map((role) => {
                         const isSelected = formData.role === role;
                         return (
@@ -503,7 +503,7 @@ export default function AssessmentForm() {
                               onChange={() => setFormData((p) => ({ ...p, role }))}
                               style={{ display: "none" }}
                             />
-                            <span style={{ fontSize: 15, color: "#040E3C" }}>{role}</span>
+                            <span style={{ fontSize: 13, color: "#040E3C" }}>{role}</span>
                           </SelectableCard>
                         );
                       })}
@@ -627,21 +627,21 @@ export default function AssessmentForm() {
                     <div
                       style={{
                         background: "#F4F5FA",
-                        borderRadius: 16,
-                        padding: 24,
+                        borderRadius: 12,
+                        padding: 16,
                       }}
                     >
-                      <div style={{ display: "grid", gap: 16 }}>
+                      <div style={{ display: "grid", gap: 10 }}>
                         <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-                          <span style={{ color: "#6B7280", fontSize: 13 }}>Jméno</span>
+                          <span style={{ color: "#6B7280", fontSize: 12 }}>Jméno</span>
                           <span style={{ fontWeight: 700, color: "#040E3C" }}>{formData.name || "—"}</span>
                         </div>
                         <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-                          <span style={{ color: "#6B7280", fontSize: 13 }}>E-mail</span>
+                          <span style={{ color: "#6B7280", fontSize: 12 }}>E-mail</span>
                           <span style={{ fontWeight: 700, color: "#040E3C" }}>{formData.email || "—"}</span>
                         </div>
                         <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-                          <span style={{ color: "#6B7280", fontSize: 13 }}>Zařazení</span>
+                          <span style={{ color: "#6B7280", fontSize: 12 }}>Zařazení</span>
                           <span style={{ fontWeight: 700, color: "#040E3C" }}>{formData.role || "—"}</span>
                         </div>
                       </div>
@@ -649,7 +649,7 @@ export default function AssessmentForm() {
                   </motion.div>
                   <motion.p
                     variants={itemVariants}
-                    style={{ marginTop: 16, color: "#6B7280", fontSize: 13 }}
+                    style={{ marginTop: 12, color: "#6B7280", fontSize: 12 }}
                   >
                     Tip: pro rychlé pokračování můžeš použít klávesu Enter.
                   </motion.p>
@@ -670,12 +670,12 @@ export default function AssessmentForm() {
               onClick={goBack}
               disabled={currentStep === 0}
               style={{
-                padding: "14px 24px",
-                borderRadius: 12,
+                padding: "10px 18px",
+                borderRadius: 10,
                 border: "none",
                 background: "transparent",
                 color: currentStep === 0 ? "#9CA3AF" : "#040E3C",
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: 600,
                 cursor: currentStep === 0 ? "not-allowed" : "pointer",
                 display: "flex",
@@ -683,7 +683,7 @@ export default function AssessmentForm() {
                 gap: 8,
               }}
             >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
                 <path
                   d="M12.5 15L7.5 10L12.5 5"
                   stroke="currentColor"
@@ -701,12 +701,12 @@ export default function AssessmentForm() {
                 whileTap={{ scale: 0.98 }}
                 onClick={goNext}
                 style={{
-                  padding: "14px 32px",
-                  borderRadius: 12,
+                  padding: "10px 24px",
+                  borderRadius: 10,
                   border: "none",
                   background: "#2596FF",
                   color: "white",
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: 700,
                   cursor: "pointer",
                   boxShadow: "0 4px 12px rgba(37, 150, 255, 0.3)",
@@ -716,7 +716,7 @@ export default function AssessmentForm() {
                 }}
               >
                 Dále
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
                   <path
                     d="M7.5 5L12.5 10L7.5 15"
                     stroke="currentColor"
@@ -732,12 +732,12 @@ export default function AssessmentForm() {
                 whileTap={{ scale: 0.98 }}
                 onClick={submitAssessment}
                 style={{
-                  padding: "14px 32px",
-                  borderRadius: 12,
+                  padding: "10px 24px",
+                  borderRadius: 10,
                   border: "none",
                   background: "#2596FF",
                   color: "white",
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: 700,
                   cursor: "pointer",
                   boxShadow: "0 4px 12px rgba(37, 150, 255, 0.3)",
@@ -747,7 +747,7 @@ export default function AssessmentForm() {
                 }}
               >
                 Odeslat assessment
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
                   <path
                     d="M4 10L8 14L16 6"
                     stroke="currentColor"
@@ -771,12 +771,12 @@ export default function AssessmentForm() {
                 setCurrentStep(TOTAL_STEPS - 1);
               }}
               style={{
-                padding: "14px 24px",
-                borderRadius: 12,
+                padding: "10px 18px",
+                borderRadius: 10,
                 border: "none",
                 background: "transparent",
                 color: "#040E3C",
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: 600,
                 cursor: "pointer",
                 display: "flex",
@@ -784,7 +784,7 @@ export default function AssessmentForm() {
                 gap: 8,
               }}
             >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
                 <path
                   d="M12.5 15L7.5 10L12.5 5"
                   stroke="currentColor"
@@ -801,12 +801,12 @@ export default function AssessmentForm() {
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push("/")}
               style={{
-                padding: "14px 32px",
-                borderRadius: 12,
+                padding: "10px 24px",
+                borderRadius: 10,
                 border: "none",
                 background: "#2596FF",
                 color: "white",
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: 700,
                 cursor: "pointer",
                 boxShadow: "0 4px 12px rgba(37, 150, 255, 0.3)",
@@ -816,7 +816,7 @@ export default function AssessmentForm() {
               }}
             >
               Pokračovat
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
                 <path
                   d="M7.5 5L12.5 10L7.5 15"
                   stroke="currentColor"
@@ -842,12 +842,12 @@ function SectionHeader({
   description: string;
 }) {
   return (
-    <div style={{ display: "flex", alignItems: "flex-start", gap: 16, marginBottom: 32 }}>
+    <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 18 }}>
       <div
         style={{
-          width: 56,
-          height: 56,
-          borderRadius: 16,
+          width: 40,
+          height: 40,
+          borderRadius: 12,
           background: "rgba(37, 150, 255, 0.12)",
           display: "flex",
           alignItems: "center",
@@ -858,24 +858,24 @@ function SectionHeader({
         <Image
           src="/Screenshots/Symbol Dark.png"
           alt=""
-          width={36}
-          height={36}
+          width={26}
+          height={26}
           style={{ objectFit: "contain" }}
         />
       </div>
       <div>
         <h2
           style={{
-            fontSize: 24,
+            fontSize: 18,
             fontWeight: 700,
             fontStyle: "italic",
             color: "#040E3C",
-            marginBottom: 6,
+            marginBottom: 4,
           }}
         >
           {title}
         </h2>
-        <p style={{ fontSize: 15, color: "#6B7280", lineHeight: 1.5 }}>
+        <p style={{ fontSize: 13, color: "#6B7280", lineHeight: 1.4 }}>
           {description}
         </p>
       </div>
@@ -888,10 +888,10 @@ function FieldLabel({ children }: { children: React.ReactNode }) {
     <label
       style={{
         display: "block",
-        fontSize: 15,
+        fontSize: 13,
         fontWeight: 600,
         color: "#040E3C",
-        marginBottom: 8,
+        marginBottom: 6,
       }}
     >
       {children}
@@ -922,9 +922,9 @@ function SelectableCard({
       style={{
         display: "flex",
         alignItems: "center",
-        gap: 16,
-        padding: "16px 20px",
-        borderRadius: 12,
+        gap: 12,
+        padding: "10px 14px",
+        borderRadius: 10,
         border: isSelected ? "2px solid #2596FF" : "1px solid #E5E7EB",
         background: isSelected ? "rgba(37, 150, 255, 0.05)" : "white",
         cursor: "pointer",
@@ -938,10 +938,10 @@ function SelectableCard({
 
 const inputStyle: React.CSSProperties = {
   width: "100%",
-  padding: "14px 16px",
-  borderRadius: 12,
+  padding: "10px 12px",
+  borderRadius: 10,
   border: "1px solid #E5E7EB",
-  fontSize: 15,
+  fontSize: 13,
   color: "#040E3C",
   outline: "none",
   boxSizing: "border-box",

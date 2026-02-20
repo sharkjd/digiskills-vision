@@ -2,11 +2,12 @@
 
 import { useMemo, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, RefreshCw, Search, X } from "lucide-react";
 import { COURSE_LIST, Course } from "@/data/courses";
-import { useRecommendedCourses } from "@/context/RecommendedCoursesContext";
+import { useCompanyCourses } from "@/context/CompanyCoursesContext";
 
 const DEPLOY_DURATION_MS = 2000;
 const INITIAL_COURSE_COUNT = 6;
@@ -223,7 +224,7 @@ function AdminCourseTile({ course, index, onReplace }: AdminCourseTileProps) {
 
 export default function AdminCourseManagement() {
   const router = useRouter();
-  const { setRecommendedCourses } = useRecommendedCourses();
+  const { setCompanyCourses } = useCompanyCourses();
   const [selectedCourses, setSelectedCourses] = useState<Course[]>(() => COURSE_LIST.slice(0, INITIAL_COURSE_COUNT));
   const [isDeploying, setIsDeploying] = useState(false);
   const [replaceSlotIndex, setReplaceSlotIndex] = useState<number | null>(null);
@@ -259,7 +260,7 @@ export default function AdminCourseManagement() {
     setIsDeploying(true);
 
     window.setTimeout(() => {
-      setRecommendedCourses(selectedCourses);
+      setCompanyCourses(selectedCourses);
       router.push("/moje-kurzy");
     }, DEPLOY_DURATION_MS);
   };
@@ -291,9 +292,16 @@ export default function AdminCourseManagement() {
             <h1 className="mb-3 text-4xl font-bold italic" style={{ color: "var(--color-digi-sky)" }}>
               Správa firemního vzdělávání
             </h1>
-            <p className="max-w-4xl text-base leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
+            <p className="mb-6 max-w-4xl text-base leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
               Na základě výsledků assessmentu (Index 5,49) jsme vybrali tyto klíčové kurzy pro rozvoj vaší organizace.
             </p>
+            <Link
+              href="/admin/tvorba-kurzu"
+              className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:opacity-90"
+              style={{ backgroundColor: "var(--color-primary)" }}
+            >
+              Vytvořit kurz pomocí AI
+            </Link>
           </motion.header>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">

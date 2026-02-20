@@ -2,16 +2,22 @@
 
 import React from "react";
 import { useRecommendedCourses } from "@/context/RecommendedCoursesContext";
+import { useCompanyCourses } from "@/context/CompanyCoursesContext";
 import { COURSE_LIST, COMPLETED_COURSES } from "@/data/courses";
 import CatalogCourseCard from "@/components/courses/CatalogCourseCard";
 import CompletedCourseCard from "@/components/courses/CompletedCourseCard";
 
 export default function MojeKurzyPage() {
   const { recommendedCourses } = useRecommendedCourses();
+  const { companyCourses } = useCompanyCourses();
 
-  const coursesToShow = recommendedCourses.length > 0 
+  const myCourses = recommendedCourses.length > 0 
     ? recommendedCourses 
-    : COURSE_LIST.slice(0, 6);
+    : COURSE_LIST.slice(0, 5);
+
+  const mandatoryCompanyCourses = companyCourses.length > 0 
+    ? companyCourses 
+    : COURSE_LIST.slice(5, 10);
 
   return (
     <div
@@ -22,16 +28,17 @@ export default function MojeKurzyPage() {
       }}
     >
       <div className="max-w-7xl mx-auto px-6 py-10">
-        {/* Hlavní nadpis */}
-        <h1
-          className="text-4xl font-bold italic mb-8"
-          style={{ color: "#040E3C" }}
-        >
-          Moje doporučené studium
-        </h1>
+        {/* Sekce: Moje kurzy */}
+        <section className="mb-12">
+          <h1
+            className="text-4xl font-bold italic mb-8"
+            style={{ color: "#040E3C" }}
+          >
+            Moje kurzy
+          </h1>
 
-        {/* Filtrační lišta */}
-        <div className="flex flex-wrap items-center gap-4 mb-8">
+          {/* Filtrační lišta */}
+          <div className="flex flex-wrap items-center gap-4 mb-8">
           {/* Dropdown Řazení */}
           <div className="flex flex-col gap-1">
             <label 
@@ -116,16 +123,37 @@ export default function MojeKurzyPage() {
           </div>
         </div>
 
-        {/* Grid doporučených kurzů - 3 sloupce */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {coursesToShow.map((course, index) => (
-            <CatalogCourseCard 
-              key={course.id} 
-              course={course} 
-              index={index} 
-            />
-          ))}
-        </div>
+          {/* Grid kurzů - 3 sloupce */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {myCourses.map((course, index) => (
+              <CatalogCourseCard 
+                key={course.id} 
+                course={course} 
+                index={index} 
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Sekce: Povinné firemní kurzy */}
+        <section className="mb-12">
+          <h2
+            className="text-2xl font-bold italic mb-6"
+            style={{ color: "#040E3C" }}
+          >
+            Povinné firemní kurzy
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {mandatoryCompanyCourses.map((course, index) => (
+              <CatalogCourseCard 
+                key={course.id} 
+                course={course} 
+                index={index} 
+              />
+            ))}
+          </div>
+        </section>
 
         {/* Oddělovač */}
         <div 

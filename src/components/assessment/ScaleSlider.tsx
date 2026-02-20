@@ -62,30 +62,30 @@ export default function ScaleSlider({ value, onChange, label }: ScaleSliderProps
   const percentage = ((value - 1) / 9) * 100;
 
   return (
-    <div style={{ marginBottom: 32 }}>
+    <div style={{ marginBottom: 18 }}>
       <p
         style={{
-          fontSize: 15,
+          fontSize: 13,
           color: "#040E3C",
           fontWeight: 500,
-          marginBottom: 20,
-          lineHeight: 1.6,
+          marginBottom: 10,
+          lineHeight: 1.45,
         }}
       >
         {label}
       </p>
-      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <span
           style={{
-            fontSize: 12,
+            fontSize: 11,
             color: "#6B7280",
-            minWidth: 36,
+            minWidth: 28,
             textAlign: "center",
-            lineHeight: 1.4,
+            lineHeight: 1.3,
           }}
         >
           1<br />
-          <span style={{ fontSize: 10, opacity: 0.7 }}>Méně</span>
+          <span style={{ fontSize: 9, opacity: 0.7 }}>Méně</span>
         </span>
 
         {/* Custom slider track */}
@@ -94,7 +94,7 @@ export default function ScaleSlider({ value, onChange, label }: ScaleSliderProps
           onClick={handleTrackClick}
           style={{
             flex: 1,
-            height: 8,
+            height: 6,
             background: "#E5E7EB",
             borderRadius: 999,
             position: "relative",
@@ -125,8 +125,8 @@ export default function ScaleSlider({ value, onChange, label }: ScaleSliderProps
               position: "absolute",
               top: "50%",
               transform: "translate(-50%, -50%)",
-              width: 24,
-              height: 24,
+              width: 20,
+              height: 20,
               background: "white",
               borderRadius: "50%",
               boxShadow: isDragging
@@ -152,9 +152,9 @@ export default function ScaleSlider({ value, onChange, label }: ScaleSliderProps
                 transform: "translateX(-50%)",
                 background: "#2596FF",
                 color: "white",
-                padding: "4px 10px",
-                borderRadius: 8,
-                fontSize: 14,
+                padding: "3px 8px",
+                borderRadius: 6,
+                fontSize: 12,
                 fontWeight: 700,
                 whiteSpace: "nowrap",
                 boxShadow: "0 2px 8px rgba(37, 150, 255, 0.3)",
@@ -207,15 +207,15 @@ export default function ScaleSlider({ value, onChange, label }: ScaleSliderProps
 
         <span
           style={{
-            fontSize: 12,
+            fontSize: 11,
             color: "#6B7280",
-            minWidth: 36,
+            minWidth: 28,
             textAlign: "center",
-            lineHeight: 1.4,
+            lineHeight: 1.3,
           }}
         >
           10<br />
-          <span style={{ fontSize: 10, opacity: 0.7 }}>Více</span>
+          <span style={{ fontSize: 9, opacity: 0.7 }}>Více</span>
         </span>
 
         {/* Value badge with pulse animation */}
@@ -225,8 +225,8 @@ export default function ScaleSlider({ value, onChange, label }: ScaleSliderProps
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", stiffness: 400, damping: 12 }}
           style={{
-            width: 52,
-            height: 52,
+            width: 40,
+            height: 40,
             borderRadius: "50%",
             background: "#2596FF",
             color: "white",
@@ -234,7 +234,7 @@ export default function ScaleSlider({ value, onChange, label }: ScaleSliderProps
             alignItems: "center",
             justifyContent: "center",
             fontWeight: 700,
-            fontSize: 22,
+            fontSize: 17,
             flexShrink: 0,
             boxShadow: "0 4px 12px rgba(37, 150, 255, 0.35)",
           }}

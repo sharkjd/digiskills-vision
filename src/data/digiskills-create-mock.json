@@ -1,0 +1,179 @@
+{
+  "courseTitle": "Mistrovství v AI: Promptování pro manažery",
+  "generatedDuration": "cca 1 h 45 min",
+  "studyTime": "1h 30 min",
+  "methodologyScore": "99% (Digiskills Enterprise Standard)",
+  "targetAudience": "Manažeři a vedoucí pracovníci",
+  "version": "1.0.0",
+  "certification": "Ano",
+  "publishedDate": "23. listopadu",
+  "introParagraph": "Kurz Mistrovství v AI vás provede od základů promptování až po pokročilé techniky využitelné v manažerské praxi. Naučíte se efektivně komunikovat s AI nástroji a využívat je pro přípravu meetingů, delegování úkolů a strategické plánování.",
+  "processSteps": [
+    { "id": 1, "label": "Vize" },
+    { "id": 2, "label": "Příprava" },
+    { "id": 3, "label": "Realizace" },
+    { "id": 4, "label": "Monitoring" },
+    { "id": 5, "label": "Ukončení" }
+  ],
+  "mobileAppFeatures": ["Efektivní komunikace", "Týmová práce"],
+  "discussionComments": [
+    { "id": 1, "author": "Marie Nováková", "time": "před 2 dny", "text": "Skvělý kurz, hlavně sekce o CREATE frameworku mi hodně pomohla.", "repliesCount": 2, "canEdit": true },
+    { "id": 2, "author": "Petr Svoboda", "time": "před 1 týdnem", "text": "Doporučuji všem manažerům. Praktické příklady jsou přesně to, co jsem potřeboval.", "repliesCount": 0, "canEdit": false },
+    { "id": 3, "author": "Eva Horáková", "time": "před 3 dny", "text": "Máte někdo zkušenost s použitím v Microsoft Teams? Ráda bych to nasadila v našem oddělení.", "repliesCount": 1, "canEdit": true }
+  ],
+  "curriculum": [
+    {
+      "sectionTitle": "1. Vstupní brána do světa AI",
+      "items": [
+        {
+          "id": 101,
+          "type": "Video",
+          "title": "AI není magie, je to váš nový asistent",
+          "desc": "Jak přestat vnímat AI jako hrozbu a začít ji brát jako člena týmu.",
+          "color": "#A97FEF",
+          "fullContent": "V tomto videu se dozvíte, proč je důležité přestat vnímat AI jako hrozbu a začít ji brát jako člena týmu. Ukážeme si konkrétní příklady z manažerské praxe – jak AI může pomoci s přípravou meetingů, shrnutím dokumentů nebo generováním prvních návrhů. Video trvá cca 8 minut."
+        },
+        {
+          "id": 102,
+          "type": "Článek",
+          "title": "Slovníček pojmů, kterým se nevyhnete",
+          "desc": "Co znamená LLM, halucinace, kontextové okno a token.",
+          "color": "#77F9D9",
+          "fullContent": "LLM (Large Language Model) je model natrénovaný na obrovském množství textu. Halucinace znamená, že AI vymýšlí informace. Kontextové okno je limit zpracovaného textu. Token je jednotka textu – zhruba 4 znaky. Článek obsahuje detailní vysvětlení s příklady."
+        },
+        {
+          "id": 103,
+          "type": "Infografika",
+          "title": "Přehled hlavních AI nástrojů na trhu",
+          "desc": "Copilot vs. ChatGPT vs. Claude. Kdy použít co?",
+          "color": "#77F9D9",
+          "fullContent": "Srovnávací přehled Microsoft Copilot, ChatGPT a Claude. Kdy použít Copilot pro Office, kdy ChatGPT pro kreativní úkoly a kdy Claude pro analýzu dokumentů. Infografika obsahuje rozhodovací strom."
+        }
+      ]
+    },
+    {
+      "sectionTitle": "2. Anatomie dokonalého promptu",
+      "items": [
+        {
+          "id": 201,
+          "type": "Video",
+          "title": "Proč AI dává hloupé odpovědi?",
+          "desc": "Pravidlo 'Garbage in, garbage out' v praxi.",
+          "color": "#A97FEF",
+          "fullContent": "Video ukazuje, jak nekvalitní vstup vede k nekvalitnímu výstupu. Praktické ukázky špatných a dobrých promptů. Trvání 6 minut."
+        },
+        {
+          "id": 202,
+          "type": "Infografika",
+          "title": "Framework CREATE",
+          "desc": "Kontext, Role, Explicitní zadání, Akce, Tón, Extra mantinely.",
+          "color": "#77F9D9",
+          "fullContent": "CREATE: C = Context, R = Role, E = Explicit instruction, A = Action, T = Tone, E = Extra constraints. Infografika obsahuje příklady pro každý prvek."
+        },
+        {
+          "id": 203,
+          "type": "Článek",
+          "title": "Technika 'Persona': Dejte AI identitu",
+          "desc": "Jak přinutit AI uvažovat jako finanční ředitel nebo copywriter.",
+          "color": "#77F9D9",
+          "fullContent": "Technika Persona: přiřaďte AI roli. AI pak odpovídá z této perspektivy. Článek obsahuje 5 příkladů pro manažerské situace."
+        },
+        {
+          "id": 204,
+          "type": "Úkol",
+          "title": "Přepište tento špatný prompt",
+          "desc": "Zkuste vzít jednoduchý příkaz a vylepšit ho pomocí metody CREATE.",
+          "color": "#F7981C",
+          "fullContent": "Zadání: Vezměte prompt a vylepšete ho pomocí CREATE. Očekávaný výstup: 2–3 vylepšené verze s komentářem."
+        }
+      ]
+    },
+    {
+      "sectionTitle": "3. Pokročilé techniky (Když základy nestačí)",
+      "items": [
+        {
+          "id": 301,
+          "type": "Video",
+          "title": "Chain of Thought (Řetězení myšlenek)",
+          "desc": "Zabraňte chybám tím, že AI donutíte vysvětlit svůj postup krok za krokem.",
+          "color": "#A97FEF",
+          "fullContent": "Chain of Thought: přidejte do promptu Vysvětli svůj postup krok za krokem. Video 7 minut s praktickými ukázkami."
+        },
+        {
+          "id": 302,
+          "type": "Článek",
+          "title": "Few-Shot Prompting",
+          "desc": "Dejte AI příklady toho, co přesně očekáváte za výstup.",
+          "color": "#77F9D9",
+          "fullContent": "Few-Shot znamená dát AI 1–3 příklady požadovaného výstupu. Článek obsahuje šablonu a 4 příklady."
+        },
+        {
+          "id": 303,
+          "type": "Video",
+          "title": "Jak vést s AI dialog a iterovat",
+          "desc": "První odpověď je zřídka dokonalá. Naučte se ptát doplňující otázky.",
+          "color": "#A97FEF",
+          "fullContent": "Techniky pro iteraci. Video 5 minut s ukázkou reálného dialogu."
+        }
+      ]
+    },
+    {
+      "sectionTitle": "4. AI v každodenní manažerské praxi",
+      "items": [
+        {
+          "id": 401,
+          "type": "Článek",
+          "title": "Delegování úkolů s pomocí AI",
+          "desc": "Tvorba jasných a neprůstřelných zadání pro váš tým.",
+          "color": "#77F9D9",
+          "fullContent": "AI pomůže formulovat zadání. Článek obsahuje checklist a 3 šablony promptů."
+        },
+        {
+          "id": 402,
+          "type": "Video",
+          "title": "Příprava na složité hodnotící pohovory",
+          "desc": "Nechte si od AI zahrát roli naštvaného podřízeného a natrénujte si reakce.",
+          "color": "#A97FEF",
+          "fullContent": "Simulace náročného rozhovoru s AI. Video 10 minut."
+        },
+        {
+          "id": 403,
+          "type": "Infografika",
+          "title": "Tvorba strategií a analýza dat",
+          "desc": "Jak bezpečně analyzovat firemní data a hledat v nich trendy.",
+          "color": "#77F9D9",
+          "fullContent": "Přehled bezpečnostních pravidel. Infografika s rozhodovacím stromem."
+        }
+      ]
+    },
+    {
+      "sectionTitle": "5. Bezpečnost, etika a závěr",
+      "items": [
+        {
+          "id": 501,
+          "type": "Článek",
+          "title": "Zlaté pravidlo: Co do AI nikdy nepatří",
+          "desc": "Ochrana firemních dat, GDPR a obchodní tajemství.",
+          "color": "#77F9D9",
+          "fullContent": "Seznam dat, která nikdy nevkládejte do veřejných AI. Článek obsahuje konkrétní příklady."
+        },
+        {
+          "id": 502,
+          "type": "Test",
+          "title": "Závěrečný kvíz: Jste připraveni?",
+          "desc": "10 otázek, které prověří vaše znalosti promptování a bezpečnosti.",
+          "color": "#F7981C",
+          "fullContent": "Kvíz obsahuje 10 otázek. Po dokončení získáte skóre a doporučení."
+        },
+        {
+          "id": 503,
+          "type": "Úkol",
+          "title": "Váš první reálný firemní prompt",
+          "desc": "Aplikujte naučené znalosti na váš aktuální pracovní problém.",
+          "color": "#F7981C",
+          "fullContent": "Praktický úkol: vytvořte prompt pomocí CREATE. Odevzdejte prompt a zhodnocení."
+        }
+      ]
+    }
+  ]
+}
