@@ -56,7 +56,7 @@ export default function Footer() {
             alt="Digiskills"
             width={120}
             height={30}
-            style={{ objectFit: "contain" }}
+            style={{ objectFit: "contain", height: "auto" }}
           />
         </Link>
 

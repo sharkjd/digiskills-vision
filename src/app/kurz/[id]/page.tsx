@@ -14,7 +14,6 @@ import {
   ChevronDown,
   ChevronRight,
   ExternalLink,
-  MessageCircle,
 } from "lucide-react";
 import courseData from "@/data/course-detail.json";
 
@@ -449,19 +448,6 @@ export default function CourseDetailPage() {
           </div>
         </div>
       </div>
-
-      {/* FAB Chat tlačítko */}
-      <motion.button
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        className="fixed bottom-6 right-6 w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
-        style={{
-          backgroundColor: "var(--color-accent)",
-          boxShadow: "0 4px 20px rgba(247, 152, 28, 0.4)",
-        }}
-      >
-        <MessageCircle className="w-6 h-6 text-white" />
-      </motion.button>
     </div>
   );
 }

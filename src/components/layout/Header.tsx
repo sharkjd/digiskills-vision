@@ -49,7 +49,7 @@ export default function Header() {
             width={160}
             height={40}
             priority
-            style={{ objectFit: "contain" }}
+            style={{ objectFit: "contain", height: "auto" }}
           />
         </Link>
 
@@ -219,6 +219,7 @@ export default function Header() {
             >
               {[
                 { label: "Váš profil", href: "/profil" },
+                { label: "Dashboard manažera", href: "/manager" },
                 { label: "Individuální assessment", href: "/assessment" },
                 { label: "Firemní report", href: "/firma/vysledky" },
                 { label: "Admin modul", href: "/admin/kurzy" },
