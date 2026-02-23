@@ -221,7 +221,7 @@ export default function Header() {
                 { label: "Váš profil", href: "/profil" },
                 { label: "Dashboard manažera", href: "/manager" },
                 { label: "Individuální assessment", href: "/assessment" },
-                { label: "Firemní report", href: "/firma/vysledky" },
+                { label: "Firemní report", href: "/firma" },
                 { label: "Admin modul", href: "/admin/kurzy" },
                 { label: "Tvorbu kurzu", href: "/admin/tvorba-kurzu" },
                 { label: "Odhlásit se", href: "/odhlasit" },

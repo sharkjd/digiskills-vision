@@ -154,7 +154,7 @@ export default function Home() {
             strategické priority a doporučené firemní kurzy.
           </p>
           <Link
-            href="/firma/vysledky"
+            href="/firma"
             style={{
               display: "inline-block",
               padding: "10px 28px",

@@ -13,6 +13,20 @@
   --color-accent-green: #77F9D9;
   --color-accent-orange: #F7981C;
 
+  /* Dark card variants (pro pozadí karet s bílým textem) */
+  --color-card-dark-green: #0d4a42; /* tmavá varianta Digi Skills */
+  --color-card-dark-orange: #4a3510; /* tmavá varianta Digi Orange */
+
+  /* Light card variants (superschopnosti / prostor pro růst) */
+  --color-card-light-teal: #d4f5f0; /* světle tyrkysová – superschopnosti */
+  --color-card-light-coral: #fce8e8; /* světle korálová – prostor pro růst */
+  --color-card-light-blue: #e8f4fd; /* světle modrá – odvozeno od Digi Azure */
+
+  /* Brand palette – stat karty */
+  --color-digi-blue: #44499C;
+  --color-digi-violet: #A97FEF;
+  --color-digi-salmon: #FF7575;
+
   /* Backgrounds */
   --color-breeze: #F4F5FA;
   --color-background: #ffffff;
