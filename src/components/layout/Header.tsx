@@ -4,11 +4,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { useTranslation } from "@/hooks/useTranslation";
+import type { Language } from "@/context/LanguageContext";
 
 const NAV_LINKS = [
-  { label: "Online kurzy", href: "/moje-kurzy" },
-  { label: "Microlearning", href: "/microlearning" },
-  { label: "Domů", href: "/" },
+  { labelKey: "header.nav.onlineCourses", href: "/moje-kurzy" },
+  { labelKey: "header.nav.microlearning", href: "/microlearning" },
+  { labelKey: "header.nav.home", href: "/" },
+];
+
+const DROPDOWN_ITEMS = [
+  { labelKey: "header.dropdown.profile", href: "/profil" },
+  { labelKey: "header.dropdown.managerDashboard", href: "/manager" },
+  { labelKey: "header.dropdown.individualAssessment", href: "/assessment" },
+  { labelKey: "header.dropdown.companyReport", href: "/firma" },
+  { labelKey: "header.dropdown.adminModule", href: "/admin/kurzy" },
+  { labelKey: "header.dropdown.createCourse", href: "/admin/tvorba-kurzu" },
+  { labelKey: "header.dropdown.logout", href: "/odhlasit" },
 ];
 
 const MOCK_USER = {
@@ -21,6 +33,7 @@ const MOCK_USER = {
 export default function Header() {
   const pathname = usePathname();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { t, language, setLanguage } = useTranslation();
 
   return (
     <header
@@ -81,7 +94,7 @@ export default function Header() {
                   transition: "color 0.15s",
                 }}
               >
-                {link.label}
+                {t(link.labelKey)}
               </Link>
             );
           })}
@@ -94,9 +107,42 @@ export default function Header() {
               whiteSpace: "nowrap",
             }}
           >
-            Plná verze do {MOCK_USER.licenseExpiry}
+            {t("header.licenseUntil")} {MOCK_USER.licenseExpiry}
           </span>
         </nav>
+
+        {/* Přepínač jazyka CZ/EN */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 0,
+            flexShrink: 0,
+          }}
+        >
+          {(["cs", "en"] as const).map((lang) => (
+            <button
+              key={lang}
+              type="button"
+              onClick={() => setLanguage(lang as Language)}
+              style={{
+                padding: "6px 12px",
+                fontSize: 14,
+                fontWeight: 600,
+                border: "1px solid var(--color-border)",
+                background: language === lang ? "var(--color-primary)" : "var(--color-background)",
+                color: language === lang ? "white" : "var(--color-text-secondary)",
+                cursor: "pointer",
+                borderRadius: lang === "cs" ? "8px 0 0 8px" : "0 8px 8px 0",
+                transition: "all 0.15s",
+              }}
+              aria-pressed={language === lang}
+              aria-label={lang === "cs" ? "Čeština" : "English"}
+            >
+              {lang === "cs" ? "CZ" : "EN"}
+            </button>
+          ))}
+        </div>
 
         {/* Uživatel */}
         <div style={{ position: "relative", flexShrink: 0 }}>
@@ -114,7 +160,6 @@ export default function Header() {
             aria-haspopup="true"
             aria-expanded={dropdownOpen}
           >
-            {/* Jméno + org (vlevo) */}
             <div style={{ textAlign: "right" }}>
               <div
                 style={{
@@ -138,7 +183,6 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Avatar (vpravo od textu) */}
             <div
               style={{
                 width: 38,
@@ -179,7 +223,6 @@ export default function Header() {
               )}
             </div>
 
-            {/* Šipka dolů */}
             <svg
               width="16"
               height="16"
@@ -201,7 +244,6 @@ export default function Header() {
             </svg>
           </button>
 
-          {/* Dropdown menu */}
           {dropdownOpen && (
             <div
               style={{
@@ -217,15 +259,7 @@ export default function Header() {
                 overflow: "hidden",
               }}
             >
-              {[
-                { label: "Váš profil", href: "/profil" },
-                { label: "Dashboard manažera", href: "/manager" },
-                { label: "Individuální assessment", href: "/assessment" },
-                { label: "Firemní report", href: "/firma" },
-                { label: "Admin modul", href: "/admin/kurzy" },
-                { label: "Tvorbu kurzu", href: "/admin/tvorba-kurzu" },
-                { label: "Odhlásit se", href: "/odhlasit" },
-              ].map((item) => (
+              {DROPDOWN_ITEMS.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
@@ -245,7 +279,7 @@ export default function Header() {
                     (e.currentTarget.style.background = "transparent")
                   }
                 >
-                  {item.label}
+                  {t(item.labelKey)}
                 </Link>
               ))}
             </div>

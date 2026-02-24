@@ -6,191 +6,39 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import ScaleSlider from "./ScaleSlider";
 import CheckboxGroup from "./CheckboxGroup";
-
-const ROLES = [
-  "Management / Vedení",
-  "HR / Právo / Vzdělávání",
-  "Administrativa / Zákaznická péče",
-  "Marketing / Obchod",
-  "Finance / Audit",
-  "Výroba / Logistika",
-  "IT / Vývoj",
-];
-
-type SectionData = {
-  q1: number;
-  q2: number;
-  tools: string[];
-};
-
-type SectionKey = "information" | "communication" | "content" | "security" | "problemsolving";
-
-type FormData = {
-  name: string;
-  email: string;
-  role: string;
-  digitalRelationship: number;
-  information: SectionData;
-  communication: SectionData;
-  content: SectionData;
-  security: SectionData;
-  problemsolving: SectionData;
-  ai: { score: number; tools: string[] };
-};
-
-const INITIAL_DATA: FormData = {
-  name: "Honza Dolejš",
-  email: "honza.dolejs@digiskills.cz",
-  role: "IT / Vývoj",
-  digitalRelationship: 7,
-  information: {
-    q1: 7,
-    q2: 8,
-    tools: [
-      "SharePoint (prohledávání firemního obsahu)",
-      "OneDrive (organizace a správa vlastních souborů)",
-    ],
-  },
-  communication: {
-    q1: 8,
-    q2: 7,
-    tools: [
-      "Microsoft Teams (komunikace, týmová spolupráce)",
-      "Outlook (e-mail, správa času a kalendáře)",
-    ],
-  },
-  content: {
-    q1: 6,
-    q2: 7,
-    tools: ["PowerPoint (prezentace)", "Word (dokumenty)"],
-  },
-  security: {
-    q1: 7,
-    q2: 8,
-    tools: [
-      "Microsoft Authenticator (schvalování přihlášení)",
-      "Microsoft Defender (ochrana zařízení)",
-    ],
-  },
-  problemsolving: {
-    q1: 8,
-    q2: 7,
-    tools: [
-      "OneNote (digitální zápisník)",
-      "Planner / To Do (správa úkolů)",
-    ],
-  },
-  ai: {
-    score: 6,
-    tools: [
-      "Microsoft Copilot (asistent v Office)",
-      "Diktování (převod řeči na text)",
-    ],
-  },
-};
-
-const SECTIONS: {
-  key: SectionKey;
-  icon: string;
-  title: string;
-  description: string;
-  q1: string;
-  q2: string;
-  toolsLabel: string;
-  tools: string[];
-}[] = [
-  {
-    key: "information",
-    icon: "🔍",
-    title: "Informační a datová gramotnost",
-    description: "Schopnost vyhledat, vyhodnotit a spravovat data a informace.",
-    q1: "Efektivita vyhledávání: Jak dobře dokážete využívat filtry a pokročilé nástroje k nalezení relevantních informací v záplavě dat?",
-    q2: "Kritické posouzení: Jak moc si věříte v rozpoznání důvěryhodného zdroje od zavádějícího nebo lživého obsahu (fake news)?",
-    toolsLabel: "Které z těchto M365 aplikací využíváte pro práci s informacemi?",
-    tools: [
-      "SharePoint (prohledávání firemního obsahu)",
-      "OneDrive (organizace a správa vlastních souborů)",
-      "Microsoft Lists (evidence a třídění dat)",
-    ],
-  },
-  {
-    key: "communication",
-    icon: "🤝",
-    title: "Komunikace a spolupráce",
-    description: "Interakce, sdílení a spolupráce prostřednictvím digitálních technologií.",
-    q1: "Pokročilé sdílení: Jak dobře ovládáte nastavování přístupových práv k dokumentům (např. odlišná práva pro čtení vs. úpravy pro různé lidi)?",
-    q2: "Digitální etiketa a organizace: Jak si věříte v organizaci komplexních online schůzek (včetně správy kalendáře, nahrávání a moderování chatu)?",
-    toolsLabel: "Které z těchto M365 aplikací využíváte pro spolupráci?",
-    tools: [
-      "Microsoft Teams (komunikace, týmová spolupráce)",
-      "Outlook (e-mail, správa času a kalendáře)",
-      "Whiteboard (společné vizuální plánování a brainstorming)",
-    ],
-  },
-  {
-    key: "content",
-    icon: "✍️",
-    title: "Tvorba digitálního obsahu",
-    description: "Vytváření a úprava obsahu, programování a pochopení autorských práv.",
-    q1: "Právní povědomí: Do jaké míry rozumíte licencím a autorským právům u digitálního obsahu (např. co můžete legálně použít z internetu)?",
-    q2: "Zjednodušení práce: Jak dobře dokážete využívat pokročilé funkce aplikací k automatizaci (např. hromadná korespondence, makra, automatická pravidla)?",
-    toolsLabel: "Které z těchto M365 aplikací využíváte k tvorbě a úpravám?",
-    tools: [
-      "PowerPoint (prezentace)",
-      "Word (dokumenty)",
-      "Power Automate (automatizace procesů)",
-    ],
-  },
-  {
-    key: "security",
-    icon: "🛡️",
-    title: "Bezpečnost",
-    description: "Ochrana zařízení, osobních údajů, soukromí a zdraví.",
-    q1: "Digitální stopa a soukromí: Jak dobře dokážete spravovat své soukromí (např. omezování přístupu aplikací k poloze nebo správné nastavení cookies)?",
-    q2: "Kybernetická ostražitost: Nakolik jste si jistí v rozpoznání podezřelých e-mailů (phishing) a v bezpečném nakládání s hesly (např. MFA)?",
-    toolsLabel: "Které z těchto M365 nástrojů využíváte pro bezpečnost?",
-    tools: [
-      "Microsoft Authenticator (schvalování přihlášení)",
-      "Microsoft Defender (ochrana zařízení)",
-      "Purview (zabezpečení citlivých dokumentů)",
-    ],
-  },
-  {
-    key: "problemsolving",
-    icon: "🛠️",
-    title: "Řešení problémů",
-    description: "Identifikace potřeb a řešení technických potíží.",
-    q1: "Technická soběstačnost: Jak dobře si dokážete sami vyhledat návod a vyřešit problém s nastavením softwaru, aniž byste volali IT podporu?",
-    q2: "Inovativní přístup: Nakolik aktivně hledáte nové digitální způsoby, jak vylepšit stávající firemní procesy nebo si zjednodušit práci?",
-    toolsLabel: "Které z těchto M365 aplikací využíváte k řešení úkolů?",
-    tools: [
-      "OneNote (digitální zápisník)",
-      "Planner / To Do (správa úkolů)",
-      "Forms (průzkumy a sběr dat)",
-    ],
-  },
-];
-
-const AI_TOOLS = [
-  "Microsoft Copilot (asistent v Office)",
-  "Designer (tvorba grafiky AI)",
-  "Diktování (převod řeči na text)",
-];
+import { getSections, getInitialData, type FormData, type SectionData, type SectionKey } from "./assessment-data";
+import { useLanguage } from "@/context/LanguageContext";
+import { useTranslation } from "@/hooks/useTranslation";
+import AssessmentSummary from "./AssessmentSummary";
 
 const TOTAL_STEPS = 8;
 
-const STEP_LABELS = [
-  "Identifikace",
-  "Informace & Data",
-  "Komunikace",
-  "Tvorba obsahu",
-  "Bezpečnost",
-  "Řešení problémů",
-  "AI Bonus",
-  "Odeslání",
-];
+const STEP_KEYS = [
+  "assessment.steps.identification",
+  "assessment.steps.information",
+  "assessment.steps.communication",
+  "assessment.steps.content",
+  "assessment.steps.security",
+  "assessment.steps.problemsolving",
+  "assessment.steps.aiBonus",
+  "assessment.steps.submit",
+] as const;
 
-import AssessmentSummary from "./AssessmentSummary";
+const ROLE_KEYS = [
+  "assessmentRoles.management",
+  "assessmentRoles.hr",
+  "assessmentRoles.admin",
+  "assessmentRoles.marketing",
+  "assessmentRoles.finance",
+  "assessmentRoles.production",
+  "assessmentRoles.it",
+] as const;
+
+const AI_TOOL_KEYS = [
+  "assessment.aiTools.microsoftCopilot",
+  "assessment.aiTools.designer",
+  "assessment.aiTools.dictation",
+] as const;
 
 const SLANT_ANGLE = 11.3;
 const SLANT_TAN = Math.tan((SLANT_ANGLE * Math.PI) / 180);
@@ -224,12 +72,21 @@ const itemVariants = {
 };
 
 export default function AssessmentForm() {
+  const { language } = useLanguage();
+  const { t } = useTranslation();
+  const SECTIONS = getSections(language);
+  const INITIAL_DATA = getInitialData(language);
+
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>(INITIAL_DATA);
   const [phase, setPhase] = useState<"form" | "loading" | "report">("form");
   const [direction, setDirection] = useState(1);
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement | null>(null);
+
+  const ROLES = ROLE_KEYS.map((k) => t(k));
+  const AI_TOOLS = AI_TOOL_KEYS.map((k) => t(k));
+  const STEP_LABELS = STEP_KEYS.map((k) => t(k));
 
   const submitAssessment = () => {
     if (phase !== "form") return;
@@ -315,12 +172,12 @@ export default function AssessmentForm() {
               marginBottom: 4,
             }}
           >
-            Digitální Assessment
+            {t("assessment.title")}
           </h1>
           <p style={{ color: "#6B7280", fontSize: 13 }}>
             {isReport
-              ? "Vyhodnocení výsledků · osobní report"
-              : `Mapování digitálních kompetencí DigComp 2.1 · Krok ${currentStep + 1} z ${TOTAL_STEPS}`}
+              ? t("assessment.evaluationReport")
+              : t("assessment.formStepSubtitle", { current: currentStep + 1, total: TOTAL_STEPS })}
           </p>
         </div>
 
@@ -406,7 +263,7 @@ export default function AssessmentForm() {
               fontWeight: 600,
             }}
           >
-            {isReport ? "Vyhodnocení" : STEP_LABELS[currentStep]}
+            {isReport ? t("assessment.evaluation") : STEP_LABELS[currentStep]}
           </span>
         </div>
 
@@ -428,11 +285,11 @@ export default function AssessmentForm() {
               animate={{ opacity: 1, scale: 1 }}
               style={{ display: "grid", placeItems: "center", padding: "32px 0", gap: 10 }}
             >
-              <div className="ds-spinner" aria-label="Načítání" />
+              <div className="ds-spinner" aria-label={t("assessment.loading")} />
               <div style={{ textAlign: "center" }}>
-                <div style={{ fontWeight: 700, marginBottom: 4, color: "#040E3C", fontSize: 14 }}>Vyhodnocujeme výsledky…</div>
+                <div style={{ fontWeight: 700, marginBottom: 4, color: "#040E3C", fontSize: 14 }}>{t("assessment.form.evaluating")}</div>
                 <div style={{ color: "#6B7280", fontSize: 12 }}>
-                  Zabere to jen chvilku
+                  {t("assessment.form.justAMoment")}
                 </div>
               </div>
             </motion.div>
@@ -452,11 +309,11 @@ export default function AssessmentForm() {
               >
                 <motion.div variants={containerVariants} initial="hidden" animate="visible">
                   <motion.div variants={itemVariants}>
-                    <SectionHeader icon="👤" title="Úvodní identifikace" description="Ověřte a doplňte své základní údaje." />
+                    <SectionHeader icon="👤" title={t("assessment.introTitle")} description={t("assessment.introDesc")} />
                   </motion.div>
 
                   <motion.div variants={itemVariants} style={{ marginBottom: 14 }}>
-                    <FieldLabel>Celé jméno</FieldLabel>
+                    <FieldLabel>{t("assessment.form.fullName")}</FieldLabel>
                     <input
                       type="text"
                       value={formData.name}
@@ -466,7 +323,7 @@ export default function AssessmentForm() {
                   </motion.div>
 
                   <motion.div variants={itemVariants} style={{ marginBottom: 18 }}>
-                    <FieldLabel>Pracovní e-mail</FieldLabel>
+                    <FieldLabel>{t("assessment.form.workEmail")}</FieldLabel>
                     <input
                       type="email"
                       value={formData.email}
@@ -484,7 +341,7 @@ export default function AssessmentForm() {
                         marginBottom: 10,
                       }}
                     >
-                      Vaše pracovní zařazení
+                      {t("assessment.form.workRole")}
                     </p>
                     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                       {ROLES.map((role) => {
@@ -512,7 +369,7 @@ export default function AssessmentForm() {
 
                   <motion.div variants={itemVariants}>
                     <ScaleSlider
-                      label="Váš celkový vztah k digitálním technologiím (1 = vyhýbám se jim, 10 = jsem technologický nadšenec)"
+                      label={t("assessment.digitalRelationship")}
                       value={formData.digitalRelationship}
                       onChange={(v) => setFormData((p) => ({ ...p, digitalRelationship: v }))}
                     />
@@ -581,20 +438,20 @@ export default function AssessmentForm() {
                   <motion.div variants={itemVariants}>
                     <SectionHeader
                       icon="🤖"
-                      title="Bonus: Umělá inteligence (AI)"
-                      description="Nepovinná sekce zaměřená na znalost a používání AI nástrojů."
+                      title={t("assessment.aiBonusTitle")}
+                      description={t("assessment.aiBonusDesc")}
                     />
                   </motion.div>
                   <motion.div variants={itemVariants}>
                     <ScaleSlider
-                      label="Znalost AI: Jak se považujete za pokročilé v používání generativní AI (např. psaní promptů, generování textů či obrázků)?"
+                      label={t("assessment.aiKnowledge")}
                       value={formData.ai.score}
                       onChange={(v) => setFormData((p) => ({ ...p, ai: { ...p.ai, score: v } }))}
                     />
                   </motion.div>
                   <motion.div variants={itemVariants}>
                     <CheckboxGroup
-                      label="Které AI funkce v Microsoftu znáte nebo používáte?"
+                      label={t("assessment.aiTools")}
                       options={AI_TOOLS}
                       selected={formData.ai.tools}
                       onChange={(tools) => setFormData((p) => ({ ...p, ai: { ...p.ai, tools } }))}
@@ -619,8 +476,8 @@ export default function AssessmentForm() {
                   <motion.div variants={itemVariants}>
                     <SectionHeader
                       icon="✅"
-                      title="Před odesláním"
-                      description="Po kliknutí na Odeslat se vygeneruje vyhodnocení a zobrazí se report."
+                      title={t("assessment.beforeSubmitTitle")}
+                      description={t("assessment.beforeSubmitDesc")}
                     />
                   </motion.div>
                   <motion.div variants={itemVariants}>
@@ -633,15 +490,15 @@ export default function AssessmentForm() {
                     >
                       <div style={{ display: "grid", gap: 10 }}>
                         <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-                          <span style={{ color: "#6B7280", fontSize: 12 }}>Jméno</span>
+                          <span style={{ color: "#6B7280", fontSize: 12 }}>{t("assessment.form.name")}</span>
                           <span style={{ fontWeight: 700, color: "#040E3C" }}>{formData.name || "—"}</span>
                         </div>
                         <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-                          <span style={{ color: "#6B7280", fontSize: 12 }}>E-mail</span>
+                          <span style={{ color: "#6B7280", fontSize: 12 }}>{t("assessment.form.email")}</span>
                           <span style={{ fontWeight: 700, color: "#040E3C" }}>{formData.email || "—"}</span>
                         </div>
                         <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-                          <span style={{ color: "#6B7280", fontSize: 12 }}>Zařazení</span>
+                          <span style={{ color: "#6B7280", fontSize: 12 }}>{t("assessment.form.role")}</span>
                           <span style={{ fontWeight: 700, color: "#040E3C" }}>{formData.role || "—"}</span>
                         </div>
                       </div>
@@ -651,7 +508,7 @@ export default function AssessmentForm() {
                     variants={itemVariants}
                     style={{ marginTop: 12, color: "#6B7280", fontSize: 12 }}
                   >
-                    Tip: pro rychlé pokračování můžeš použít klávesu Enter.
+                    {t("assessment.form.enterTip")}
                   </motion.p>
                 </motion.div>
               </motion.div>
@@ -692,7 +549,7 @@ export default function AssessmentForm() {
                   strokeLinejoin="round"
                 />
               </svg>
-              Zpět
+              {t("assessment.form.back")}
             </motion.button>
 
             {currentStep < TOTAL_STEPS - 1 ? (
@@ -715,7 +572,7 @@ export default function AssessmentForm() {
                   gap: 8,
                 }}
               >
-                Dále
+                {t("assessment.form.next")}
                 <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
                   <path
                     d="M7.5 5L12.5 10L7.5 15"
@@ -746,7 +603,7 @@ export default function AssessmentForm() {
                   gap: 8,
                 }}
               >
-                Odeslat assessment
+                {t("assessment.form.submitAssessment")}
                 <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
                   <path
                     d="M4 10L8 14L16 6"
@@ -793,7 +650,7 @@ export default function AssessmentForm() {
                   strokeLinejoin="round"
                 />
               </svg>
-              Upravit odpovědi
+              {t("assessment.form.editAnswers")}
             </motion.button>
 
             <motion.button
@@ -815,7 +672,7 @@ export default function AssessmentForm() {
                 gap: 8,
               }}
             >
-              Pokračovat
+              {t("assessment.form.continue")}
               <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
                 <path
                   d="M7.5 5L12.5 10L7.5 15"

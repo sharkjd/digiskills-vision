@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
 import {
@@ -32,21 +33,8 @@ const itemVariants = {
   },
 };
 
-const ACTIVITY_DATA = [
-  { weekKey: "manager.week", weekNum: 1, lessons: 42 },
-  { weekKey: "manager.week", weekNum: 2, lessons: 58 },
-  { weekKey: "manager.week", weekNum: 3, lessons: 71 },
-  { weekKey: "manager.week", weekNum: 4, lessons: 65 },
-  { weekKey: "manager.week", weekNum: 5, lessons: 89 },
-];
-
-const TOP_STUDENTS = [
-  { name: "Marie Nováková", points: 124, initials: "MN" },
-  { name: "Petr Svoboda", points: 98, initials: "PS" },
-  { name: "Eva Horáková", points: 87, initials: "EH" },
-  { name: "Jan Procházka", points: 76, initials: "JP" },
-  { name: "Lucie Dvořáková", points: 65, initials: "LD" },
-];
+const ACTIVITY_WEEKS = [1, 2, 3, 4, 5];
+const ACTIVITY_LESSONS = [8, 12, 15, 11, 18];
 
 const STRENGTHS = [
   { topic: "Kyberbezpečnost", percent: 92 },
@@ -60,17 +48,18 @@ const GAPS = [
   { topic: "Cloud", percent: 25 },
 ];
 
-const MILESTONE_KEYS = [
-  "manager.milestone1",
-  "manager.milestone2",
-  "manager.milestone3",
-] as const;
+const MILESTONE_KEYS = ["manager.milestone1", "manager.milestone2", "manager.milestone3"] as const;
 
-export default function ManagerDashboard() {
+const USER_NAME = "Honza Dolejš";
+const DIGISKILLS_INDEX = 7.3;
+const COMPANY_AVG = 5.52;
+const BEST_EMPLOYEE = 9.2;
+
+export default function ProfileDashboard() {
   const { t } = useTranslation();
-  const activityData = ACTIVITY_DATA.map((d) => ({
-    week: `${t(d.weekKey)} ${d.weekNum}`,
-    lessons: d.lessons,
+  const activityData = ACTIVITY_WEEKS.map((w, i) => ({
+    week: `${t("profile.week")} ${w}`,
+    lessons: ACTIVITY_LESSONS[i],
   }));
 
   return (
@@ -80,7 +69,7 @@ export default function ManagerDashboard() {
       animate="visible"
       style={{ display: "flex", flexDirection: "column", gap: 32 }}
     >
-      {/* A. Executive Hero Banner */}
+      {/* A. Hero Banner */}
       <motion.div
         variants={itemVariants}
         style={{
@@ -109,7 +98,7 @@ export default function ManagerDashboard() {
                 marginBottom: 16,
               }}
             >
-              AI Insights
+              {t("profile.yourProfile")}
             </div>
             <h1
               style={{
@@ -119,10 +108,10 @@ export default function ManagerDashboard() {
                 fontStyle: "italic",
               }}
             >
-              {t("manager.teamDoingGreat")}
+              {t("profile.yourDigitalPath")}
             </h1>
             <p style={{ fontSize: 15, opacity: 0.9, margin: 0, lineHeight: 1.6 }}>
-              {t("manager.halfwayText")}
+              {t("profile.continueText")}
             </p>
           </div>
 
@@ -143,12 +132,12 @@ export default function ManagerDashboard() {
                 textAlign: "center",
               }}
             >
-              <div style={{ fontSize: 36, fontWeight: 800 }}>345</div>
+              <div style={{ fontSize: 36, fontWeight: 800 }}>24</div>
               <div style={{ fontSize: 14, fontWeight: 600, opacity: 0.9 }}>
-                {t("manager.totalStudied")}
+                {t("profile.totalStudied")}
               </div>
               <div style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>
-                {t("manager.hours")}
+                {t("profile.hours")}
               </div>
             </motion.div>
             <motion.div
@@ -161,12 +150,12 @@ export default function ManagerDashboard() {
                 textAlign: "center",
               }}
             >
-              <div style={{ fontSize: 36, fontWeight: 800 }}>18 / 24</div>
+              <div style={{ fontSize: 36, fontWeight: 800 }}>12</div>
               <div style={{ fontSize: 14, fontWeight: 600, opacity: 0.9 }}>
-                {t("manager.activeMembers")}
+                Aktivní série
               </div>
               <div style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>
-                {t("manager.inTeam")}
+                dní v řadě
               </div>
             </motion.div>
             <motion.div
@@ -179,19 +168,19 @@ export default function ManagerDashboard() {
                 textAlign: "center",
               }}
             >
-              <div style={{ fontSize: 36, fontWeight: 800 }}>120</div>
+              <div style={{ fontSize: 36, fontWeight: 800 }}>8</div>
               <div style={{ fontSize: 14, fontWeight: 600, opacity: 0.9 }}>
-                {t("manager.remainingToGoal")}
+                Zbývá k cíli
               </div>
               <div style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>
-                {t("manager.lessons")}
+                lekcí
               </div>
             </motion.div>
           </div>
         </div>
       </motion.div>
 
-      {/* B. Naše Cesta (Team Vision Path) */}
+      {/* B. Cesta jednotlivce */}
       <motion.div
         variants={itemVariants}
         whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
@@ -213,7 +202,7 @@ export default function ManagerDashboard() {
             fontStyle: "italic",
           }}
         >
-          {t("manager.teamPath")}
+          Vaše cesta: Kam směřujete
         </h2>
 
         <div style={{ marginBottom: 24 }}>
@@ -271,10 +260,9 @@ export default function ManagerDashboard() {
         >
           {MILESTONE_KEYS.map((key, idx) => {
             const status = idx === 0 ? "done" : idx === 1 ? "active" : "pending";
-            const milestone = { id: String(idx + 1), label: t(key), status } as const;
             return (
             <div
-              key={milestone.id}
+              key={key}
               style={{
                 textAlign: "center",
                 padding: "12px 8px",
@@ -289,7 +277,7 @@ export default function ManagerDashboard() {
                   color: "var(--color-text-main)",
                 }}
               >
-                {milestone.label}
+                {t(key)}
               </div>
               <div
                 style={{
@@ -297,18 +285,18 @@ export default function ManagerDashboard() {
                   fontWeight: 600,
                   marginTop: 4,
                   color:
-                    milestone.status === "done"
+                    status === "done"
                       ? "var(--color-accent-green)"
-                      : milestone.status === "active"
+                      : status === "active"
                         ? "var(--color-primary)"
                         : "var(--color-text-secondary)",
                 }}
               >
-                {milestone.status === "done"
-                  ? t("manager.done")
-                  : milestone.status === "active"
-                    ? t("manager.inProgress")
-                    : t("manager.waiting")}
+                {status === "done"
+                  ? t("profile.done")
+                  : status === "active"
+                    ? t("profile.inProgress")
+                    : t("profile.waiting")}
               </div>
             </div>
           );
@@ -316,7 +304,7 @@ export default function ManagerDashboard() {
         </div>
       </motion.div>
 
-      {/* C. Aktivita Týmu (Graf & Leaderboard) */}
+      {/* C. Aktivita + Digiskills Index */}
       <motion.div
         variants={itemVariants}
         style={{
@@ -345,14 +333,14 @@ export default function ManagerDashboard() {
               fontStyle: "italic",
             }}
           >
-            {t("manager.activityOverTime")}
+            {t("profile.activityOverTime")}
           </h2>
           <div style={{ width: "100%", height: 260, minHeight: 260 }}>
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={activityData}>
                 <defs>
                   <linearGradient
-                    id="colorLessons"
+                    id="colorLessonsProfile"
                     x1="0"
                     y1="0"
                     x2="0"
@@ -394,14 +382,14 @@ export default function ManagerDashboard() {
                     boxShadow: "0 4px 12px var(--color-card-shadow)",
                   }}
                   labelStyle={{ fontWeight: 600, color: "var(--color-text-main)" }}
-                  formatter={(value) => [`${value ?? 0} ${t("manager.lessons")}`, t("manager.lessonsStudied")]}
+                  formatter={(value) => [`${value ?? 0}`, t("profile.lessonsStudied")]}
                 />
                 <Area
                   type="monotone"
                   dataKey="lessons"
                   stroke="var(--color-primary)"
                   strokeWidth={2}
-                  fill="url(#colorLessons)"
+                  fill="url(#colorLessonsProfile)"
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -428,71 +416,18 @@ export default function ManagerDashboard() {
               fontStyle: "italic",
             }}
           >
-            {t("manager.topStudents")}
+            Digiskills Index
           </h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {TOP_STUDENTS.map((student, index) => (
-              <div
-                key={student.name}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 12,
-                }}
-              >
-                <div
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: "50%",
-                    background: "var(--color-primary)",
-                    color: "white",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: 14,
-                    fontWeight: 700,
-                    flexShrink: 0,
-                  }}
-                >
-                  {student.initials}
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 600,
-                      color: "var(--color-text-main)",
-                    }}
-                  >
-                    {student.name}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: 12,
-                      color: "var(--color-text-secondary)",
-                      marginTop: 2,
-                    }}
-                  >
-                    {student.points} {t("manager.points")}
-                  </div>
-                </div>
-                <div
-                  style={{
-                    fontSize: 16,
-                    fontWeight: 700,
-                    color: "var(--color-primary)",
-                  }}
-                >
-                  #{index + 1}
-                </div>
-              </div>
-            ))}
-          </div>
+          <DigiskillsIndexGauge
+            myScore={DIGISKILLS_INDEX}
+            companyAvg={COMPANY_AVG}
+            bestEmployee={BEST_EMPLOYEE}
+            userName={USER_NAME}
+          />
         </motion.div>
       </motion.div>
 
-      {/* D. Zvládnutá vs. Chybějící témata */}
+      {/* D. Silné stránky vs. Prostor pro růst */}
       <motion.div
         variants={itemVariants}
         style={{
@@ -520,7 +455,7 @@ export default function ManagerDashboard() {
               fontStyle: "italic",
             }}
           >
-            {t("manager.strengths")}
+            Co už ovládáte (Silné stránky)
           </h3>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {STRENGTHS.map((item) => (
@@ -593,7 +528,7 @@ export default function ManagerDashboard() {
               fontStyle: "italic",
             }}
           >
-            {t("manager.gaps")}
+            Kde máte mezery (Příležitosti k růstu)
           </h3>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {GAPS.map((item) => (
@@ -647,6 +582,138 @@ export default function ManagerDashboard() {
           </div>
         </motion.div>
       </motion.div>
+
+      {/* E. CTA - Moje kurzy */}
+      <motion.div variants={itemVariants}>
+        <Link href="/moje-kurzy">
+          <motion.div
+            whileHover={{
+              scale: 1.01,
+              boxShadow: "0 8px 24px rgba(37, 150, 255, 0.3)",
+            }}
+            transition={HOVER_TRANSITION}
+            style={{
+              background: "var(--color-primary)",
+              borderRadius: 16,
+              padding: "28px 32px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <span
+              style={{
+                color: "white",
+                fontSize: 18,
+                fontWeight: 700,
+              }}
+            >
+              Přejít na moje kurzy
+            </span>
+          </motion.div>
+        </Link>
+      </motion.div>
     </motion.div>
+  );
+}
+
+function DigiskillsIndexGauge({
+  myScore,
+  companyAvg,
+  bestEmployee,
+  userName,
+}: {
+  myScore: number;
+  companyAvg: number;
+  bestEmployee: number;
+  userName: string;
+}) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 16,
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
+        <div
+          style={{
+            width: 48,
+            height: 48,
+            borderRadius: "50%",
+            background: "var(--color-primary)",
+            color: "white",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: 20,
+            fontWeight: 700,
+          }}
+        >
+          {userName.charAt(0)}
+        </div>
+        <div>
+          <div style={{ fontWeight: 700, fontSize: 15, color: "var(--color-text-main)" }}>
+            {userName}
+          </div>
+          <div style={{ fontSize: 13, color: "var(--color-text-secondary)" }}>
+            Pořadí: 3. místo z 47 zaměstnanců
+          </div>
+        </div>
+      </div>
+
+      <div style={{ position: "relative", width: 140, height: 140 }}>
+        <svg width="140" height="140" viewBox="0 0 140 140" style={{ display: "block" }}>
+          <circle
+            cx="70"
+            cy="70"
+            r="60"
+            fill="none"
+            stroke="var(--color-border)"
+            strokeWidth="12"
+          />
+          <circle
+            cx="70"
+            cy="70"
+            r="60"
+            fill="none"
+            stroke="var(--color-primary)"
+            strokeWidth="12"
+            strokeLinecap="round"
+            strokeDasharray={`${(myScore / 10) * 377} 377`}
+            transform="rotate(-90 70 70)"
+            style={{ transition: "stroke-dasharray 0.6s ease" }}
+          />
+        </svg>
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            textAlign: "center",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 32,
+              fontWeight: 800,
+              color: "var(--color-text-main)",
+            }}
+          >
+            {myScore.toFixed(1)}
+          </div>
+          <div style={{ fontSize: 12, color: "var(--color-text-secondary)" }}>
+            / 10
+          </div>
+        </div>
+      </div>
+
+      <div style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-secondary)" }}>
+        Průměr firmy: {companyAvg.toFixed(1)} · Nejlepší: {bestEmployee.toFixed(1)}
+      </div>
+    </div>
   );
 }

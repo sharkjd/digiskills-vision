@@ -32,9 +32,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="cs">
+    <html lang="cs" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${montserrat.variable} antialiased`}
+        suppressHydrationWarning
         style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
       >
         <Providers>

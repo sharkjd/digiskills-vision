@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Course } from "@/data/courses";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type CatalogCourseCardProps = {
   course: Course;
@@ -11,6 +12,7 @@ type CatalogCourseCardProps = {
 };
 
 export default function CatalogCourseCard({ course, index }: CatalogCourseCardProps) {
+  const { t } = useTranslation();
   return (
     <Link
       href={`/kurz/${course.id}`}
@@ -68,13 +70,13 @@ export default function CatalogCourseCard({ course, index }: CatalogCourseCardPr
             className="text-xs"
             style={{ color: "#6c757d" }}
           >
-            {course.activities} aktivit, cca {course.duration}
+            {course.activities} {t("courses.activities")}, {t("courses.approx")} {course.duration}
           </span>
           <span
             className="px-5 py-2 rounded-lg text-sm font-semibold text-white transition-colors"
             style={{ backgroundColor: "#2596FF" }}
           >
-            Zobrazit
+            {t("courses.view")}
           </span>
         </div>
       </div>

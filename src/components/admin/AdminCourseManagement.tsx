@@ -1,12 +1,14 @@
 "use client";
 
 import { useMemo, useState, useCallback } from "react";
+import { useTranslation } from "@/hooks/useTranslation";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, RefreshCw, Search, X } from "lucide-react";
-import { COURSE_LIST, Course } from "@/data/courses";
+import { getCourseList, type Course } from "@/data/courses";
+import { useLanguage } from "@/context/LanguageContext";
 import { useCompanyCourses } from "@/context/CompanyCoursesContext";
 
 const DEPLOY_DURATION_MS = 2000;
@@ -41,12 +43,15 @@ type ReplaceCourseModalProps = {
 
 function ReplaceCourseModal({ slotIndex, currentCourse, selectedCourseIds, onSelect, onClose }: ReplaceCourseModalProps) {
   const [search, setSearch] = useState("");
+  const { t } = useTranslation();
+  const { language } = useLanguage();
+  const courseList = getCourseList(language);
 
   const candidates = useMemo(() => {
-    return COURSE_LIST.filter(
+    return courseList.filter(
       (c) => c.id !== currentCourse.id && !selectedCourseIds.has(c.id),
     );
-  }, [currentCourse.id, selectedCourseIds]);
+  }, [currentCourse.id, selectedCourseIds, courseList]);
 
   const filtered = useMemo(
     () => candidates.filter((c) => matchesSearch(c, search)),
@@ -74,14 +79,14 @@ function ReplaceCourseModal({ slotIndex, currentCourse, selectedCourseIds, onSel
       >
         <div className="flex items-center justify-between border-b px-6 py-4" style={{ borderColor: "var(--color-border)" }}>
           <h2 className="text-xl font-bold italic" style={{ color: "var(--color-digi-sky)" }}>
-            Vyměnit kurz (priorita {slotIndex + 1})
+            {t("admin.replaceCourse", { index: slotIndex + 1 })}
           </h2>
           <button
             type="button"
             onClick={onClose}
             className="rounded-lg p-2 transition-colors hover:bg-gray-100"
             style={{ color: "var(--color-text-secondary)" }}
-            aria-label="Zavřít"
+            aria-label={t("admin.close")}
           >
             <X size={20} />
           </button>
@@ -96,7 +101,7 @@ function ReplaceCourseModal({ slotIndex, currentCourse, selectedCourseIds, onSel
             />
             <input
               type="text"
-              placeholder="Hledat kurz (název, popis, úroveň)..."
+              placeholder={t("admin.searchPlaceholder")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full rounded-lg border py-2.5 pl-10 pr-4 text-sm"
@@ -161,6 +166,7 @@ type AdminCourseTileProps = {
 };
 
 function AdminCourseTile({ course, index, onReplace }: AdminCourseTileProps) {
+  const { t } = useTranslation();
   return (
     <motion.article
       layout
@@ -193,13 +199,13 @@ function AdminCourseTile({ course, index, onReplace }: AdminCourseTileProps) {
           }}
         >
           <RefreshCw size={12} />
-          Vyměnit
+          {t("admin.replace")}
         </button>
       </div>
 
       <div className="flex flex-1 flex-col p-5">
         <p className="mb-1 text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--color-text-secondary)" }}>
-          Priorita {index + 1}
+          {t("admin.priority", { index: index + 1 })}
         </p>
         <h3 className="mb-3 text-lg font-bold leading-tight" style={{ color: "var(--color-digi-sky)" }}>
           {course.title}
@@ -211,7 +217,7 @@ function AdminCourseTile({ course, index, onReplace }: AdminCourseTileProps) {
 
         <div className="flex items-center justify-between border-t pt-3" style={{ borderColor: "var(--color-border)" }}>
           <span className="text-xs font-medium" style={{ color: "var(--color-text-secondary)" }}>
-            {course.activities} aktivit
+            {course.activities} {t("courses.activities")}
           </span>
           <span className="rounded-lg px-3 py-1 text-xs font-semibold" style={{ backgroundColor: "var(--color-breeze)", color: "var(--color-digi-sky)" }}>
             {course.duration} • {course.level}
@@ -225,13 +231,16 @@ function AdminCourseTile({ course, index, onReplace }: AdminCourseTileProps) {
 export default function AdminCourseManagement() {
   const router = useRouter();
   const { setCompanyCourses } = useCompanyCourses();
-  const [selectedCourses, setSelectedCourses] = useState<Course[]>(() => COURSE_LIST.slice(0, INITIAL_COURSE_COUNT));
+  const { language } = useLanguage();
+  const { t } = useTranslation();
+  const courseList = getCourseList(language);
+  const [selectedCourses, setSelectedCourses] = useState<Course[]>(() => courseList.slice(0, INITIAL_COURSE_COUNT));
   const [isDeploying, setIsDeploying] = useState(false);
   const [replaceSlotIndex, setReplaceSlotIndex] = useState<number | null>(null);
 
   const employeeCount = 2534;
   const selectedCourseIds = useMemo(() => new Set(selectedCourses.map((c) => c.id)), [selectedCourses]);
-  const replaceEnabled = useMemo(() => COURSE_LIST.length > selectedCourses.length, [selectedCourses.length]);
+  const replaceEnabled = useMemo(() => courseList.length > selectedCourses.length, [courseList.length, selectedCourses.length]);
 
   const openReplaceModal = useCallback(
     (index: number) => {

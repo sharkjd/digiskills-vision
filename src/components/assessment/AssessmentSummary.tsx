@@ -5,7 +5,9 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useRecommendedCourses } from "@/context/RecommendedCoursesContext";
-import { COURSE_LIST, Course } from "@/data/courses";
+import { getCourseList, type Course } from "@/data/courses";
+import { useLanguage } from "@/context/LanguageContext";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
 
@@ -38,23 +40,23 @@ type AssessmentSummaryProps = {
   }[];
 };
 
-const DIGCOMP_LABELS = [
-  "Zpracování informací a dat",
-  "Komunikace a spolupráce",
-  "Tvorba digitálního obsahu",
-  "Digitální bezpečnost",
-  "Řešení problémů",
-];
+const DIGCOMP_LABEL_KEYS = [
+  "assessmentSummary.digcompInfo",
+  "assessmentSummary.digcompComm",
+  "assessmentSummary.digcompContent",
+  "assessmentSummary.digcompSecurity",
+  "assessmentSummary.digcompProblems",
+] as const;
+
+const DIGCOMP_LEGEND_KEYS = [
+  "assessmentSummary.legendInfo",
+  "assessmentSummary.legendComm",
+  "assessmentSummary.legendContent",
+  "assessmentSummary.legendSecurity",
+  "assessmentSummary.legendProblems",
+] as const;
 
 const COMPANY_AVG = [6.4, 5.4, 4.4, 6.5, 4.7];
-
-const DIGCOMP_LEGEND = [
-  { short: "Informace a data", icon: "📊", color: "#FEE2E2", iconBg: "#EF4444" },
-  { short: "Komunikace", icon: "💬", color: "#EDE9FE", iconBg: "#6366F1" },
-  { short: "Digitální obsah", icon: "☁️", color: "#E0F2FE", iconBg: "#0EA5E9" },
-  { short: "Bezpečnost", icon: "✓", color: "#FEF3C7", iconBg: "#F59E0B" },
-  { short: "Řešení problémů", icon: "🧩", color: "#D1FAE5", iconBg: "#10B981" },
-];
 
 const BENCHMARK_DATA = {
   myScore: 7.3,
@@ -72,30 +74,26 @@ const RECOMMENDED_APPS = [
 ];
 
 
-function getLevelLabel(score: number): { label: string; description: string } {
-  if (score < 5) return { label: "Digitální nováček", description: "Základní digitální dovednosti" };
-  if (score < 7) return { label: "Digitální praktik", description: "Mírně pokročilá úroveň" };
-  if (score < 9) return { label: "Digitální expert", description: "Pokročilá úroveň" };
-  return { label: "Digitální lídr", description: "Expertní úroveň" };
-}
-
-function getAIFeedback(score: number): string {
-  if (score < 5) {
-    return "Máte solidní základ. Zaměřte se na prozkoumání nových nástrojů a nebojte se experimentovat – každý krok vpřed se počítá.";
-  }
-  if (score < 7) {
-    return "Technologie ovládáte s jistotou. Pokud se zaměříte na automatizaci a AI nástroje, získáte hodiny času týdně navíc.";
-  }
-  if (score < 9) {
-    return "Jste nad průměrem. Vaše znalosti vám umožňují být mentorem pro kolegy a aktivně přispívat k digitální transformaci.";
-  }
-  return "Gratulujeme! Patříte mezi digitální lídry. Vaše expertiza může formovat digitální strategii celé organizace.";
-}
-
 export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSummaryProps) {
   const router = useRouter();
   const { setRecommendedCourses } = useRecommendedCourses();
-  
+  const { language } = useLanguage();
+  const { t } = useTranslation();
+
+  const getLevelLabel = (score: number): { label: string; description: string } => {
+    if (score < 5) return { label: t("assessmentSummary.digitalNewbie"), description: t("assessmentSummary.digitalNewbieDesc") };
+    if (score < 7) return { label: t("assessmentSummary.digitalPractitioner"), description: t("assessmentSummary.digitalPractitionerDesc") };
+    if (score < 9) return { label: t("assessmentSummary.digitalExpert"), description: t("assessmentSummary.digitalExpertDesc") };
+    return { label: t("assessmentSummary.digitalLeader"), description: t("assessmentSummary.digitalLeaderDesc") };
+  };
+
+  const getAIFeedback = (score: number): string => {
+    if (score < 5) return t("assessmentSummary.aiFeedback1");
+    if (score < 7) return t("assessmentSummary.aiFeedback2");
+    if (score < 9) return t("assessmentSummary.aiFeedback3");
+    return t("assessmentSummary.aiFeedback4");
+  };
+
   const sectionKeys = ["information", "communication", "content", "security", "problemsolving"] as const;
 
   const userScores = sectionKeys.map((key) => {
@@ -106,9 +104,17 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
   const overallScore = userScores.reduce((a, b) => a + b, 0) / userScores.length;
   const levelInfo = getLevelLabel(overallScore);
   const aiFeedback = getAIFeedback(overallScore);
-  
+
+  const DIGCOMP_LABELS = DIGCOMP_LABEL_KEYS.map((k) => t(k));
+  const DIGCOMP_LEGEND = DIGCOMP_LEGEND_KEYS.map((short, i) => ({
+    short: t(short),
+    icon: ["📊", "💬", "☁️", "✓", "🧩"][i],
+    color: ["#FEE2E2", "#EDE9FE", "#E0F2FE", "#FEF3C7", "#D1FAE5"][i],
+    iconBg: ["#EF4444", "#6366F1", "#0EA5E9", "#F59E0B", "#10B981"][i],
+  }));
+
   const handleContinue = () => {
-    setRecommendedCourses(COURSE_LIST.slice(0, 6));
+    setRecommendedCourses(getCourseList(language).slice(0, 6));
     router.push("/moje-kurzy");
   };
 
@@ -145,7 +151,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
             {levelInfo.label}
           </div>
           <h1 style={{ fontSize: 32, fontWeight: 800, margin: "0 0 8px" }}>
-            Výsledky vašeho assessmentu
+            {t("assessmentSummary.resultsTitle")}
           </h1>
           <p style={{ fontSize: 15, opacity: 0.85, margin: "0 0 20px", maxWidth: 480, lineHeight: 1.6 }}>
             {aiFeedback}
@@ -167,7 +173,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
             </div>
             <div>
               <div style={{ fontWeight: 700, fontSize: 15 }}>{formData.name}</div>
-              <div style={{ fontSize: 13, opacity: 0.7 }}>{formData.role || "Neuvedeno"}</div>
+              <div style={{ fontSize: 13, opacity: 0.7 }}>{formData.role || "—"}</div>
             </div>
           </div>
         </div>
@@ -227,7 +233,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
         }}
       >
         <h2 style={{ fontSize: 20, fontWeight: 700, color: "#040E3C", margin: "0 0 24px", fontStyle: "italic" }}>
-          Porovnání kompetencí dle DigComp
+          {t("assessmentSummary.digcompComparison")}
         </h2>
 
         <div style={{ display: "flex", gap: 32, alignItems: "flex-start", flexWrap: "wrap" }}>
@@ -237,6 +243,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
               userScores={userScores}
               companyAvg={COMPANY_AVG}
               labels={DIGCOMP_LABELS}
+              legend={DIGCOMP_LEGEND}
             />
           </div>
 
@@ -286,11 +293,11 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
             >
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 <div style={{ width: 16, height: 3, background: "#F7981C", borderRadius: 2 }} />
-                <span style={{ fontSize: 11, color: "#374151", fontWeight: 500 }}>Můj výsledek</span>
+                <span style={{ fontSize: 11, color: "#374151", fontWeight: 500 }}>{t("assessmentSummary.myResult")}</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 <div style={{ width: 16, height: 3, background: "#9CA3AF", borderRadius: 2 }} />
-                <span style={{ fontSize: 11, color: "#6B7280", fontWeight: 500 }}>Průměr firmy</span>
+                <span style={{ fontSize: 11, color: "#6B7280", fontWeight: 500 }}>{t("assessmentSummary.companyAvg")}</span>
               </div>
             </div>
           </div>
@@ -469,7 +476,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
           Kurzy vybrané přímo pro tebe
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
-          {COURSE_LIST.slice(0, 3).map((course) => (
+          {getCourseList(language).slice(0, 3).map((course) => (
             <CourseCard key={course.id} course={course} />
           ))}
         </div>
@@ -513,7 +520,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
           onMouseEnter={(e) => (e.currentTarget.style.background = "#F4F5FA")}
           onMouseLeave={(e) => (e.currentTarget.style.background = "white")}
         >
-          Pokračovat ke kurzům
+          {t("assessmentSummary.continueToCourses")}
         </motion.button>
       </div>
     </div>
@@ -750,10 +757,12 @@ function IndividualRadarChart({
   userScores,
   companyAvg,
   labels,
+  legend,
 }: {
   userScores: number[];
   companyAvg: number[];
   labels: string[];
+  legend: { short: string; icon: string; color: string; iconBg: string }[];
 }) {
   const size = 320;
   const center = size / 2;
@@ -843,7 +852,7 @@ function IndividualRadarChart({
       {/* Popisky kompetencí jako HTML elementy kolem grafu */}
       {labels.map((_, i) => {
         const pos = getLabelPosition(i);
-        const legend = DIGCOMP_LEGEND[i];
+        const legendItem = legend[i];
         
         let transform = "translate(-50%, -50%)";
         if (i === 0) transform = "translate(-50%, -100%)";
@@ -869,7 +878,7 @@ function IndividualRadarChart({
               whileHover={{ scale: 1.03, boxShadow: "0 4px 16px rgba(37, 150, 255, 0.12)" }}
               transition={HOVER_TRANSITION}
               style={{
-                background: legend.color,
+                background: legendItem.color,
                 borderRadius: 20,
                 padding: "6px 12px 6px 8px",
                 display: "flex",
@@ -885,7 +894,7 @@ function IndividualRadarChart({
                   width: 28,
                   height: 28,
                   borderRadius: "50%",
-                  background: legend.iconBg,
+                  background: legendItem.iconBg,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -894,10 +903,10 @@ function IndividualRadarChart({
                   fontWeight: 700,
                 }}
               >
-                {legend.icon}
+                {legendItem.icon}
               </div>
               <span style={{ fontSize: 12, fontWeight: 700, color: "#040E3C", textTransform: "uppercase" }}>
-                {legend.short}
+                {legendItem.short}
               </span>
             </motion.div>
           </div>

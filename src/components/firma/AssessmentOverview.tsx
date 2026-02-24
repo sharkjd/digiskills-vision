@@ -2,26 +2,18 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const INITIAL_COMPLETED = 55;
 const INITIAL_TOTAL = 100;
 const SEND_DELAY_MS = 2200;
 
-const INITIAL_EMAIL_TEXT = `Předmět: Připomínka k dokončení Digiskills assessmentu
-
-Dobrý den,
-
-prosíme vás o vyplnění Digiskills assessmentu. Vaše odpovědi nám pomohou vyhodnotit aktuální úroveň digitálních dovedností ve firmě a připravit cílená vzdělávací doporučení.
-
-Odkaz na assessment: https://digiskills.example.com/assessment
-
-Děkujeme za spolupráci.`;
-
 export default function AssessmentOverview() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [completedCount, setCompletedCount] = useState(INITIAL_COMPLETED);
   const [totalCount] = useState(INITIAL_TOTAL);
-  const [emailBody, setEmailBody] = useState(INITIAL_EMAIL_TEXT);
+  const [emailBody, setEmailBody] = useState(() => t("firma.initialEmailBody"));
   const [isSending, setIsSending] = useState(false);
   const [sendFeedback, setSendFeedback] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -52,14 +44,14 @@ export default function AssessmentOverview() {
     setSendCountAtConfirm(notCompletedCount);
     setSendDialogPhase("sending");
     setIsSending(true);
-    setSendFeedback("Odesílání...");
+    setSendFeedback(t("firma.sending"));
 
     window.setTimeout(() => {
       setCompletedCount((currentValue) => {
         const increment = Math.ceil(currentValue * 0.1);
         return Math.min(totalCount, currentValue + increment);
       });
-      setSendFeedback("Odesláno");
+      setSendFeedback(t("firma.sent"));
       setSendDialogPhase("sent");
       setIsSending(false);
     }, SEND_DELAY_MS);
@@ -96,7 +88,7 @@ export default function AssessmentOverview() {
               marginBottom: 12,
             }}
           >
-            Přehled assessmentu
+            {t("firma.overviewTitle")}
           </h1>
           <div
             style={{
@@ -117,7 +109,7 @@ export default function AssessmentOverview() {
               <p style={{ fontSize: 40, fontWeight: 700, lineHeight: 1, marginBottom: 8 }}>
                 {completionPercent} %
               </p>
-              <p style={{ fontWeight: 600, opacity: 0.95 }}>Míra dokončení assessmentu</p>
+              <p style={{ fontWeight: 600, opacity: 0.95 }}>{t("firma.completionRate")}</p>
             </div>
             <div
               style={{
@@ -131,7 +123,7 @@ export default function AssessmentOverview() {
               <p style={{ fontSize: 40, fontWeight: 700, lineHeight: 1, marginBottom: 8 }}>
                 {completedCount}
               </p>
-              <p style={{ fontWeight: 600, opacity: 0.95 }}>Vyplnilo assessment</p>
+              <p style={{ fontWeight: 600, opacity: 0.95 }}>{t("firma.completedAssessment")}</p>
             </div>
             <div
               style={{
@@ -145,7 +137,7 @@ export default function AssessmentOverview() {
               <p style={{ fontSize: 40, fontWeight: 700, lineHeight: 1, marginBottom: 8 }}>
                 {totalCount}
               </p>
-              <p style={{ fontWeight: 600, opacity: 0.95 }}>Celkový počet zaměstnanců</p>
+              <p style={{ fontWeight: 600, opacity: 0.95 }}>{t("firma.totalEmployees")}</p>
             </div>
           </div>
         </section>
@@ -167,7 +159,7 @@ export default function AssessmentOverview() {
               marginBottom: 12,
             }}
           >
-            Hromadné připomenutí k dokončení assessmentu e-mailem
+            {t("firma.bulkReminderTitle")}
           </h2>
           <textarea
             value={emailBody}
@@ -198,7 +190,7 @@ export default function AssessmentOverview() {
                 fontWeight: 600,
               }}
             >
-              Odeslat
+              {t("firma.send")}
             </button>
             {sendFeedback ? (
               <span style={{ color: "var(--color-text-secondary)", fontWeight: 600 }}>
@@ -225,7 +217,7 @@ export default function AssessmentOverview() {
               marginBottom: 12,
             }}
           >
-            Vyhodnotit assessment
+            {t("firma.evaluateTitle")}
           </h2>
           <p
             style={{
@@ -233,7 +225,7 @@ export default function AssessmentOverview() {
               marginBottom: 16,
             }}
           >
-            Po dosažení dostatečné účasti pokračujte na firemní vyhodnocení.
+            {t("firma.evaluateDesc")}
           </p>
           <button
             type="button"
@@ -249,7 +241,7 @@ export default function AssessmentOverview() {
               cursor: "pointer",
             }}
           >
-            Vyhodnotit assessment
+            {t("firma.evaluateAssessment")}
           </button>
         </section>
       </div>
@@ -290,11 +282,10 @@ export default function AssessmentOverview() {
                 marginBottom: 12,
               }}
             >
-              Vyhodnocení assessmentu
+              {t("firma.evaluationDialogTitle")}
             </h3>
             <p style={{ color: "var(--color-text-secondary)", lineHeight: 1.6, marginBottom: 20 }}>
-              {completionPercent} % lidí dokončilo assessment. Chcete pokračovat ve vyhodnocení
-              pro celou firmu?
+              {t("firma.peopleCompleted", { percent: completionPercent })} {t("firma.evaluationDialogText")}
             </p>
             <div style={{ display: "flex", justifyContent: "flex-end", gap: 10 }}>
               <button
@@ -310,7 +301,7 @@ export default function AssessmentOverview() {
                   cursor: "pointer",
                 }}
               >
-                Ne
+                {t("firma.no")}
               </button>
               <button
                 type="button"
@@ -326,8 +317,8 @@ export default function AssessmentOverview() {
                   cursor: "pointer",
                 }}
               >
-                Ano
-              </button>
+                    {t("firma.yes")}
+                  </button>
             </div>
           </div>
         </div>
@@ -371,7 +362,7 @@ export default function AssessmentOverview() {
                     marginBottom: 12,
                   }}
                 >
-                  Odeslat e-mail {notCompletedCount} lidem, kteří nevyplnili assessment
+                  {t("firma.sendDialogTitle", { count: notCompletedCount })}
                 </h3>
                 <p
                   style={{
@@ -380,7 +371,7 @@ export default function AssessmentOverview() {
                     marginBottom: 20,
                   }}
                 >
-                  Opravdu chcete odeslat připomínku těmto zaměstnancům?
+                  {t("firma.sendDialogConfirm")}
                 </p>
                 <div style={{ display: "flex", justifyContent: "flex-end", gap: 10 }}>
                   <button
@@ -396,7 +387,7 @@ export default function AssessmentOverview() {
                       cursor: "pointer",
                     }}
                   >
-                    Ne
+                    {t("firma.no")}
                   </button>
                   <button
                     type="button"
@@ -412,11 +403,11 @@ export default function AssessmentOverview() {
                       cursor: "pointer",
                     }}
                   >
-                    Ano
-                  </button>
-                </div>
-              </>
-            ) : sendDialogPhase === "sending" ? (
+                {t("firma.yes")}
+              </button>
+            </div>
+          </>
+        ) : sendDialogPhase === "sending" ? (
               <p
                 style={{
                   color: "var(--color-text-main)",
@@ -425,7 +416,7 @@ export default function AssessmentOverview() {
                   margin: 0,
                 }}
               >
-                Odesílání...
+                {t("firma.sending")}
               </p>
             ) : (
               <>
@@ -438,7 +429,7 @@ export default function AssessmentOverview() {
                     marginBottom: 12,
                   }}
                 >
-                  Odeslat e-mail {sendCountAtConfirm} lidem, kteří nevyplnili assessment
+                  {t("firma.sendDialogTitle", { count: sendCountAtConfirm })}
                 </h3>
                 <p
                   style={{
@@ -448,7 +439,7 @@ export default function AssessmentOverview() {
                     marginBottom: 20,
                   }}
                 >
-                  Odesláno
+                  {t("firma.sent")}
                 </p>
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                   <button
@@ -465,7 +456,7 @@ export default function AssessmentOverview() {
                       cursor: "pointer",
                     }}
                   >
-                    Zavřít
+                    {t("firma.close")}
                   </button>
                 </div>
               </>

@@ -3,12 +3,14 @@
 import React from "react";
 import Image from "next/image";
 import { Course } from "@/data/courses";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type CompletedCourseCardProps = {
   course: Course;
 };
 
 export default function CompletedCourseCard({ course }: CompletedCourseCardProps) {
+  const { t } = useTranslation();
   return (
     <div
       className="bg-white rounded-xl overflow-hidden border border-gray-200 flex flex-col h-full opacity-75"
@@ -49,7 +51,7 @@ export default function CompletedCourseCard({ course }: CompletedCourseCardProps
                 />
               </svg>
             </div>
-            <span className="text-white font-bold text-lg">Hotovo</span>
+            <span className="text-white font-bold text-lg">{t("courses.done")}</span>
           </div>
         </div>
         {/* Digiskills badge – logo (bílá poloprůhledná) */}
@@ -94,7 +96,7 @@ export default function CompletedCourseCard({ course }: CompletedCourseCardProps
             className="text-xs"
             style={{ color: "#6c757d" }}
           >
-            {course.activities} aktivit, cca {course.duration}
+            {course.activities} {t("courses.activities")}, {t("courses.approx")} {course.duration}
           </span>
           <button
             className="px-5 py-2 rounded-lg text-sm font-semibold text-white transition-colors"
@@ -102,7 +104,7 @@ export default function CompletedCourseCard({ course }: CompletedCourseCardProps
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#059669")}
             onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#10B981")}
           >
-            Zobrazit
+            {t("courses.view")}
           </button>
         </div>
       </div>

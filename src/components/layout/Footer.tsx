@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const FOOTER_LINKS = [
-  { label: "Akce", href: "/akce" },
-  { label: "Blog", href: "/blog" },
-  { label: "Kontakt", href: "/kontakt" },
-  { label: "GDPR", href: "/gdpr" },
+  { labelKey: "footer.events", href: "/akce" },
+  { labelKey: "footer.blog", href: "/blog" },
+  { labelKey: "footer.contact", href: "/kontakt" },
+  { labelKey: "footer.gdpr", href: "/gdpr" },
 ];
 
 function FacebookIcon() {
@@ -29,6 +30,8 @@ function LinkedInIcon() {
 }
 
 export default function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer
       style={{
@@ -49,7 +52,6 @@ export default function Footer() {
           flexWrap: "wrap",
         }}
       >
-        {/* Logo */}
         <Link href="/" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
           <Image
             src="/images/digiskills-logo.png"
@@ -60,7 +62,6 @@ export default function Footer() {
           />
         </Link>
 
-        {/* Navigační odkazy */}
         <nav style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
           {FOOTER_LINKS.map((link) => (
             <Link
@@ -80,12 +81,11 @@ export default function Footer() {
                 (e.currentTarget.style.color = "var(--color-text-secondary)")
               }
             >
-              {link.label}
+              {t(link.labelKey)}
             </Link>
           ))}
         </nav>
 
-        {/* Sociální sítě */}
         <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
           <a
             href="https://facebook.com"

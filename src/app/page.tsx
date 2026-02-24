@@ -1,6 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function Home() {
+  const { t } = useTranslation();
+
   return (
     <div style={{ maxWidth: 1200, margin: "0 auto", padding: "48px 24px" }}>
       <h1
@@ -11,7 +16,7 @@ export default function Home() {
           marginBottom: 8,
         }}
       >
-        Digiskills portál
+        {t("home.title")}
       </h1>
       <p
         style={{
@@ -20,7 +25,7 @@ export default function Home() {
           marginBottom: 40,
         }}
       >
-        Vítejte v aplikaci Digiskills. Zjistěte úroveň svých digitálních dovedností a získejte doporučené kurzy.
+        {t("home.welcome")}
       </p>
 
       <div
@@ -30,7 +35,6 @@ export default function Home() {
           gap: 24,
         }}
       >
-        {/* Digitální Assessment */}
         <div
           style={{
             background: "var(--color-background)",
@@ -65,10 +69,10 @@ export default function Home() {
                   marginBottom: 2,
                 }}
               >
-                Digitální Assessment
+                {t("home.assessment.title")}
               </h2>
               <p style={{ fontSize: "var(--font-size-meta)", color: "var(--color-text-secondary)" }}>
-                DigComp 2.1 · 8 kroků · ~5 minut
+                {t("home.assessment.subtitle")}
               </p>
             </div>
           </div>
@@ -80,8 +84,7 @@ export default function Home() {
               lineHeight: 1.65,
             }}
           >
-            Otestujte své digitální kompetence v 5 oblastech: informační gramotnost, komunikace,
-            tvorba obsahu, bezpečnost a řešení problémů. Na základě výsledků získáte doporučené kurzy.
+            {t("home.assessment.description")}
           </p>
           <Link
             href="/assessment"
@@ -96,11 +99,10 @@ export default function Home() {
               textDecoration: "none",
             }}
           >
-            Spustit assessment →
+            {t("home.assessment.cta")}
           </Link>
         </div>
 
-        {/* Firemní Assessment Report */}
         <div
           style={{
             background: "var(--color-background)",
@@ -135,10 +137,10 @@ export default function Home() {
                   marginBottom: 2,
                 }}
               >
-                Firemní Assessment Report
+                {t("home.companyReport.title")}
               </h2>
               <p style={{ fontSize: "var(--font-size-meta)", color: "var(--color-text-secondary)" }}>
-                Pro vedení · Agregované výsledky · Benchmark trhu
+                {t("home.companyReport.subtitle")}
               </p>
             </div>
           </div>
@@ -150,8 +152,7 @@ export default function Home() {
               lineHeight: 1.65,
             }}
           >
-            Přehled digitálních kompetencí celé firmy: Digiskills Index, porovnání s trhem, talent pipeline,
-            strategické priority a doporučené firemní kurzy.
+            {t("home.companyReport.description")}
           </p>
           <Link
             href="/firma"
@@ -166,7 +167,7 @@ export default function Home() {
               textDecoration: "none",
             }}
           >
-            Zobrazit report →
+            {t("home.companyReport.cta")}
           </Link>
         </div>
       </div>

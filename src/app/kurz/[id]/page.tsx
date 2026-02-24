@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "@/hooks/useTranslation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Play,
@@ -53,6 +54,7 @@ const getActivityBadgeStyle = (color: string) => ({
 });
 
 export default function CourseDetailPage() {
+  const { t } = useTranslation();
   const [completedActivities, setCompletedActivities] = useState<number[]>([]);
   const [expandedSections, setExpandedSections] = useState<string[]>(
     courseData.curriculum.map((s) => s.section)
@@ -86,7 +88,7 @@ export default function CourseDetailPage() {
       <div className="max-w-6xl mx-auto px-6 py-8">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm mb-6" style={{ color: "var(--color-text-secondary)" }}>
-          <span>Kurzy</span>
+          <span>{t("courseDetail.courses")}</span>
           <ChevronRight className="w-4 h-4" />
           <span style={{ color: "var(--color-text-main)", fontWeight: 500 }}>
             {courseData.courseTitle}
@@ -148,13 +150,13 @@ export default function CourseDetailPage() {
                   className="text-base font-semibold mb-2"
                   style={{ color: "var(--color-text-main)" }}
                 >
-                  Váš pokrok
+                  {t("courseDetail.yourProgress")}
                 </h3>
                 <p
                   className="text-sm font-bold mb-3"
                   style={{ color: "var(--color-primary)" }}
                 >
-                  {progress}/{total} aktivit
+                  {progress}/{total} {t("courseDetail.activities")}
                 </p>
                 <div
                   className="h-2 rounded-full overflow-hidden"
@@ -201,7 +203,7 @@ export default function CourseDetailPage() {
                     className="text-base font-semibold mb-2"
                     style={{ color: "var(--color-text-main)" }}
                   >
-                    Užitečný tip
+                    {t("courseDetail.usefulTip")}
                   </h3>
                   <p
                     className="text-sm leading-relaxed flex items-start gap-2"
@@ -212,7 +214,7 @@ export default function CourseDetailPage() {
                       style={{ width: 16, height: 16, color: "var(--color-accent-orange)" }}
                     />
                     <span>
-                      Když se při studiu zaseknete, dejte si minutu pauzu. Krátké nadechnutí často otevře nové řešení. Potřebujete poradit? Použijte chat vpravo dole.
+                      {t("courseDetail.tipText")}
                     </span>
                   </p>
                 </div>
@@ -227,7 +229,7 @@ export default function CourseDetailPage() {
               {courseData.courseTitle}
             </h1>
             <p className="text-sm mb-2" style={{ color: "var(--color-text-secondary)" }}>
-              Kurzem provází:{" "}
+              {t("courseDetail.ledBy")}{" "}
               <span style={{ color: "var(--color-text-main)", fontWeight: 600 }}>
                 {courseData.instructor}
               </span>
@@ -262,7 +264,7 @@ export default function CourseDetailPage() {
                   </div>
                   <div>
                     <p className="text-xs" style={{ color: "var(--color-text-secondary)" }}>
-                      Délka kurzu
+                      {t("courseDetail.courseLength")}
                     </p>
                     <p className="font-semibold" style={{ color: "var(--color-text-main)" }}>
                       {courseData.duration}
@@ -279,7 +281,7 @@ export default function CourseDetailPage() {
                   </div>
                   <div>
                     <p className="text-xs" style={{ color: "var(--color-text-secondary)" }}>
-                      Počet aktivit
+                      {t("courseDetail.activityCount")}
                     </p>
                     <p className="font-semibold" style={{ color: "var(--color-text-main)" }}>
                       {courseData.activitiesCount}
@@ -299,7 +301,7 @@ export default function CourseDetailPage() {
                   boxShadow: "0 4px 12px rgba(37, 150, 255, 0.3)",
                 }}
               >
-                Zahájit studium
+                {t("courseDetail.startStudy")}
               </motion.button>
             </div>
           </div>
@@ -319,7 +321,7 @@ export default function CourseDetailPage() {
             className="text-2xl font-bold italic mb-6"
             style={{ color: "var(--color-text-main)" }}
           >
-            Osnova kurzu
+            {t("courseDetail.curriculum")}
           </h2>
 
           <div className="space-y-6">

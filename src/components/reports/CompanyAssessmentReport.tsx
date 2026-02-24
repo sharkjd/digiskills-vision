@@ -4,8 +4,24 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
+
+const DIGCOMP_LABEL_KEYS = [
+  "companyReport.digcompInfo",
+  "companyReport.digcompContent",
+  "companyReport.digcompProblems",
+  "companyReport.digcompComm",
+  "companyReport.digcompSecurity",
+] as const;
+
+const LEVEL_GROUP_KEYS = [
+  "companyReport.beginners",
+  "companyReport.intermediate",
+  "companyReport.advanced",
+  "companyReport.experts",
+] as const;
 
 const COMPANY_DATA = {
   name: "VIG CZ",
@@ -16,14 +32,6 @@ const COMPANY_DATA = {
   marketMax: 8.15,
   marketMin: 3.02,
 };
-
-const DIGCOMP_LABELS = [
-  "Zpracování informací a dat",
-  "Tvorba digitálního obsahu",
-  "Řešení problémů",
-  "Komunikace a spolupráce",
-  "Digitální bezpečnost",
-];
 
 const DIGCOMP_SCORES = {
   company: [6.4, 4.4, 4.7, 5.4, 6.5],
@@ -44,12 +52,6 @@ const TALENT_DISTRIBUTION = [
   { level: 10, count: 22 },
 ];
 
-const LEVEL_GROUPS = [
-  { name: "Začátečníci (1–4)", percent: 28, top30: 18, color: "#EF4444" },
-  { name: "Mírně pokročilí (5–6)", percent: 38, top30: 23, color: "#F59E0B" },
-  { name: "Pokročilí (7–8)", percent: 29, top30: 39, color: "#2596FF" },
-  { name: "Experti (9–10)", percent: 5, top30: 20, color: "#77F9D9" },
-];
 
 const IMPROVEMENT_PRIORITIES = [
   { area: "Automatizace rutinní práce", count: 1288 },
@@ -74,55 +76,44 @@ const M365_PROFICIENCY = [
   { app: "Copilot", usage: 3.8, proficiency: 3.2, icon: "/logos/Copilot.png", color: "#2596FF" },
 ];
 
-const RECOMMENDED_COURSES = [
-  {
-    id: 2,
-    title: "Automatizace s Power Automate",
-    description: "Zjednodušte rutinní úkoly a ušetřete hodiny práce týdně.",
-    image: "/courses/Automatizace.webp",
-    duration: "3 hodiny",
-    level: "Pokročilý",
-    priority: "Vysoká",
-  },
-  {
-    id: 3,
-    title: "Základy práce s AI nástroji",
-    description: "Objevte, jak vám Copilot a další AI nástroje pomohou být produktivnější.",
-    image: "/courses/AI.webp",
-    duration: "1.5 hodiny",
-    level: "Začátečník",
-    priority: "Vysoká",
-  },
-  {
-    id: 5,
-    title: "Kybernetická bezpečnost v každodenní praxi",
-    description: "Chraňte data, rozpoznávejte hrozby a bezpečně pracujte online.",
-    image: "/courses/security.png",
-    duration: "1.5 hodiny",
-    level: "Začátečník",
-    priority: "Střední",
-  },
-  {
-    id: 4,
-    title: "Excel a analýza dat",
-    description: "Pracujte s tabulkami, grafy a vzorci efektivně a přehledně.",
-    image: "/courses/excel.webp",
-    duration: "2.5 hodiny",
-    level: "Středně pokročilý",
-    priority: "Střední",
-  },
-  {
-    id: 1,
-    title: "Efektivní spolupráce v Microsoft Teams",
-    description: "Naučte se pokročilé techniky pro týmovou komunikaci a online schůzky.",
-    image: "/courses/teams.webp",
-    duration: "2 hodiny",
-    level: "Středně pokročilý",
-    priority: "Střední",
-  },
+const RECOMMENDED_COURSES_CONFIG = [
+  { id: 2, titleKey: "companyReport.course1Title", descKey: "companyReport.course1Desc", image: "/courses/Automatizace.webp", durationKey: "3", levelKey: "assessmentLevels.advanced", priorityKey: "companyReport.priorityHigh", priorityLevel: "high" as const },
+  { id: 3, titleKey: "companyReport.course2Title", descKey: "companyReport.course2Desc", image: "/courses/AI.webp", durationKey: "1.5", levelKey: "assessmentLevels.beginner", priorityKey: "companyReport.priorityHigh", priorityLevel: "high" as const },
+  { id: 5, titleKey: "companyReport.course3Title", descKey: "companyReport.course3Desc", image: "/courses/security.png", durationKey: "1.5", levelKey: "assessmentLevels.beginner", priorityKey: "companyReport.priorityMedium", priorityLevel: "medium" as const },
+  { id: 4, titleKey: "companyReport.course4Title", descKey: "companyReport.course4Desc", image: "/courses/excel.webp", durationKey: "2.5", levelKey: "assessmentLevels.intermediate", priorityKey: "companyReport.priorityMedium", priorityLevel: "medium" as const },
+  { id: 1, titleKey: "companyReport.course5Title", descKey: "companyReport.course5Desc", image: "/courses/teams.webp", durationKey: "2", levelKey: "assessmentLevels.intermediate", priorityKey: "companyReport.priorityMedium", priorityLevel: "medium" as const },
 ];
 
 export default function CompanyAssessmentReport() {
+  const { t } = useTranslation();
+  const DIGCOMP_LABELS = DIGCOMP_LABEL_KEYS.map((k) => t(k));
+  const DIGCOMP_LEGEND = [
+    { short: t("companyReport.legendInfo"), icon: "📊", color: "#FEE2E2", iconBg: "#EF4444" },
+    { short: t("companyReport.legendContent"), icon: "☁️", color: "#E0F2FE", iconBg: "#0EA5E9" },
+    { short: t("companyReport.legendProblems"), icon: "🧩", color: "#D1FAE5", iconBg: "#10B981" },
+    { short: t("companyReport.legendComm"), icon: "💬", color: "#EDE9FE", iconBg: "#6366F1" },
+    { short: t("companyReport.legendSecurity"), icon: "✓", color: "#FEF3C7", iconBg: "#F59E0B" },
+  ];
+  const RECOMMENDED_COURSES = RECOMMENDED_COURSES_CONFIG.map((c) => ({
+    id: c.id,
+    title: t(c.titleKey),
+    description: t(c.descKey),
+    image: c.image,
+    duration: c.durationKey,
+    level: t(c.levelKey),
+    priority: t(c.priorityKey),
+    priorityLevel: c.priorityLevel,
+  }));
+  const LEVEL_GROUPS = LEVEL_GROUP_KEYS.map((key, i) => {
+    const data = [
+      { percent: 28, top30: 18, color: "#EF4444" },
+      { percent: 38, top30: 23, color: "#F59E0B" },
+      { percent: 29, top30: 39, color: "#2596FF" },
+      { percent: 5, top30: 20, color: "#77F9D9" },
+    ][i];
+    return { name: t(key), ...data };
+  });
+
   const maxCount = Math.max(...TALENT_DISTRIBUTION.map((d) => d.count));
   const maxPriority = Math.max(...IMPROVEMENT_PRIORITIES.map((p) => p.count));
   const indexDiff = COMPANY_DATA.companyIndex - COMPANY_DATA.marketAvg;
@@ -276,6 +267,7 @@ export default function CompanyAssessmentReport() {
               marketAvg={DIGCOMP_SCORES.marketAvg}
               top30={DIGCOMP_SCORES.top30}
               labels={DIGCOMP_LABELS}
+              legend={DIGCOMP_LEGEND}
             />
           </div>
 
@@ -834,6 +826,40 @@ export default function CompanyAssessmentReport() {
           </Link>
         </motion.div>
       </div>
+
+      {/* Stáhnout PDF */}
+      <div style={{ display: "flex", justifyContent: "center", paddingTop: 8 }}>
+        <motion.a
+          href="https://digiskillscz.sharepoint.com/sites/Kooperativapojiovna-Intern/Sdilene%20dokumenty/Forms/AllItems.aspx?id=%2Fsites%2FKooperativapojiovna%2DIntern%2FSdilene%20dokumenty%2FIntern%C3%AD%2FAssessment%2FVyhodnoceni%20%2D%20Reporty%2FVIGCZ%5FUvodni%20assessment%20CZ%5F2025%2Epdf&parent=%2Fsites%2FKooperativapojiovna%2DIntern%2FSdilene%20dokumenty%2FIntern%C3%AD%2FAssessment%2FVyhodnoceni%20%2D%20Reporty"
+          target="_blank"
+          rel="noopener noreferrer"
+          whileHover={{ scale: 1.02 }}
+          transition={HOVER_TRANSITION}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            padding: "10px 20px",
+            background: "white",
+            border: "1px solid var(--color-primary)",
+            borderRadius: 8,
+            color: "var(--color-primary)",
+            fontSize: 14,
+            fontWeight: 600,
+            cursor: "pointer",
+            textDecoration: "none",
+          }}
+        >
+          {/* ikona PDF */}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <path d="M12 18v-6" />
+            <path d="M9 15h6" />
+          </svg>
+          Stáhnout výsledky v PDF
+        </motion.a>
+      </div>
     </div>
   );
 }
@@ -1100,24 +1126,18 @@ function DigiskillsIndexChart({
   );
 }
 
-const DIGCOMP_LEGEND = [
-  { short: "Informace a data", icon: "📊", color: "#FEE2E2", iconBg: "#EF4444" },
-  { short: "Digitální obsah", icon: "☁️", color: "#E0F2FE", iconBg: "#0EA5E9" },
-  { short: "Řešení problémů", icon: "🧩", color: "#D1FAE5", iconBg: "#10B981" },
-  { short: "Komunikace", icon: "💬", color: "#EDE9FE", iconBg: "#6366F1" },
-  { short: "Bezpečnost", icon: "✓", color: "#FEF3C7", iconBg: "#F59E0B" },
-];
-
 function CompanyRadarChart({
   companyScores,
   marketAvg,
   top30,
   labels,
+  legend,
 }: {
   companyScores: number[];
   marketAvg: number[];
   top30: number[];
   labels: string[];
+  legend: { short: string; icon: string; color: string; iconBg: string }[];
 }) {
   const size = 420;
   const center = size / 2;
@@ -1198,7 +1218,7 @@ function CompanyRadarChart({
       {/* Popisky kompetencí jako HTML elementy kolem grafu */}
       {labels.map((_, i) => {
         const pos = getLabelPosition(i);
-        const legend = DIGCOMP_LEGEND[i];
+        const legendItem = legend[i];
         
         let transform = "translate(-50%, -50%)";
         if (i === 0) transform = "translate(-50%, -100%)";
@@ -1224,7 +1244,7 @@ function CompanyRadarChart({
               whileHover={{ scale: 1.03, boxShadow: "0 4px 16px rgba(37, 150, 255, 0.12)" }}
               transition={HOVER_TRANSITION}
               style={{
-                background: legend.color,
+                background: legendItem.color,
                 borderRadius: 20,
                 padding: "6px 12px 6px 8px",
                 display: "flex",
@@ -1240,7 +1260,7 @@ function CompanyRadarChart({
                   width: 28,
                   height: 28,
                   borderRadius: "50%",
-                  background: legend.iconBg,
+                  background: legendItem.iconBg,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -1249,10 +1269,10 @@ function CompanyRadarChart({
                   fontWeight: 700,
                 }}
               >
-                {legend.icon}
+                {legendItem.icon}
               </div>
               <span style={{ fontSize: 12, fontWeight: 700, color: "#040E3C", textTransform: "uppercase" }}>
-                {legend.short}
+                {legendItem.short}
               </span>
             </motion.div>
           </div>
@@ -1266,7 +1286,16 @@ function CompanyCourseCard({
   course,
   index,
 }: {
-  course: (typeof RECOMMENDED_COURSES)[0];
+  course: {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+    duration: string;
+    level: string;
+    priority: string;
+    priorityLevel: "high" | "medium";
+  };
   index: number;
 }) {
   return (
@@ -1291,7 +1320,7 @@ function CompanyCourseCard({
           position: "absolute",
           top: 12,
           left: 12,
-          background: course.priority === "Vysoká" ? "#EF4444" : "#F59E0B",
+          background: course.priorityLevel === "high" ? "#EF4444" : "#F59E0B",
           color: "white",
           padding: "4px 10px",
           borderRadius: 6,
