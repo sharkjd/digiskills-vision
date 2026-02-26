@@ -13,16 +13,36 @@ const NAV_LINKS = [
   { labelKey: "header.nav.assessment", href: "/assessment" },
 ];
 
-const DROPDOWN_ITEMS = [
-  { labelKey: "header.dropdown.profile", href: "/profil" },
-  { labelKey: "header.dropdown.managerDashboard", href: "/manager" },
-  { labelKey: "header.dropdown.individualAssessment", href: "/assessment" },
-  { labelKey: "header.dropdown.companyReport", href: "/firma" },
-  { labelKey: "header.dropdown.notificationSettings", href: "/firma/nastaveni" },
-  { labelKey: "header.dropdown.adminModule", href: "/admin/kurzy" },
-  { labelKey: "header.dropdown.createCourse", href: "/admin/tvorba-kurzu" },
-  { labelKey: "header.dropdown.digiskillsCreator", href: "/creator" },
-  { labelKey: "header.dropdown.logout", href: "/odhlasit" },
+type DropdownLink = { type: "link"; labelKey: string; href: string };
+type DropdownGroup = {
+  type: "group";
+  labelKey: string;
+  children: { labelKey: string; href: string }[];
+};
+type DropdownItem = DropdownLink | DropdownGroup;
+
+const DROPDOWN_ITEMS: DropdownItem[] = [
+  {
+    type: "group",
+    labelKey: "header.dropdown.statistics",
+    children: [
+      { labelKey: "header.dropdown.statisticsPersonal", href: "/profil" },
+      { labelKey: "header.dropdown.statisticsTeam", href: "/manager" },
+      { labelKey: "header.dropdown.statisticsCompany", href: "/firma/statistiky" },
+    ],
+  },
+  {
+    type: "group",
+    labelKey: "header.dropdown.assessment",
+    children: [
+      { labelKey: "header.dropdown.assessmentIndividual", href: "/assessment/osobni" },
+      { labelKey: "header.dropdown.assessmentCompany", href: "/firma" },
+    ],
+  },
+  { type: "link", labelKey: "header.dropdown.notificationSettings", href: "/firma/nastaveni" },
+  { type: "link", labelKey: "header.dropdown.adminModule", href: "/admin/kurzy" },
+  { type: "link", labelKey: "header.dropdown.digiskillsCreator", href: "/creator" },
+  { type: "link", labelKey: "header.dropdown.logout", href: "/odhlasit" },
 ];
 
 const MOCK_USER = {
@@ -261,29 +281,72 @@ export default function Header() {
                 overflow: "hidden",
               }}
             >
-              {DROPDOWN_ITEMS.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setDropdownOpen(false)}
-                  style={{
-                    display: "block",
-                    padding: "10px 16px",
-                    fontSize: 14,
-                    color: "var(--color-text-main)",
-                    textDecoration: "none",
-                    transition: "background 0.15s",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.background = "var(--color-border)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.background = "transparent")
-                  }
-                >
-                  {t(item.labelKey)}
-                </Link>
-              ))}
+              {DROPDOWN_ITEMS.map((item, idx) => {
+                if (item.type === "link") {
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setDropdownOpen(false)}
+                      style={{
+                        display: "block",
+                        padding: "10px 16px",
+                        fontSize: 14,
+                        color: "var(--color-text-main)",
+                        textDecoration: "none",
+                        transition: "background 0.15s",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.background = "var(--color-border)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.background = "transparent")
+                      }
+                    >
+                      {t(item.labelKey)}
+                    </Link>
+                  );
+                }
+                return (
+                  <div key={`group-${idx}`}>
+                    <div
+                      style={{
+                        padding: "8px 16px 4px",
+                        fontSize: 12,
+                        fontWeight: 700,
+                        color: "var(--color-text-secondary)",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.04em",
+                      }}
+                    >
+                      {t(item.labelKey)}
+                    </div>
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        onClick={() => setDropdownOpen(false)}
+                        style={{
+                          display: "block",
+                          padding: "6px 16px 10px 24px",
+                          fontSize: 14,
+                          color: "var(--color-text-main)",
+                          textDecoration: "none",
+                          transition: "background 0.15s",
+                        }}
+                        onMouseEnter={(e) =>
+                          (e.currentTarget.style.background = "var(--color-border)")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.style.background = "transparent")
+                        }
+                      >
+                        {t(child.labelKey)}
+                      </Link>
+                    ))}
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>

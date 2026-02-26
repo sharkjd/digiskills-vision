@@ -101,8 +101,10 @@ export default function AssessmentForm() {
     setPhase("loading");
 
     window.setTimeout(() => {
-      setPhase("report");
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("assessment-result", JSON.stringify(formData));
+      }
+      router.push("/assessment/osobni");
     }, 4000);
   };
 

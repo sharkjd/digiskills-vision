@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mic, Upload, Send, ImageIcon } from "lucide-react";
@@ -17,7 +18,6 @@ import {
 } from "./assessment-data";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTranslation } from "@/hooks/useTranslation";
-import AssessmentSummary from "./AssessmentSummary";
 import { MarkdownFeedback } from "./MarkdownFeedback";
 
 type Phase = "chat" | "loading" | "report";
@@ -47,6 +47,7 @@ function extractScore(text: string): number {
 }
 
 export default function AssessmentChatbot() {
+  const router = useRouter();
   const { language } = useLanguage();
   const { t } = useTranslation();
   const SECTIONS = getSections(language);
@@ -129,11 +130,14 @@ export default function AssessmentChatbot() {
 
   const advanceToNextStep = (newAnswers: number[]) => {
     if (currentStep >= ASSESSMENT_STEPS.length - 1) {
+      const data = buildFormDataFromAnswers(newAnswers);
+      setFormData(data);
       setPhase("loading");
-      setFormData(buildFormDataFromAnswers(newAnswers));
       window.setTimeout(() => {
-        setPhase("report");
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (typeof window !== "undefined") {
+          sessionStorage.setItem("assessment-result", JSON.stringify(data));
+        }
+        router.push("/assessment/osobni");
       }, 800);
       return;
     }
@@ -214,43 +218,10 @@ export default function AssessmentChatbot() {
     }, 1500);
   };
 
-  const isReport = phase === "report";
   const isLoading = phase === "loading";
   const showInput = !isLoading && currentStepData;
 
   const progressPercent = ((currentStep + 1) / ASSESSMENT_STEPS.length) * 100;
-
-  if (isReport && formData) {
-    return (
-      <div
-        style={{
-          minHeight: "100vh",
-          background: "var(--color-breeze)",
-          padding: "24px 20px",
-        }}
-      >
-        <div style={{ maxWidth: 1020, margin: "0 auto" }}>
-          <div style={{ marginBottom: 20 }}>
-            <h1
-              style={{
-                fontSize: 24,
-                fontWeight: 700,
-                fontStyle: "italic",
-                color: "var(--color-text-main)",
-                marginBottom: 4,
-              }}
-            >
-              {t("assessment.title")}
-            </h1>
-            <p style={{ color: "var(--color-text-secondary)", fontSize: 13 }}>
-              {t("assessment.evaluationReport")}
-            </p>
-          </div>
-          <AssessmentSummary formData={formData} SECTIONS={SECTIONS} />
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div
