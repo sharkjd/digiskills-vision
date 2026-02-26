@@ -47,21 +47,24 @@ export default function DropZone({ files, onChange }: DropZoneProps) {
     [files, onChange]
   );
 
+  const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
+
   return (
     <div style={{ width: "100%" }}>
       <motion.div
-        whileHover={{ borderColor: "var(--color-primary)", backgroundColor: "rgba(37, 150, 255, 0.03)" }}
+        whileHover={{ scale: 1.01, borderColor: "var(--color-primary)" }}
+        whileTap={{ scale: 0.99 }}
+        transition={HOVER_TRANSITION}
         onClick={handleClick}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         style={{
-          border: "2px dashed var(--color-border-input)",
-          borderRadius: "var(--radius-card)",
+          border: "2px dashed var(--color-border)",
+          borderRadius: 12,
           padding: "32px 24px",
           textAlign: "center",
           cursor: "pointer",
-          transition: "border-color 0.2s, background 0.2s",
-          backgroundColor: "var(--color-breeze)",
+          backgroundColor: "var(--color-background)",
         }}
       >
         <input
@@ -71,26 +74,25 @@ export default function DropZone({ files, onChange }: DropZoneProps) {
           onChange={handleFileChange}
           style={{ display: "none" }}
         />
-        <Upload
+        <motion.div
+          whileHover={{ y: -4 }}
+          transition={HOVER_TRANSITION}
           style={{
-            width: 48,
-            height: 48,
-            color: "var(--color-text-secondary)",
-            marginBottom: 12,
-            display: "block",
+            width: 56,
+            height: 56,
+            borderRadius: 14,
+            background: "linear-gradient(135deg, rgba(37, 150, 255, 0.15) 0%, rgba(119, 249, 217, 0.1) 100%)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
             margin: "0 auto 12px",
           }}
-        />
-        <p
-          style={{
-            fontSize: 15,
-            fontWeight: 600,
-            color: "var(--color-text-main)",
-            marginBottom: 4,
-          }}
         >
+          <Upload size={24} color="var(--color-primary)" strokeWidth={2} />
+        </motion.div>
+        <div style={{ fontSize: 15, fontWeight: 600, color: "var(--color-text-main)", marginBottom: 4 }}>
           Přetáhněte soubory sem nebo klikněte pro výběr
-        </p>
+        </div>
         <p style={{ fontSize: 13, color: "var(--color-text-secondary)" }}>
           PDF, Word, PowerPoint – vaše materiály a know-how
         </p>

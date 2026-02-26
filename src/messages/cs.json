@@ -285,6 +285,8 @@
     "yes": "Ano",
     "close": "Zavřít",
     "peopleCompleted": "{percent} % lidí dokončilo assessment.",
+    "evaluatingCompany": "Vyhodnocujeme výsledky pro celou firmu…",
+    "analyzingData": "Analyzujeme data všech zaměstnanců",
     "initialEmailBody": "Předmět: Připomínka k dokončení Digiskills assessmentu\n\nDobrý den,\n\nprosíme vás o vyplnění Digiskills assessmentu. Vaše odpovědi nám pomohou vyhodnotit aktuální úroveň digitálních dovedností ve firmě a připravit cílená vzdělávací doporučení.\n\nOdkaz na assessment: https://digiskills.example.com/assessment\n\nDěkujeme za spolupráci."
   },
   "companyReport": {

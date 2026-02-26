@@ -475,6 +475,7 @@ export default function AssessmentChoice() {
           </motion.div>
         </div>
 
+        {/* EXECUTIVE SUMMARY STYLE HEADER */}
         <div
           style={{
             marginTop: 32,
@@ -485,246 +486,304 @@ export default function AssessmentChoice() {
         >
           <div
             style={{
-              borderRadius: 20,
               background: "var(--color-digi-sky)",
+              borderRadius: 16,
+              padding: "36px 32px",
               color: "white",
-              padding: "40px 36px 44px",
-              border: "1px solid rgba(255,255,255,0.06)",
             }}
           >
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                padding: "8px 16px",
-                borderRadius: 999,
-                fontSize: 13,
-                fontWeight: 600,
-                marginBottom: 20,
-                background: "rgba(255,255,255,0.12)",
-                letterSpacing: "0.02em",
-              }}
-            >
-              <Sparkles size={15} />
-              {t("assessment.info.badge")}
-            </div>
-
-            <h2
-              style={{
-                fontSize: 32,
-                fontWeight: 700,
-                margin: "0 0 16px",
-                fontStyle: "italic",
-                lineHeight: 1.3,
-                letterSpacing: "-0.01em",
-              }}
-            >
-              {t("assessment.info.title")}
-            </h2>
-            <p style={{ margin: 0, opacity: 0.88, fontSize: 16, lineHeight: 1.7, maxWidth: 640 }}>
-              {t("assessment.info.lead")}
-            </p>
-
-            <div
-              style={{
-                marginTop: 32,
-                paddingTop: 28,
-                borderTop: "1px solid rgba(255,255,255,0.12)",
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: 24,
-              }}
-            >
-              {[
-                { title: t("assessment.info.step1Title"), desc: t("assessment.info.step1Desc") },
-                { title: t("assessment.info.step2Title"), desc: t("assessment.info.step2Desc") },
-                { title: t("assessment.info.step3Title"), desc: t("assessment.info.step3Desc") },
-              ].map((step, idx) => (
-                <div key={step.title} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                  <div
-                    style={{
-                      width: 32,
-                      height: 32,
-                      borderRadius: "50%",
-                      background: "var(--color-accent-orange)",
-                      color: "var(--color-text-main)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                      fontWeight: 700,
-                      fontSize: 14,
-                    }}
-                  >
-                    {idx + 1}
-                  </div>
-                  <div>
-                    <p style={{ margin: "0 0 8px", fontWeight: 700, fontSize: 15 }}>{step.title}</p>
-                    <p style={{ margin: 0, opacity: 0.8, fontSize: 14, lineHeight: 1.6 }}>{step.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div
-            style={{
-              borderRadius: 20,
-              border: "1px solid var(--color-border)",
-              background: "var(--color-background)",
-              boxShadow: "0 2px 8px var(--color-card-shadow)",
-              padding: "36px 40px 40px",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: 20,
-                alignItems: "flex-start",
-                marginBottom: 32,
-                flexWrap: "wrap",
-              }}
-            >
-              <div>
-                <h3
-                  style={{
-                    margin: "0 0 10px",
-                    fontSize: 26,
-                    fontWeight: 700,
-                    fontStyle: "italic",
-                    color: "var(--color-text-main)",
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  {t("assessment.info.benefitsTitle")}
-                </h3>
-                <p style={{ margin: 0, color: "var(--color-text-secondary)", fontSize: 15, lineHeight: 1.6 }}>
-                  {t("assessment.info.benefitsSubtitle")}
-                </p>
-              </div>
-
-              <Link
-                href="/firma/vysledky"
+            <div style={{ marginBottom: 24 }}>
+              <div
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 8,
-                  padding: "12px 18px",
-                  border: "1px solid var(--color-primary)",
-                  borderRadius: "var(--radius-btn)",
-                  color: "var(--color-primary)",
-                  textDecoration: "none",
-                  fontSize: 14,
+                  background: "rgba(255,255,255,0.15)",
+                  padding: "6px 14px",
+                  borderRadius: 999,
+                  fontSize: 13,
                   fontWeight: 600,
-                  marginTop: 4,
+                  marginBottom: 16,
                 }}
               >
-                {t("assessment.info.reportCta")}
-                <ArrowRight size={16} />
-              </Link>
+                <Sparkles size={14} />
+                {t("assessment.info.badge")}
+              </div>
+              <h2 style={{ fontSize: 32, fontWeight: 800, margin: "0 0 8px", fontStyle: "italic" }}>
+                {t("assessment.info.title")}
+              </h2>
+              <p style={{ fontSize: 15, opacity: 0.85, margin: 0, maxWidth: 600 }}>
+                {t("assessment.info.lead")}
+              </p>
             </div>
 
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+              {[
+                { title: t("assessment.info.step1Title"), desc: t("assessment.info.step1Desc"), icon: "1" },
+                { title: t("assessment.info.step2Title"), desc: t("assessment.info.step2Desc"), icon: "2" },
+                { title: t("assessment.info.step3Title"), desc: t("assessment.info.step3Desc"), icon: "3" },
+              ].map((step) => (
+                <motion.div
+                  key={step.title}
+                  whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.15)" }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  style={{
+                    background: "rgba(255,255,255,0.1)",
+                    borderRadius: 12,
+                    padding: 20,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: "50%",
+                      background: "var(--color-accent-orange)",
+                      color: "var(--color-digi-sky)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: 800,
+                      fontSize: 16,
+                      marginBottom: 12,
+                    }}
+                  >
+                    {step.icon}
+                  </div>
+                  <p style={{ margin: "0 0 6px", fontWeight: 700, fontSize: 15 }}>{step.title}</p>
+                  <p style={{ margin: 0, opacity: 0.8, fontSize: 13, lineHeight: 1.5 }}>{step.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* BENEFITS CARDS - GRID LAYOUT */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              gap: 16,
+            }}
+          >
+            {[
+              {
+                icon: <Target size={24} color="white" />,
+                title: t("assessment.info.benefit1Title"),
+                desc: t("assessment.info.benefit1Desc"),
+                gradient: "linear-gradient(135deg, #2596FF 0%, #1F80D9 100%)",
+                shadowColor: "rgba(37, 150, 255, 0.3)",
+              },
+              {
+                icon: <BarChart3 size={24} color="white" />,
+                title: t("assessment.info.benefit2Title"),
+                desc: t("assessment.info.benefit2Desc"),
+                gradient: "linear-gradient(135deg, #77F9D9 0%, #10B981 100%)",
+                shadowColor: "rgba(119, 249, 217, 0.3)",
+              },
+              {
+                icon: <TrendingUp size={24} color="white" />,
+                title: t("assessment.info.benefit3Title"),
+                desc: t("assessment.info.benefit3Desc"),
+                gradient: "linear-gradient(135deg, #F7981C 0%, #EA580C 100%)",
+                shadowColor: "rgba(247, 152, 28, 0.3)",
+              },
+              {
+                icon: <Sparkles size={24} color="white" />,
+                title: t("assessment.info.benefit4Title"),
+                desc: t("assessment.info.benefit4Desc"),
+                gradient: "linear-gradient(135deg, #6366F1 0%, #4F46E5 100%)",
+                shadowColor: "rgba(99, 102, 241, 0.3)",
+              },
+            ].map((benefit) => (
+              <motion.div
+                key={benefit.title}
+                whileHover={{ y: -6, boxShadow: `0 16px 40px ${benefit.shadowColor}` }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                style={{
+                  background: "var(--color-background)",
+                  borderRadius: 16,
+                  border: "1px solid var(--color-border)",
+                  padding: "24px",
+                  boxShadow: "0 2px 8px var(--color-card-shadow)",
+                  cursor: "default",
+                }}
+              >
+                <div
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 14,
+                    background: benefit.gradient,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginBottom: 16,
+                    boxShadow: `0 4px 12px ${benefit.shadowColor}`,
+                  }}
+                >
+                  {benefit.icon}
+                </div>
+                <h4 style={{ margin: "0 0 8px", color: "var(--color-text-main)", fontWeight: 700, fontSize: 16 }}>
+                  {benefit.title}
+                </h4>
+                <p style={{ margin: 0, color: "var(--color-text-secondary)", fontSize: 14, lineHeight: 1.6 }}>
+                  {benefit.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* BENCHMARK PREVIEW SECTION */}
+          <div
+            style={{
+              background: "var(--color-background)",
+              borderRadius: 16,
+              border: "1px solid var(--color-border)",
+              boxShadow: "0 2px 8px var(--color-card-shadow)",
+              overflow: "visible",
+            }}
+          >
             <div
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
-                gap: 32,
-                alignItems: "start",
+                minHeight: 380,
+                overflow: "visible",
               }}
             >
+              {/* Left side - Text content */}
               <div
                 style={{
+                  padding: "32px",
                   display: "flex",
                   flexDirection: "column",
-                  gap: 16,
+                  justifyContent: "center",
                 }}
               >
-                {[
-                  {
-                    icon: <Target size={20} color="var(--color-primary)" />,
-                    title: t("assessment.info.benefit1Title"),
-                    desc: t("assessment.info.benefit1Desc"),
-                  },
-                  {
-                    icon: <BarChart3 size={20} color="var(--color-primary)" />,
-                    title: t("assessment.info.benefit2Title"),
-                    desc: t("assessment.info.benefit2Desc"),
-                  },
-                  {
-                    icon: <TrendingUp size={20} color="var(--color-primary)" />,
-                    title: t("assessment.info.benefit3Title"),
-                    desc: t("assessment.info.benefit3Desc"),
-                  },
-                  {
-                    icon: <Sparkles size={20} color="var(--color-primary)" />,
-                    title: t("assessment.info.benefit4Title"),
-                    desc: t("assessment.info.benefit4Desc"),
-                  },
-                ].map((benefit) => (
-                  <div
-                    key={benefit.title}
-                    style={{
-                      border: "1px solid var(--color-border)",
-                      borderRadius: 14,
-                      padding: "18px 20px",
-                      background: "var(--color-background)",
-                    }}
-                  >
+                <h3
+                  style={{
+                    margin: "0 0 12px",
+                    fontSize: 24,
+                    fontWeight: 700,
+                    fontStyle: "italic",
+                    color: "var(--color-text-main)",
+                  }}
+                >
+                  {t("assessment.info.benefitsTitle")}
+                </h3>
+                <p
+                  style={{
+                    margin: "0 0 24px",
+                    color: "var(--color-text-secondary)",
+                    fontSize: 15,
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {t("assessment.info.benefitsSubtitle")}
+                </p>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 24 }}>
+                  {[1, 2, 3].map((item) => (
                     <div
+                      key={item}
                       style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 12,
-                        background: "rgba(37, 150, 255, 0.1)",
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "center",
-                        marginBottom: 14,
+                        gap: 12,
                       }}
                     >
-                      {benefit.icon}
+                      <div
+                        style={{
+                          width: 24,
+                          height: 24,
+                          borderRadius: "50%",
+                          background: item === 2 ? "rgba(247, 152, 28, 0.15)" : "rgba(37, 150, 255, 0.15)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: 8,
+                            height: 8,
+                            borderRadius: "50%",
+                            background: item === 2 ? "var(--color-accent-orange)" : "var(--color-primary)",
+                          }}
+                        />
+                      </div>
+                      <span style={{ color: "var(--color-text-main)", fontSize: 14, fontWeight: 500 }}>
+                        {t(`assessment.info.benchmarkPoint${item}`)}
+                      </span>
                     </div>
-                    <p style={{ margin: "0 0 6px", color: "var(--color-text-main)", fontWeight: 700, fontSize: 15 }}>
-                      {benefit.title}
-                    </p>
-                    <p style={{ margin: 0, color: "var(--color-text-secondary)", fontSize: 14, lineHeight: 1.55 }}>
-                      {benefit.desc}
-                    </p>
-                  </div>
-                ))}
+                  ))}
+                </div>
+
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Link
+                    href="/firma/vysledky"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 8,
+                      padding: "14px 24px",
+                      background: "var(--color-primary)",
+                      borderRadius: 10,
+                      color: "white",
+                      textDecoration: "none",
+                      fontSize: 14,
+                      fontWeight: 600,
+                      boxShadow: "0 4px 12px rgba(37, 150, 255, 0.3)",
+                    }}
+                  >
+                    {t("assessment.info.reportCta")}
+                    <ArrowRight size={18} />
+                  </Link>
+                </motion.div>
               </div>
 
+              {/* Right side - Radar chart */}
               <div
                 style={{
-                  borderRadius: 16,
-                  background: "var(--color-breeze)",
-                  border: "1px solid var(--color-border)",
-                  padding: "24px",
+                  background: "var(--color-background)",
+                  padding: "32px",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
+                  justifyContent: "center",
+                  borderLeft: "1px solid var(--color-border)",
+                  overflow: "visible",
                 }}
               >
-                <p style={{ margin: "0 0 8px", color: "var(--color-text-main)", fontSize: 16, fontWeight: 700, textAlign: "center" }}>
+                <p
+                  style={{
+                    margin: "0 0 8px",
+                    color: "var(--color-text-main)",
+                    fontSize: 15,
+                    fontWeight: 700,
+                    textAlign: "center",
+                  }}
+                >
                   {t("assessment.info.benchmarkTitle")}
                 </p>
                 <p
                   style={{
-                    margin: "0 0 20px",
+                    margin: "0 0 16px",
                     color: "var(--color-text-secondary)",
-                    fontSize: 14,
-                    lineHeight: 1.55,
+                    fontSize: 13,
                     textAlign: "center",
-                    maxWidth: 320,
+                    maxWidth: 280,
                   }}
                 >
                   {t("assessment.info.benchmarkDesc")}
                 </p>
-                
+
                 <CompetenceRadarChart
-                  size={320}
+                  size={280}
                   data={{
                     companyScores: [6.4, 4.4, 4.7, 5.4, 6.5],
                     marketAvg: [7.3, 5.9, 6.2, 7.5, 7.1],
@@ -745,33 +804,6 @@ export default function AssessmentChoice() {
                     ],
                   }}
                 />
-
-                <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 20, width: "100%" }}>
-                  {[1, 2, 3].map((item) => (
-                    <div
-                      key={item}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 10,
-                        color: "var(--color-text-main)",
-                        fontSize: 14,
-                        fontWeight: 600,
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: 8,
-                          height: 8,
-                          borderRadius: "50%",
-                          background: item === 2 ? "var(--color-accent-orange)" : "var(--color-primary)",
-                          flexShrink: 0,
-                        }}
-                      />
-                      {t(`assessment.info.benchmarkPoint${item}`)}
-                    </div>
-                  ))}
-                </div>
               </div>
             </div>
           </div>

@@ -103,7 +103,7 @@ export default function AssessmentForm() {
     window.setTimeout(() => {
       setPhase("report");
       window.scrollTo({ top: 0, behavior: "smooth" });
-    }, 900);
+    }, 4000);
   };
 
   useEffect(() => {

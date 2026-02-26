@@ -75,6 +75,8 @@ const getActivityBadgeStyle = (color: string) => ({
   borderColor: color,
 });
 
+const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
+
 export default function DigiskillsCreate() {
   const router = useRouter();
   const [phase, setPhase] = useState<Phase>("wizard");
@@ -177,61 +179,129 @@ export default function DigiskillsCreate() {
     };
   }, [phase]);
 
-  const progress = currentStep >= 4 ? 100 : Math.round((currentStep / 4) * 100);
+  const progressPercent = phase === "wizard" ? ((currentStep + 1) / 5) * 100 : 0;
 
   return (
     <div
       style={{
         minHeight: "100vh",
-        background: phase === "result" ? "var(--color-breeze)" : "var(--color-breeze)",
-        padding: "24px 20px",
+        background: "var(--color-breeze)",
+        padding: phase === "wizard" ? "32px 20px" : "24px 20px",
       }}
     >
-      <div style={{ maxWidth: phase === "result" ? 960 : 720, margin: "0 auto" }}>
-        {/* Header */}
-        <div style={{ marginBottom: 20 }}>
-          <h1
+      <div style={{ maxWidth: phase === "result" ? 960 : 800, margin: "0 auto" }}>
+        {/* Dark Hero Header (wizard + generating) */}
+        {(phase === "wizard" || phase === "generating") && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
             style={{
-              fontSize: 24,
-              fontWeight: 700,
-              fontStyle: "italic",
-              color: "var(--color-text-main)",
-              marginBottom: 4,
+              background: "#040E3C",
+              borderRadius: 16,
+              padding: "28px 32px",
+              marginBottom: 24,
+              color: "white",
             }}
           >
-            {phase === "wizard" && "Digiskills.create"}
-            {phase === "generating" && "Generuji kurz…"}
-            {phase === "result" && "Váš kurz je připraven!"}
-          </h1>
-          <p style={{ color: "var(--color-text-secondary)", fontSize: 13 }}>
-            {phase === "wizard" &&
-              `Tvorba kurzu pomocí AI · Krok ${currentStep + 1} z 5`}
-            {phase === "generating" && "AI zpracovává vaše materiály"}
-            {phase === "result" && "Osnova kurzu vygenerovaná podle vašich požadavků"}
-          </p>
-        </div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
+              <div>
+                <div
+                  style={{
+                    display: "inline-block",
+                    background: "rgba(255,255,255,0.15)",
+                    padding: "5px 12px",
+                    borderRadius: 999,
+                    fontSize: 12,
+                    fontWeight: 600,
+                    marginBottom: 12,
+                  }}
+                >
+                  Tvorba kurzu pomocí AI
+                </div>
+                <h1 style={{ fontSize: 28, fontWeight: 800, margin: "0 0 6px", fontStyle: "italic" }}>
+                  {phase === "wizard" && "Digiskills.create"}
+                  {phase === "generating" && "Generuji kurz…"}
+                </h1>
+                <p style={{ fontSize: 14, opacity: 0.8, margin: 0 }}>
+                  {phase === "wizard" && `Krok ${currentStep + 1} z 5`}
+                  {phase === "generating" && "AI zpracovává vaše materiály"}
+                </p>
+              </div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                transition={HOVER_TRANSITION}
+                style={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 14,
+                  background: "rgba(255,255,255,0.1)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Image
+                  src="/Screenshots/Symbol Dark.png"
+                  alt=""
+                  width={36}
+                  height={36}
+                  style={{ objectFit: "contain" }}
+                />
+              </motion.div>
+            </div>
 
-        {/* Progress bar (wizard only) */}
-        {phase === "wizard" && (
-          <div
-            style={{
-              background: "var(--color-border)",
-              borderRadius: 999,
-              height: 6,
-              marginBottom: 18,
-              overflow: "hidden",
-            }}
-          >
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ type: "spring", stiffness: 80, damping: 15 }}
+            {phase === "wizard" && (
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, opacity: 0.9 }}>
+                    Krok {currentStep + 1} z 5
+                  </span>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: "#77F9D9" }}>
+                    {Math.round(progressPercent)}%
+                  </span>
+                </div>
+                <div
+                  style={{
+                    height: 8,
+                    background: "rgba(255,255,255,0.15)",
+                    borderRadius: 4,
+                    overflow: "hidden",
+                  }}
+                >
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${progressPercent}%` }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    style={{
+                      height: "100%",
+                      background: "linear-gradient(90deg, #2596FF 0%, #77F9D9 100%)",
+                      borderRadius: 4,
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+          </motion.div>
+        )}
+
+        {/* Result phase header */}
+        {phase === "result" && (
+          <div style={{ marginBottom: 20 }}>
+            <h1
               style={{
-                height: "100%",
-                background: "var(--color-primary)",
-                borderRadius: 999,
+                fontSize: 24,
+                fontWeight: 700,
+                fontStyle: "italic",
+                color: "var(--color-text-main)",
+                marginBottom: 4,
               }}
-            />
+            >
+              Váš kurz je připraven!
+            </h1>
+            <p style={{ color: "var(--color-text-secondary)", fontSize: 13 }}>
+              Osnova kurzu vygenerovaná podle vašich požadavků
+            </p>
           </div>
         )}
 
@@ -240,85 +310,102 @@ export default function DigiskillsCreate() {
           {phase === "wizard" && (
             <motion.div
               key="wizard"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
               exit={{ opacity: 0 }}
               style={{
                 background: "var(--color-background)",
-                borderRadius: "var(--radius-card)",
+                borderRadius: 16,
                 border: "1px solid var(--color-border)",
-                boxShadow: "0 2px 8px var(--color-card-shadow)",
-                padding: "24px 28px",
+                boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
                 overflow: "hidden",
               }}
             >
               {/* Chat messages */}
               <div
                 style={{
-                  maxHeight: 400,
+                  maxHeight: 420,
                   overflowY: "auto",
-                  marginBottom: 20,
+                  padding: "24px 24px 16px",
                   display: "flex",
                   flexDirection: "column",
-                  gap: 16,
+                  gap: 20,
                 }}
               >
                 {messages.map((msg, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
+                    initial={{ opacity: 0, y: 16, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.4, delay: i * 0.05 }}
                     style={{
                       display: "flex",
                       justifyContent: msg.role === "bot" ? "flex-start" : "flex-end",
-                      alignItems: "flex-end",
-                      gap: 8,
+                      alignItems: "flex-start",
+                      gap: 12,
                     }}
                   >
                     {msg.role === "bot" && (
-                      <div
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        transition={HOVER_TRANSITION}
                         style={{
-                          width: 32,
-                          height: 32,
-                          borderRadius: "var(--radius-btn)",
+                          width: 40,
+                          height: 40,
+                          borderRadius: 12,
                           overflow: "hidden",
                           flexShrink: 0,
-                          background: "rgba(37, 150, 255, 0.12)",
+                          background: "linear-gradient(135deg, #2596FF 0%, #77F9D9 100%)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
+                          boxShadow: "0 4px 12px rgba(37, 150, 255, 0.25)",
                         }}
                       >
                         <Image
                           src="/Screenshots/Symbol Dark.png"
                           alt=""
-                          width={22}
-                          height={22}
+                          width={26}
+                          height={26}
                           style={{ objectFit: "contain" }}
                         />
-                      </div>
+                      </motion.div>
                     )}
-                    <div
+                    <motion.div
+                      whileHover={{ scale: 1.01 }}
+                      transition={HOVER_TRANSITION}
                       style={{
-                        maxWidth: "85%",
-                        padding: "12px 16px",
-                        borderRadius: msg.role === "bot" ? "4px 16px 16px 16px" : "16px 4px 16px 16px",
-                        background: msg.role === "bot" ? "rgba(37, 150, 255, 0.08)" : "var(--color-primary)",
+                        maxWidth: "75%",
+                        padding: "14px 18px",
+                        borderRadius: msg.role === "bot" ? "4px 18px 18px 18px" : "18px 4px 18px 18px",
+                        background: msg.role === "bot"
+                          ? "linear-gradient(135deg, rgba(37, 150, 255, 0.08) 0%, rgba(119, 249, 217, 0.05) 100%)"
+                          : "linear-gradient(135deg, #2596FF 0%, #1F80D9 100%)",
                         color: msg.role === "bot" ? "var(--color-text-main)" : "white",
-                        fontSize: 14,
-                        lineHeight: 1.5,
+                        fontSize: 15,
+                        lineHeight: 1.6,
+                        boxShadow: msg.role === "bot"
+                          ? "0 2px 8px rgba(0,0,0,0.04)"
+                          : "0 4px 16px rgba(37, 150, 255, 0.3)",
+                        border: msg.role === "bot" ? "1px solid rgba(37, 150, 255, 0.12)" : "none",
                       }}
                     >
                       {msg.content}
-                    </div>
+                    </motion.div>
                   </motion.div>
                 ))}
                 <div ref={messagesEndRef} />
               </div>
 
               {/* Input area */}
-              <div style={{ borderTop: "1px solid var(--color-border)", paddingTop: 20 }}>
+              <div
+                style={{
+                  borderTop: "1px solid var(--color-border)",
+                  padding: "20px 24px",
+                  background: "var(--color-breeze)",
+                }}
+              >
                 {currentStep === 0 && (
                   <div>
                     <textarea
@@ -329,31 +416,35 @@ export default function DigiskillsCreate() {
                       rows={3}
                       style={{
                         width: "100%",
-                        padding: "12px 14px",
-                        borderRadius: "var(--radius-card)",
+                        padding: "14px 16px",
+                        borderRadius: 12,
                         border: "1px solid var(--color-border)",
-                        fontSize: 14,
+                        fontSize: 15,
                         color: "var(--color-text-main)",
                         resize: "vertical",
                         marginBottom: 12,
                         boxSizing: "border-box",
+                        background: "var(--color-background)",
+                        fontFamily: "inherit",
                       }}
                     />
                     <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      whileHover={topicInput.trim() ? { scale: 1.03, boxShadow: "0 6px 20px rgba(37, 150, 255, 0.35)" } : {}}
+                      whileTap={topicInput.trim() ? { scale: 0.98 } : {}}
                       onClick={handleTopicSubmit}
                       disabled={!topicInput.trim()}
-                      className={topicInput.trim() ? "btn-primary" : ""}
                       style={{
-                        padding: "10px 20px",
-                        borderRadius: "var(--radius-btn)",
+                        padding: "14px 24px",
+                        borderRadius: 12,
                         border: "none",
-                        background: topicInput.trim() ? "var(--color-primary)" : "var(--color-border)",
+                        background: topicInput.trim()
+                          ? "linear-gradient(135deg, #2596FF 0%, #1F80D9 100%)"
+                          : "var(--color-border)",
                         color: topicInput.trim() ? "white" : "var(--color-text-secondary)",
-                        fontSize: 14,
-                        fontWeight: 600,
+                        fontSize: 15,
+                        fontWeight: 700,
                         cursor: topicInput.trim() ? "pointer" : "not-allowed",
+                        boxShadow: topicInput.trim() ? "0 4px 16px rgba(37, 150, 255, 0.3)" : "none",
                       }}
                     >
                       Odeslat
@@ -363,20 +454,23 @@ export default function DigiskillsCreate() {
 
                 {currentStep === 1 && (
                   <div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 4 }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 12 }}>
                       {AUDIENCE_OPTIONS.map((opt) => {
                         const isSelected = formData.audience === opt.value;
                         return (
                           <motion.div
                             key={opt.value}
-                            whileHover={{ scale: 1.02, boxShadow: "0 4px 16px rgba(37, 150, 255, 0.12)" }}
+                            whileHover={{ scale: 1.01, boxShadow: "0 4px 16px rgba(37, 150, 255, 0.12)" }}
                             whileTap={{ scale: 0.98 }}
+                            transition={HOVER_TRANSITION}
                             onClick={() => handleAudienceSelect(opt.value)}
                             style={{
                               padding: "14px 18px",
-                              borderRadius: "var(--radius-card)",
+                              borderRadius: 12,
                               border: isSelected ? "2px solid var(--color-primary)" : "2px solid var(--color-border)",
-                              background: isSelected ? "rgba(37, 150, 255, 0.05)" : "var(--color-background)",
+                              background: isSelected
+                                ? "linear-gradient(135deg, rgba(37, 150, 255, 0.08) 0%, rgba(119, 249, 217, 0.05) 100%)"
+                                : "var(--color-background)",
                               cursor: "pointer",
                               fontSize: 15,
                               fontWeight: 600,
@@ -389,19 +483,19 @@ export default function DigiskillsCreate() {
                       })}
                     </div>
                     <motion.button
-                      whileHover={{ scale: 1.02 }}
+                      whileHover={{ scale: 1.03, boxShadow: "0 6px 20px rgba(37, 150, 255, 0.35)" }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handleAudienceContinue}
-                      className="btn-primary"
                       style={{
-                        padding: "10px 20px",
-                        borderRadius: "var(--radius-btn)",
+                        padding: "14px 24px",
+                        borderRadius: 12,
                         border: "none",
-                        background: "var(--color-primary)",
+                        background: "linear-gradient(135deg, #2596FF 0%, #1F80D9 100%)",
                         color: "white",
-                        fontSize: 14,
-                        fontWeight: 600,
+                        fontSize: 15,
+                        fontWeight: 700,
                         cursor: "pointer",
+                        boxShadow: "0 4px 16px rgba(37, 150, 255, 0.3)",
                       }}
                     >
                       Odeslat
@@ -419,30 +513,35 @@ export default function DigiskillsCreate() {
                       rows={4}
                       style={{
                         width: "100%",
-                        padding: "12px 14px",
-                        borderRadius: "var(--radius-card)",
+                        padding: "14px 16px",
+                        borderRadius: 12,
                         border: "1px solid var(--color-border)",
-                        fontSize: 14,
+                        fontSize: 15,
                         color: "var(--color-text-main)",
                         resize: "vertical",
                         marginBottom: 12,
                         boxSizing: "border-box",
+                        background: "var(--color-background)",
+                        fontFamily: "inherit",
                       }}
                     />
                     <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      whileHover={goalsInput.trim() ? { scale: 1.03, boxShadow: "0 6px 20px rgba(37, 150, 255, 0.35)" } : {}}
+                      whileTap={goalsInput.trim() ? { scale: 0.98 } : {}}
                       onClick={handleGoalsSubmit}
                       disabled={!goalsInput.trim()}
                       style={{
-                        padding: "10px 20px",
-                        borderRadius: "var(--radius-btn)",
+                        padding: "14px 24px",
+                        borderRadius: 12,
                         border: "none",
-                        background: goalsInput.trim() ? "var(--color-primary)" : "var(--color-border)",
+                        background: goalsInput.trim()
+                          ? "linear-gradient(135deg, #2596FF 0%, #1F80D9 100%)"
+                          : "var(--color-border)",
                         color: goalsInput.trim() ? "white" : "var(--color-text-secondary)",
-                        fontSize: 14,
-                        fontWeight: 600,
+                        fontSize: 15,
+                        fontWeight: 700,
                         cursor: goalsInput.trim() ? "pointer" : "not-allowed",
+                        boxShadow: goalsInput.trim() ? "0 4px 16px rgba(37, 150, 255, 0.3)" : "none",
                       }}
                     >
                       Odeslat
@@ -457,19 +556,20 @@ export default function DigiskillsCreate() {
                       onChange={(v) => setFormData((p) => ({ ...p, duration: v }))}
                     />
                     <motion.button
-                      whileHover={{ scale: 1.02 }}
+                      whileHover={{ scale: 1.03, boxShadow: "0 6px 20px rgba(37, 150, 255, 0.35)" }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handleDurationContinue}
-                      className="btn-primary"
                       style={{
-                        padding: "10px 20px",
-                        borderRadius: "var(--radius-btn)",
+                        marginTop: 12,
+                        padding: "14px 24px",
+                        borderRadius: 12,
                         border: "none",
-                        background: "var(--color-primary)",
+                        background: "linear-gradient(135deg, #2596FF 0%, #1F80D9 100%)",
                         color: "white",
-                        fontSize: 14,
-                        fontWeight: 600,
+                        fontSize: 15,
+                        fontWeight: 700,
                         cursor: "pointer",
+                        boxShadow: "0 4px 16px rgba(37, 150, 255, 0.3)",
                       }}
                     >
                       Pokračovat
@@ -484,21 +584,20 @@ export default function DigiskillsCreate() {
                       onChange={(files) => setFormData((p) => ({ ...p, files }))}
                     />
                     <motion.button
-                      whileHover={{ scale: 1.02, boxShadow: "0 6px 20px rgba(37, 150, 255, 0.4)" }}
+                      whileHover={{ scale: 1.03, boxShadow: "0 6px 20px rgba(37, 150, 255, 0.35)" }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handleGenerate}
-                      className="btn-primary"
                       style={{
                         marginTop: 16,
                         padding: "14px 24px",
-                        borderRadius: "var(--radius-card)",
+                        borderRadius: 12,
                         border: "none",
-                        background: "var(--color-primary)",
+                        background: "linear-gradient(135deg, #2596FF 0%, #1F80D9 100%)",
                         color: "white",
                         fontSize: 16,
                         fontWeight: 700,
                         cursor: "pointer",
-                        boxShadow: "0 4px 12px rgba(37, 150, 255, 0.3)",
+                        boxShadow: "0 4px 16px rgba(37, 150, 255, 0.3)",
                         width: "100%",
                       }}
                     >
@@ -513,31 +612,55 @@ export default function DigiskillsCreate() {
           {phase === "generating" && (
             <motion.div
               key="generating"
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
               exit={{ opacity: 0 }}
               style={{
                 background: "var(--color-background)",
-                borderRadius: "var(--radius-card)",
+                borderRadius: 16,
                 border: "1px solid var(--color-border)",
-                boxShadow: "0 2px 8px var(--color-card-shadow)",
-                padding: "48px 32px",
-                textAlign: "center",
+                boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
+                overflow: "hidden",
               }}
             >
-              <div className="ds-spinner" aria-label="Generuji" style={{ margin: "0 auto 20px" }} />
-              <motion.p
-                key={generatingMessageIndex}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
                 style={{
-                  fontSize: 16,
-                  fontWeight: 600,
-                  color: "var(--color-text-main)",
+                  display: "grid",
+                  placeItems: "center",
+                  padding: "80px 0",
+                  gap: 16,
                 }}
               >
-                {GENERATING_MESSAGES[generatingMessageIndex]}
-              </motion.p>
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: "50%",
+                    border: "3px solid var(--color-border)",
+                    borderTopColor: "var(--color-primary)",
+                  }}
+                />
+                <div style={{ textAlign: "center" }}>
+                  <div
+                    style={{
+                      fontWeight: 700,
+                      marginBottom: 6,
+                      color: "var(--color-text-main)",
+                      fontSize: 16,
+                    }}
+                  >
+                    {GENERATING_MESSAGES[generatingMessageIndex]}
+                  </div>
+                  <div style={{ color: "var(--color-text-secondary)", fontSize: 13 }}>
+                    AI zpracovává vaše materiály
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
           )}
 

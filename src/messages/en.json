@@ -285,6 +285,8 @@
     "yes": "Yes",
     "close": "Close",
     "peopleCompleted": "{percent} % of people completed the assessment.",
+    "evaluatingCompany": "Evaluating results for the entire company…",
+    "analyzingData": "Analyzing data from all employees",
     "initialEmailBody": "Subject: Reminder to complete Digiskills assessment\n\nHello,\n\nplease complete the Digiskills assessment. Your responses will help us evaluate the current level of digital skills in the company and prepare targeted training recommendations.\n\nAssessment link: https://digiskills.example.com/assessment\n\nThank you for your cooperation."
   },
   "companyReport": {

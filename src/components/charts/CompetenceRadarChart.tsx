@@ -59,7 +59,7 @@ export default function CompetenceRadarChart({ data, size = 420, showLabels = tr
   const companyPoints = companyScores.map((score, i) => getPoint(i, score));
 
   return (
-    <div style={{ position: "relative", width: size, height: size, margin: "0 auto" }}>
+    <div style={{ position: "relative", width: size, height: size, margin: "0 auto", overflow: "visible" }}>
       <svg width={size} height={size} style={{ display: "block" }}>
         {Array.from({ length: levels }, (_, i) => {
           const r = ((i + 1) / levels) * maxRadius;
