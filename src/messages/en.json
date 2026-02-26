@@ -11,6 +11,7 @@
       "managerDashboard": "Manager dashboard",
       "individualAssessment": "Individual assessment",
       "companyReport": "Company report",
+      "notificationSettings": "Communication & Notifications",
       "adminModule": "Admin module",
       "createCourse": "Create course",
       "digiskillsCreator": "Digiskills Creator",
@@ -368,5 +369,30 @@
     "usefulTip": "Useful tip",
     "tipText": "When you get stuck while studying, take a minute break. A short breather often opens new solutions. Need help? Use the chat in the bottom right.",
     "ledBy": "Course led by:"
+  },
+  "goalChatbot": {
+    "title": "Define your goal",
+    "intro": "Hi! I'll help you define your path to digital heroism. Together we'll set a clear goal that will motivate you. Answer a few questions – you have pre-filled answers ready, just press Enter.",
+    "q1": "In which area do you most want to improve your digital skills? (e.g., productivity, communication, security, AI tools)",
+    "q2": "How much time per week do you want to dedicate to learning and development?",
+    "q3": "What is your biggest challenge when working with technology?",
+    "q4": "What is your preferred learning style?",
+    "q5": "What specific goal do you want to achieve in the next 30 days?",
+    "a1": "I want to improve in productivity and using AI tools.",
+    "a2": "About 1 hour per week, ideally split into shorter blocks.",
+    "a3": "Sometimes I get lost in the number of apps and don't know which one to use.",
+    "a4": "I prefer videos and practical examples that I can try right away.",
+    "a5": "I want to learn to effectively use Copilot for everyday work.",
+    "complete": "Great! Your goal is set. Below you can see an overview of what you want to achieve. Now just get started!",
+    "yourGoal": "Your digital goal",
+    "next30days": "For the next 30 days",
+    "summaryArea": "Focus area",
+    "summaryTime": "Time for learning",
+    "summaryChallenge": "Main challenge",
+    "summaryStyle": "Learning style",
+    "summaryGoal": "My goal",
+    "placeholder": "Type your answer or use the pre-filled one...",
+    "hint": "Tip: Press Enter to send the pre-filled answer",
+    "defineAgain": "Define goal again"
   }
 }

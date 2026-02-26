@@ -18,6 +18,7 @@ const DROPDOWN_ITEMS = [
   { labelKey: "header.dropdown.managerDashboard", href: "/manager" },
   { labelKey: "header.dropdown.individualAssessment", href: "/assessment" },
   { labelKey: "header.dropdown.companyReport", href: "/firma" },
+  { labelKey: "header.dropdown.notificationSettings", href: "/firma/nastaveni" },
   { labelKey: "header.dropdown.adminModule", href: "/admin/kurzy" },
   { labelKey: "header.dropdown.createCourse", href: "/admin/tvorba-kurzu" },
   { labelKey: "header.dropdown.digiskillsCreator", href: "/creator" },

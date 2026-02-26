@@ -1,7 +1,7 @@
 "use client";
 
-import DigiskillsCreate from "@/components/digiskills-create/DigiskillsCreate";
+import CourseCreationHub from "@/components/digiskills-create/CourseCreationHub";
 
 export default function TvorbaKurzuPage() {
-  return <DigiskillsCreate />;
+  return <CourseCreationHub />;
 }

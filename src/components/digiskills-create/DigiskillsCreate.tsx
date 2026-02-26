@@ -31,15 +31,15 @@ type CreateFormData = {
 };
 
 const BOT_QUESTIONS = [
-  "Ahoj! Pojďme vytvořit kurz na míru. O čem bude váš nový kurz?",
+  "Ahoj! Pojďme vytvořit kurz na míru. O čem bude váš nový kurz? (např. práce s počítačem, prohlížečem, telefonem…)",
   "Super! Pro koho je kurz určen?",
-  "Co si mají účastníci odnést?",
+  "Co si mají účastníci odnést? Jaké dovednosti nebo znalosti?",
   "Jak dlouhý by měl kurz být?",
   "Nahrajte vaše know-how (PDF, dokumenty…) a já z nich vytvořím osnovu.",
 ];
 
 const AUDIENCE_OPTIONS: { value: Audience; label: string }[] = [
-  { value: "beginner", label: "Začátečníci" },
+  { value: "beginner", label: "Začátečníci – denně používám počítač/telefon, chci využít víc" },
   { value: "intermediate", label: "Mírně pokročilí" },
   { value: "expert", label: "Experti" },
 ];
@@ -47,8 +47,8 @@ const AUDIENCE_OPTIONS: { value: Audience; label: string }[] = [
 const GENERATING_MESSAGES = [
   "Čtu nahrané materiály a hledám souvislosti…",
   "Aplikuji Digiskills microlearning metodiku…",
-  "Rozsekávám obsah na videa, články a testy…",
-  "Skládám interaktivní osnovu…",
+  "Rozsekávám obsah na videa, články a úkoly…",
+  "Skládám osnovu – počítač, prohlížeč, telefon…",
 ];
 
 const getActivityIcon = (type: string) => {
@@ -88,11 +88,11 @@ export default function DigiskillsCreate() {
     topic: "",
     audience: "beginner",
     goals: "",
-    duration: 1,
+    duration: 4,
     files: [],
   });
-  const [topicInput, setTopicInput] = useState("Kurz Úvod do AI, funkce LLM, bezpečnost");
-  const [goalsInput, setGoalsInput] = useState("Motivace do používání AI, první krůčky, vysvětlení principu, LLM, praktické scénáře");
+  const [topicInput, setTopicInput] = useState("Digitální inspirace – práce s počítačem, prohlížečem, telefonem a chytrými funkcemi");
+  const [goalsInput, setGoalsInput] = useState("Objevit, co všechno umí počítač a telefon – klávesové zkratky, snímky obrazovky, diktování, skenování dokumentů. Digitální mindset.");
   const [generatingMessageIndex, setGeneratingMessageIndex] = useState(0);
   const [expandedSections, setExpandedSections] = useState<string[]>(
     mockData.curriculum.map((s: { sectionTitle: string }) => s.sectionTitle)
@@ -170,14 +170,13 @@ export default function DigiskillsCreate() {
       });
     }, 1500);
     const timeout = setTimeout(() => {
-      setPhase("result");
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      router.push("/kurz/1");
     }, 6000);
     return () => {
       clearInterval(interval);
       clearTimeout(timeout);
     };
-  }, [phase]);
+  }, [phase, router]);
 
   const progressPercent = phase === "wizard" ? ((currentStep + 1) / 5) * 100 : 0;
 
@@ -1099,7 +1098,7 @@ export default function DigiskillsCreate() {
                 whileHover={{ scale: 1.02, boxShadow: "0 6px 20px rgba(37, 150, 255, 0.4)" }}
                 whileTap={{ scale: 0.98 }}
                 className="btn-primary"
-                onClick={() => router.push("/creator?saved=1")}
+                onClick={() => router.push("/kurz/1")}
                 style={{
                   padding: "12px 24px",
                   borderRadius: "var(--radius-btn)",

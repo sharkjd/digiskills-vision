@@ -10,12 +10,16 @@ import {
   Image as ImageIcon,
   Clock,
   BarChart3,
-  Bot,
   AlertTriangle,
   ChevronDown,
   BookOpen,
+  MessageCircle,
 } from "lucide-react";
 import courseData from "@/data/course-detail.json";
+import { VideoActivityContent } from "@/components/courses/ActivityContent";
+import { GoalChatbot } from "@/components/courses/GoalChatbot";
+
+const EXPANDABLE_ACTIVITY_IDS = [1, 2, 3];
 
 const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
 
@@ -36,6 +40,8 @@ const getActivityIcon = (type: string) => {
   switch (type.toLowerCase()) {
     case "video":
       return Play;
+    case "chatbot":
+      return MessageCircle;
     case "článek":
       return FileText;
     case "úkol":
@@ -63,12 +69,24 @@ export default function CourseDetailPage() {
   const [expandedSections, setExpandedSections] = useState<string[]>(
     courseData.curriculum.map((s) => s.section)
   );
+  const [expandedActivities, setExpandedActivities] = useState<number[]>([]);
 
-  const toggleActivity = (id: number) => {
+  const toggleActivityComplete = (id: number, e: React.MouseEvent) => {
+    e.stopPropagation();
     setCompletedActivities((prev) =>
       prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]
     );
   };
+
+  const toggleActivityExpand = (id: number) => {
+    if (!EXPANDABLE_ACTIVITY_IDS.includes(id)) return;
+    setExpandedActivities((prev) =>
+      prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]
+    );
+  };
+
+  const isActivityExpandable = (id: number) => EXPANDABLE_ACTIVITY_IDS.includes(id);
+  const isActivityExpanded = (id: number) => expandedActivities.includes(id);
 
   const toggleSection = (section: string) => {
     setExpandedSections((prev) =>
@@ -444,100 +462,156 @@ export default function CourseDetailPage() {
                             const Icon = getActivityIcon(item.type);
                             const isCompleted = completedActivities.includes(item.id);
                             const badgeStyle = getActivityBadgeStyle(item.color);
+                            const isExpandable = isActivityExpandable(item.id);
+                            const isExpanded = isActivityExpanded(item.id);
 
                             return (
                               <motion.div
                                 key={item.id}
-                                whileHover={{ y: -2, boxShadow: "0 8px 24px rgba(0,0,0,0.08)" }}
+                                initial={false}
                                 transition={HOVER_TRANSITION}
-                                onClick={() => toggleActivity(item.id)}
                                 style={{
-                                  display: "flex",
-                                  alignItems: "flex-start",
-                                  gap: 16,
-                                  padding: 16,
-                                  cursor: "pointer",
                                   borderRadius: 12,
                                   backgroundColor: isCompleted ? "rgba(119, 249, 217, 0.2)" : "white",
-                                  border: isCompleted ? "2px solid #77F9D9" : "1px solid #E5E7EB",
+                                  border: isExpanded
+                                    ? "2px solid var(--color-primary)"
+                                    : isCompleted
+                                    ? "2px solid #77F9D9"
+                                    : "1px solid #E5E7EB",
+                                  overflow: "hidden",
                                 }}
                               >
-                                {/* Checkbox */}
-                                <div
+                                {/* Activity header - klikací */}
+                                <motion.div
+                                  whileHover={{ backgroundColor: isExpandable ? "rgba(37, 150, 255, 0.04)" : undefined }}
+                                  onClick={() => isExpandable && toggleActivityExpand(item.id)}
                                   style={{
-                                    width: 24,
-                                    height: 24,
-                                    borderRadius: 6,
-                                    border: `2px solid ${isCompleted ? "#77F9D9" : "#D1D5DB"}`,
-                                    backgroundColor: isCompleted ? "#77F9D9" : "white",
                                     display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    flexShrink: 0,
-                                    marginTop: 2,
-                                    transition: "all 0.2s",
+                                    alignItems: "flex-start",
+                                    gap: 16,
+                                    padding: 16,
+                                    cursor: isExpandable ? "pointer" : "default",
                                   }}
                                 >
-                                  {isCompleted && (
-                                    <motion.svg
-                                      initial={{ scale: 0 }}
-                                      animate={{ scale: 1 }}
-                                      className="w-4 h-4"
-                                      viewBox="0 0 20 20"
-                                      fill="#040E3C"
-                                    >
-                                      <path
-                                        fillRule="evenodd"
-                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                        clipRule="evenodd"
-                                      />
-                                    </motion.svg>
-                                  )}
-                                </div>
-
-                                {/* Badge typu */}
-                                <div
-                                  style={{
-                                    padding: "6px 12px",
-                                    borderRadius: 20,
-                                    fontSize: 12,
-                                    fontWeight: 600,
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: 6,
-                                    flexShrink: 0,
-                                    backgroundColor: badgeStyle.bg,
-                                    color: badgeStyle.text,
-                                  }}
-                                >
-                                  <Icon style={{ width: 14, height: 14 }} />
-                                  {item.type}
-                                </div>
-
-                                {/* Obsah */}
-                                <div style={{ flex: 1, minWidth: 0 }}>
-                                  <h4
+                                  {/* Checkbox */}
+                                  <div
+                                    onClick={(e) => toggleActivityComplete(item.id, e)}
                                     style={{
-                                      fontSize: 15,
+                                      width: 24,
+                                      height: 24,
+                                      borderRadius: 6,
+                                      border: `2px solid ${isCompleted ? "#77F9D9" : "#D1D5DB"}`,
+                                      backgroundColor: isCompleted ? "#77F9D9" : "white",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      flexShrink: 0,
+                                      marginTop: 2,
+                                      transition: "all 0.2s",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    {isCompleted && (
+                                      <motion.svg
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: 1 }}
+                                        className="w-4 h-4"
+                                        viewBox="0 0 20 20"
+                                        fill="#040E3C"
+                                      >
+                                        <path
+                                          fillRule="evenodd"
+                                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                          clipRule="evenodd"
+                                        />
+                                      </motion.svg>
+                                    )}
+                                  </div>
+
+                                  {/* Badge typu */}
+                                  <div
+                                    style={{
+                                      padding: "6px 12px",
+                                      borderRadius: 20,
+                                      fontSize: 12,
                                       fontWeight: 600,
-                                      margin: "0 0 4px",
-                                      color: isCompleted ? "var(--color-text-secondary)" : "var(--color-text-main)",
-                                      textDecoration: isCompleted ? "line-through" : "none",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      gap: 6,
+                                      flexShrink: 0,
+                                      backgroundColor: badgeStyle.bg,
+                                      color: badgeStyle.text,
                                     }}
                                   >
-                                    {item.title}
-                                  </h4>
-                                  <p
-                                    style={{
-                                      fontSize: 13,
-                                      color: "var(--color-text-secondary)",
-                                      margin: 0,
-                                      lineHeight: 1.4,
-                                    }}
-                                  >
-                                    {item.desc}
-                                  </p>
-                                </div>
+                                    <Icon style={{ width: 14, height: 14 }} />
+                                    {item.type}
+                                  </div>
+
+                                  {/* Obsah */}
+                                  <div style={{ flex: 1, minWidth: 0 }}>
+                                    <h4
+                                      style={{
+                                        fontSize: 15,
+                                        fontWeight: 600,
+                                        margin: "0 0 4px",
+                                        color: isCompleted ? "var(--color-text-secondary)" : "var(--color-text-main)",
+                                        textDecoration: isCompleted ? "line-through" : "none",
+                                      }}
+                                    >
+                                      {item.title}
+                                    </h4>
+                                    <p
+                                      style={{
+                                        fontSize: 13,
+                                        color: "var(--color-text-secondary)",
+                                        margin: 0,
+                                        lineHeight: 1.4,
+                                      }}
+                                    >
+                                      {item.desc}
+                                    </p>
+                                  </div>
+
+                                  {/* Expand ikona pro rozbalovací aktivity */}
+                                  {isExpandable && (
+                                    <motion.div
+                                      animate={{ rotate: isExpanded ? 180 : 0 }}
+                                      transition={{ duration: 0.2 }}
+                                      style={{ flexShrink: 0, marginTop: 4 }}
+                                    >
+                                      <ChevronDown
+                                        style={{
+                                          width: 20,
+                                          height: 20,
+                                          color: "var(--color-text-secondary)",
+                                        }}
+                                      />
+                                    </motion.div>
+                                  )}
+                                </motion.div>
+
+                                {/* Rozbalitelný obsah */}
+                                <AnimatePresence>
+                                  {isExpanded && (
+                                    <motion.div
+                                      initial={{ height: 0, opacity: 0 }}
+                                      animate={{ height: "auto", opacity: 1 }}
+                                      exit={{ height: 0, opacity: 0 }}
+                                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                                      style={{ overflow: "hidden" }}
+                                    >
+                                      <div style={{ padding: "0 16px 16px" }}>
+                                        {(item.id === 1 || item.id === 2) && (
+                                          <VideoActivityContent
+                                            activityId={item.id}
+                                            title={item.title}
+                                          />
+                                        )}
+                                        {item.id === 3 && <GoalChatbot />}
+                                      </div>
+                                    </motion.div>
+                                  )}
+                                </AnimatePresence>
                               </motion.div>
                             );
                           })}
@@ -592,30 +666,6 @@ export default function CourseDetailPage() {
           >
             {t("courseDetail.startStudy")}
           </motion.button>
-        </motion.div>
-
-        {/* AI Chatbot floating button - hint */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5 }}
-          whileHover={{ scale: 1.05 }}
-          style={{
-            position: "fixed",
-            bottom: 24,
-            right: 24,
-            width: 64,
-            height: 64,
-            borderRadius: "50%",
-            backgroundColor: "#F7981C",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            boxShadow: "0 8px 24px rgba(247, 152, 28, 0.4)",
-          }}
-        >
-          <Bot style={{ width: 28, height: 28, color: "white" }} />
         </motion.div>
       </div>
     </div>

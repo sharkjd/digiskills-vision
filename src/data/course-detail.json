@@ -11,7 +11,7 @@
       "items": [
         { "id": 1, "type": "Video", "title": "Nástroje se mění a s tím i způsob, jak s nimi pracovat", "desc": "Vývoj je neustále vpředu, s novými nástroji můžete pracovat rychleji i chytřeji.", "color": "#A97FEF" },
         { "id": 2, "type": "Video", "title": "Digitální mindset", "desc": "Technologie jako dobrý sluha, ale zlý pán.", "color": "#A97FEF" },
-        { "id": 3, "type": "Článek", "title": "Definujte svou cestu k digitálnímu hrdinství", "desc": "Každá změna a naučená dovednost se počítá.", "color": "#77F9D9" }
+        { "id": 3, "type": "Chatbot", "title": "Definujte svou cestu k digitálnímu hrdinství", "desc": "Každá změna a naučená dovednost se počítá.", "color": "#77F9D9" }
       ]
     },
     {

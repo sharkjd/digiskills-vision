@@ -11,6 +11,7 @@
       "managerDashboard": "Dashboard manažera",
       "individualAssessment": "Individuální assessment",
       "companyReport": "Firemní report",
+      "notificationSettings": "Komunikace a notifikace",
       "adminModule": "Admin modul",
       "createCourse": "Tvorbu kurzu",
       "digiskillsCreator": "Digiskills Creator",
@@ -368,5 +369,30 @@
     "usefulTip": "Užitečný tip",
     "tipText": "Když se při studiu zaseknete, dejte si minutu pauzu. Krátké nadechnutí často otevře nové řešení. Potřebujete poradit? Použijte chat vpravo dole.",
     "ledBy": "Kurzem provází:"
+  },
+  "goalChatbot": {
+    "title": "Definuj svůj cíl",
+    "intro": "Ahoj! Pomůžu ti definovat tvou cestu k digitálnímu hrdinství. Společně si stanovíme jasný cíl, který tě bude motivovat. Odpověz na pár otázek – máš předpřipravené odpovědi, stačí stisknout Enter.",
+    "q1": "V jaké oblasti chceš nejvíce zlepšit své digitální dovednosti? (např. produktivita, komunikace, bezpečnost, AI nástroje)",
+    "q2": "Kolik času týdně chceš věnovat učení a rozvoji?",
+    "q3": "Co je tvou největší výzvou při práci s technologiemi?",
+    "q4": "Jaký je tvůj preferovaný styl učení?",
+    "q5": "Jaký konkrétní cíl chceš dosáhnout v příštích 30 dnech?",
+    "a1": "Chci se zlepšit v produktivitě a využívání AI nástrojů.",
+    "a2": "Asi 1 hodinu týdně, ideálně rozloženou do kratších bloků.",
+    "a3": "Občas se ztrácím v množství aplikací a nevím, kterou použít.",
+    "a4": "Preferuji videa a praktické příklady, které si mohu hned vyzkoušet.",
+    "a5": "Chci se naučit efektivně používat Copilot pro každodenní práci.",
+    "complete": "Skvělé! Tvůj cíl je stanovený. Níže vidíš přehled toho, co chceš dosáhnout. Teď už jen začít!",
+    "yourGoal": "Tvůj digitální cíl",
+    "next30days": "Na příštích 30 dní",
+    "summaryArea": "Oblast zaměření",
+    "summaryTime": "Čas na učení",
+    "summaryChallenge": "Hlavní výzva",
+    "summaryStyle": "Styl učení",
+    "summaryGoal": "Můj cíl",
+    "placeholder": "Napiš odpověď nebo použij předpřipravenou...",
+    "hint": "Tip: Stiskni Enter pro odeslání předpřipravené odpovědi",
+    "defineAgain": "Definovat cíl znovu"
   }
 }
