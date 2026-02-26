@@ -251,7 +251,20 @@
     "gaps": "Kde máme mezery (Příležitosti k růstu)",
     "milestone1": "Zvládnutí základů",
     "milestone2": "Zvýšení produktivity v M365",
-    "milestone3": "AI Inovátoři"
+    "milestone3": "AI Inovátoři",
+    "completedCourses": "Dokončené kurzy",
+    "completedCoursesDesc": "Přehled kurzů, které váš tým úspěšně dokončil.",
+    "popularCourses": "Nejoblíbenější kurzy",
+    "popularCoursesDesc": "Kurzy s nejvyšším počtem aktivních studentů v týmu.",
+    "lowCompletionCourses": "Kurzy s nejnižším dokončením",
+    "lowCompletionCoursesDesc": "Tyto kurzy potřebují pozornost – zaměstnanci je nedokončují.",
+    "completionRate": "míra dokončení",
+    "activeStudents": "aktivních studentů",
+    "studentsCount": "studentů",
+    "actionNeeded": "Potřebuje pozornost",
+    "viewCourse": "Zobrazit kurz",
+    "sendReminder": "Poslat připomenutí",
+    "week": "Týden"
   },
   "profile": {
     "week": "Týden",

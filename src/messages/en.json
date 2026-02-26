@@ -251,7 +251,20 @@
     "gaps": "Where we have gaps (Growth opportunities)",
     "milestone1": "Mastering basics",
     "milestone2": "Boosting productivity in M365",
-    "milestone3": "AI Innovators"
+    "milestone3": "AI Innovators",
+    "completedCourses": "Completed courses",
+    "completedCoursesDesc": "Overview of courses your team has successfully completed.",
+    "popularCourses": "Most popular courses",
+    "popularCoursesDesc": "Courses with the highest number of active students in the team.",
+    "lowCompletionCourses": "Courses with lowest completion",
+    "lowCompletionCoursesDesc": "These courses need attention – employees are not completing them.",
+    "completionRate": "completion rate",
+    "activeStudents": "active students",
+    "studentsCount": "students",
+    "actionNeeded": "Needs attention",
+    "viewCourse": "View course",
+    "sendReminder": "Send reminder",
+    "week": "Week"
   },
   "profile": {
     "week": "Week",
