@@ -21,6 +21,8 @@ const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
 type DeliveryChannel = "teams" | "whatsapp" | "email";
 type MentorStyle = "quick" | "quiz" | "deep";
 type Frequency = "weekly" | "biweekly" | "off";
+type ManagerInfoFreq = "off" | "biweekly" | "monthly";
+type LeadershipInfoFreq = "off" | "monthly" | "quarterly";
 
 interface SettingsState {
   deliveryChannels: DeliveryChannel[];
@@ -28,6 +30,8 @@ interface SettingsState {
   frequency: Frequency;
   mandatoryDelivery: boolean;
   minFrequency: "weekly" | "biweekly";
+  managerInfoFreq: ManagerInfoFreq;
+  leadershipInfoFreq: LeadershipInfoFreq;
 }
 
 const CHANNEL_OPTIONS = [
@@ -75,13 +79,27 @@ const FREQUENCY_OPTIONS = [
   { id: "off" as const, label: "Vypnout" },
 ];
 
+const MANAGER_INFO_OPTIONS: { id: ManagerInfoFreq; label: string }[] = [
+  { id: "off", label: "Vypnout" },
+  { id: "biweekly", label: "1x 14 dní" },
+  { id: "monthly", label: "1x měsíc" },
+];
+
+const LEADERSHIP_INFO_OPTIONS: { id: LeadershipInfoFreq; label: string }[] = [
+  { id: "off", label: "Vypnout" },
+  { id: "monthly", label: "1x měsíc" },
+  { id: "quarterly", label: "1x kvartál" },
+];
+
 export default function CommunicationSettings() {
   const [settings, setSettings] = useState<SettingsState>({
     deliveryChannels: ["teams"],
     mentorStyle: "quick",
     frequency: "weekly",
     mandatoryDelivery: true,
-    minFrequency: "weekly",
+    minFrequency: "biweekly",
+    managerInfoFreq: "biweekly",
+    leadershipInfoFreq: "monthly",
   });
   const isFrequencyDisabled = (freq: Frequency) => {
     if (!settings.mandatoryDelivery) return false;
@@ -801,6 +819,120 @@ export default function CommunicationSettings() {
                   ? "Zaměstnanci musí dostávat zprávy minimálně 1x týdně."
                   : "Zaměstnanci si mohou nastavit frekvenci až 1x za 14 dní."}
               </p>
+            </div>
+
+            {/* INFORMACE MANAŽERŮM */}
+            <div style={{ marginTop: 32, marginBottom: 32 }}>
+              <h3
+                style={{
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: "#374151",
+                  margin: "0 0 14px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.5px",
+                }}
+              >
+                Informace manažerům
+              </h3>
+              <div
+                style={{
+                  display: "flex",
+                  gap: 8,
+                  background: "#F4F5FA",
+                  padding: 4,
+                  borderRadius: 12,
+                }}
+              >
+                {MANAGER_INFO_OPTIONS.map((option) => {
+                  const isSelected = settings.managerInfoFreq === option.id;
+                  return (
+                    <motion.button
+                      key={option.id}
+                      onClick={() =>
+                        setSettings((s) => ({
+                          ...s,
+                          managerInfoFreq: option.id,
+                        }))
+                      }
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      transition={HOVER_TRANSITION}
+                      style={{
+                        flex: 1,
+                        padding: "12px 16px",
+                        background: isSelected ? "#2596FF" : "transparent",
+                        border: "none",
+                        borderRadius: 8,
+                        cursor: "pointer",
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: isSelected ? "white" : "#6B7280",
+                        transition: "all 0.2s ease",
+                      }}
+                    >
+                      {option.label}
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* INFORMACE VEDENÍ FIRMY */}
+            <div style={{ marginBottom: 32 }}>
+              <h3
+                style={{
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: "#374151",
+                  margin: "0 0 14px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.5px",
+                }}
+              >
+                Informace vedení firmy
+              </h3>
+              <div
+                style={{
+                  display: "flex",
+                  gap: 8,
+                  background: "#F4F5FA",
+                  padding: 4,
+                  borderRadius: 12,
+                }}
+              >
+                {LEADERSHIP_INFO_OPTIONS.map((option) => {
+                  const isSelected = settings.leadershipInfoFreq === option.id;
+                  return (
+                    <motion.button
+                      key={option.id}
+                      onClick={() =>
+                        setSettings((s) => ({
+                          ...s,
+                          leadershipInfoFreq: option.id,
+                        }))
+                      }
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      transition={HOVER_TRANSITION}
+                      style={{
+                        flex: 1,
+                        padding: "12px 16px",
+                        background: isSelected ? "#2596FF" : "transparent",
+                        border: "none",
+                        borderRadius: 8,
+                        cursor: "pointer",
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: isSelected ? "white" : "#6B7280",
+                        transition: "all 0.2s ease",
+                      }}
+                    >
+                      {option.label}
+                    </motion.button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* INFO BOX */}
