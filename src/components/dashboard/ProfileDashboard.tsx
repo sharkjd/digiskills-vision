@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -58,6 +58,7 @@ const BEST_EMPLOYEE = 9.2;
 
 export default function ProfileDashboard() {
   const { t } = useTranslation();
+  const [ctaHovered, setCtaHovered] = useState(false);
   const activityData = ACTIVITY_WEEKS.map((w, i) => ({
     week: `${t("profile.week")} ${w}`,
     lessons: ACTIVITY_LESSONS[i],
@@ -616,10 +617,12 @@ export default function ProfileDashboard() {
       {/* F. Přehled kurzů – dokončené / rozkoukané / zbývající */}
       <CourseProgressSection />
 
-      {/* G. CTA – outline styl */}
-      <motion.div variants={itemVariants}>
+      {/* G. CTA – outline styl, běžná velikost, zarovnáno doprostřed */}
+      <motion.div variants={itemVariants} style={{ display: "flex", justifyContent: "center" }}>
         <Link href="/moje-kurzy">
           <motion.div
+            onMouseEnter={() => setCtaHovered(true)}
+            onMouseLeave={() => setCtaHovered(false)}
             whileHover={{
               scale: 1.01,
               boxShadow: "0 8px 24px rgba(37,150,255,0.2)",
@@ -629,19 +632,32 @@ export default function ProfileDashboard() {
             style={{
               background: "var(--color-background)",
               border: "2px solid var(--color-primary)",
-              borderRadius: 16,
-              padding: "24px 32px",
-              display: "flex",
-              justifyContent: "center",
+              borderRadius: 12,
+              padding: "12px 22px",
+              display: "inline-flex",
               alignItems: "center",
               gap: 10,
               cursor: "pointer",
             }}
           >
-            <span style={{ color: "var(--color-primary)", fontSize: 17, fontWeight: 700 }}>
+            <span
+              style={{
+                color: ctaHovered ? "white" : "var(--color-primary)",
+                fontSize: 15,
+                fontWeight: 700,
+              }}
+            >
               Přejít na moje kurzy
             </span>
-            <span style={{ color: "var(--color-primary)", fontSize: 20, fontWeight: 700 }}>→</span>
+            <span
+              style={{
+                color: ctaHovered ? "white" : "var(--color-primary)",
+                fontSize: 18,
+                fontWeight: 700,
+              }}
+            >
+              →
+            </span>
           </motion.div>
         </Link>
       </motion.div>
