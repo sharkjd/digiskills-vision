@@ -61,6 +61,14 @@ const IMPROVEMENT_PRIORITIES = [
   { area: "Přehled úkolů a práce na projektech", count: 533 },
 ];
 
+const AMBASSADORS = [
+  { name: "Marie Nováková", index: 9.2 },
+  { name: "Petr Svoboda", index: 8.7 },
+  { name: "Eva Horáková", index: 8.4 },
+  { name: "Jan Procházka", index: 8.1 },
+  { name: "Lucie Dvořáková", index: 7.9 },
+];
+
 const M365_PROFICIENCY = [
   { app: "Outlook", usage: 9.1, proficiency: 7.6, icon: "/logos/Outlook.png", color: "#0078D4" },
   { app: "Word", usage: 8.2, proficiency: 7.7, icon: "/logos/Word.png", color: "#2B579A" },
@@ -528,76 +536,151 @@ export default function CompanyAssessmentReport() {
         </div>
       </div>
 
-      {/* STRATEGICKÉ PRIORITY - HEATMAPA */}
-      <div
-        style={{
-          background: "#F4F5FA",
-          borderRadius: 16,
-          padding: "28px",
-          border: "1px solid #E5E7EB",
-        }}
-      >
-        <h2 style={{ fontSize: 20, fontWeight: 700, color: "#040E3C", margin: "0 0 8px", fontStyle: "italic" }}>
-          Strategické priority
-        </h2>
-        <p style={{ fontSize: 14, color: "#6B7280", margin: "0 0 24px" }}>
-          Co chtějí zaměstnanci ve firmě zlepšit – hlasování respondentů
-        </p>
+      {/* STRATEGICKÉ PRIORITY + AMBASADOŘI - DVA SLOUPCE */}
+      <div style={{ display: "flex", gap: 24, alignItems: "stretch" }}>
+        {/* STRATEGICKÉ PRIORITY - HEATMAPA */}
+        <div
+          style={{
+            flex: 1,
+            minWidth: 0,
+            background: "#F4F5FA",
+            borderRadius: 16,
+            padding: "28px",
+            border: "1px solid #E5E7EB",
+          }}
+        >
+          <h2 style={{ fontSize: 20, fontWeight: 700, color: "#040E3C", margin: "0 0 8px", fontStyle: "italic" }}>
+            Strategické priority
+          </h2>
+          <p style={{ fontSize: 14, color: "#6B7280", margin: "0 0 24px" }}>
+            Co chtějí zaměstnanci ve firmě zlepšit – hlasování respondentů
+          </p>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          {IMPROVEMENT_PRIORITIES.map((item, index) => {
-            const percentage = ((item.count / maxPriority) * 100).toFixed(0);
-            const realPercentage = ((item.count / COMPANY_DATA.respondents) * 100).toFixed(0);
-            return (
-              <div key={item.area} style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            {IMPROVEMENT_PRIORITIES.map((item, index) => {
+              const percentage = ((item.count / maxPriority) * 100).toFixed(0);
+              const realPercentage = ((item.count / COMPANY_DATA.respondents) * 100).toFixed(0);
+              return (
+                <div key={item.area} style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                  <div
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: "50%",
+                      background: index < 2 ? "#2596FF" : "#040E3C",
+                      color: "white",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: 13,
+                      fontWeight: 700,
+                      flexShrink: 0,
+                    }}
+                  >
+                    {index + 1}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                      <span style={{ fontSize: 14, fontWeight: 600, color: "#040E3C" }}>{item.area}</span>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: "#2596FF" }}>{realPercentage}%</span>
+                    </div>
+                    <div
+                      style={{
+                        height: 10,
+                        background: "white",
+                        borderRadius: 5,
+                        overflow: "hidden",
+                        border: "1px solid #E5E7EB",
+                      }}
+                    >
+                      <div
+                        style={{
+                          height: "100%",
+                          width: `${percentage}%`,
+                          background: index < 2 ? "#2596FF" : "#9CA3AF",
+                          borderRadius: 5,
+                          transition: "width 0.4s ease",
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <span style={{ fontSize: 12, color: "#6B7280", minWidth: 60, textAlign: "right" }}>
+                    {item.count.toLocaleString("cs-CZ")} hlasů
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* AMBASADOŘI */}
+        <div
+          style={{
+            flex: 1,
+            minWidth: 0,
+            background: "white",
+            borderRadius: 16,
+            padding: "28px",
+            border: "1px solid #E5E7EB",
+          }}
+        >
+          <h2 style={{ fontSize: 20, fontWeight: 700, color: "#040E3C", margin: "0 0 24px", fontStyle: "italic" }}>
+            Ambasadoři
+          </h2>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            {AMBASSADORS.map((person, index) => {
+              const initials = person.name
+                .split(" ")
+                .map((n) => n[0])
+                .join("");
+              return (
                 <div
+                  key={person.name}
                   style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: "50%",
-                    background: index < 2 ? "#2596FF" : "#040E3C",
-                    color: "white",
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: 13,
-                    fontWeight: 700,
-                    flexShrink: 0,
+                    gap: 16,
                   }}
                 >
-                  {index + 1}
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                    <span style={{ fontSize: 14, fontWeight: 600, color: "#040E3C" }}>{item.area}</span>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: "#2596FF" }}>{realPercentage}%</span>
+                  <div
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: "50%",
+                      background: "#2596FF",
+                      color: "white",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: 16,
+                      fontWeight: 700,
+                      flexShrink: 0,
+                    }}
+                  >
+                    {initials}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 16, fontWeight: 700, color: "#040E3C" }}>
+                      {person.name}
+                    </div>
+                    <div style={{ fontSize: 14, color: "#6B7280" }}>
+                      {person.index.toFixed(1)} Digiskills Index
+                    </div>
                   </div>
                   <div
                     style={{
-                      height: 10,
-                      background: "white",
-                      borderRadius: 5,
-                      overflow: "hidden",
-                      border: "1px solid #E5E7EB",
+                      fontSize: 24,
+                      fontWeight: 700,
+                      color: "#2596FF",
                     }}
                   >
-                    <div
-                      style={{
-                        height: "100%",
-                        width: `${percentage}%`,
-                        background: index < 2 ? "#2596FF" : "#9CA3AF",
-                        borderRadius: 5,
-                        transition: "width 0.4s ease",
-                      }}
-                    />
+                    #{index + 1}
                   </div>
                 </div>
-                <span style={{ fontSize: 12, color: "#6B7280", minWidth: 60, textAlign: "right" }}>
-                  {item.count.toLocaleString("cs-CZ")} hlasů
-                </span>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -827,8 +910,33 @@ export default function CompanyAssessmentReport() {
         </motion.div>
       </div>
 
-      {/* Stáhnout PDF */}
-      <div style={{ display: "flex", justifyContent: "center", paddingTop: 8 }}>
+      {/* Srovnávací report + Stáhnout PDF */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16, paddingTop: 24 }}>
+        <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }} transition={HOVER_TRANSITION}>
+          <Link
+            href="/firma/srovnani"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "10px 20px",
+              background: "rgb(71, 149, 249)",
+              border: "none",
+              borderRadius: 8,
+              color: "white",
+              fontSize: 14,
+              fontWeight: 600,
+              cursor: "pointer",
+              textDecoration: "none",
+            }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 3v18h18" />
+              <path d="M18 9l-5 5-4-4-3 3" />
+            </svg>
+            Zobrazit srovnávací report
+          </Link>
+        </motion.div>
         <motion.a
           href="https://digiskillscz.sharepoint.com/sites/Kooperativapojiovna-Intern/Sdilene%20dokumenty/Forms/AllItems.aspx?id=%2Fsites%2FKooperativapojiovna%2DIntern%2FSdilene%20dokumenty%2FIntern%C3%AD%2FAssessment%2FVyhodnoceni%20%2D%20Reporty%2FVIGCZ%5FUvodni%20assessment%20CZ%5F2025%2Epdf&parent=%2Fsites%2FKooperativapojiovna%2DIntern%2FSdilene%20dokumenty%2FIntern%C3%AD%2FAssessment%2FVyhodnoceni%20%2D%20Reporty"
           target="_blank"
