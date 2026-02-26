@@ -4,19 +4,23 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { Paperclip } from "lucide-react";
 import ScaleSlider from "./ScaleSlider";
 import CheckboxGroup from "./CheckboxGroup";
 import { getSections, getInitialData, type FormData, type SectionData, type SectionKey } from "./assessment-data";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTranslation } from "@/hooks/useTranslation";
 import AssessmentSummary from "./AssessmentSummary";
+import { MarkdownFeedback } from "./MarkdownFeedback";
 
-const TOTAL_STEPS = 8;
+const TOTAL_STEPS = 9;
+const ONEDRIVE_VISUAL_STEP = 3;
 
 const STEP_KEYS = [
   "assessment.steps.identification",
   "assessment.steps.information",
   "assessment.steps.communication",
+  "assessment.steps.onedriveTask",
   "assessment.steps.content",
   "assessment.steps.security",
   "assessment.steps.problemsolving",
@@ -81,6 +85,10 @@ export default function AssessmentForm() {
   const [formData, setFormData] = useState<FormData>(INITIAL_DATA);
   const [phase, setPhase] = useState<"form" | "loading" | "report">("form");
   const [direction, setDirection] = useState(1);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [isAnalyzingVisual, setIsAnalyzingVisual] = useState(false);
+  const [visualTaskCompleted, setVisualTaskCompleted] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -115,6 +123,9 @@ export default function AssessmentForm() {
 
       if (phase !== "form") return;
 
+      const onVisualTaskBlocked = currentStep === ONEDRIVE_VISUAL_STEP && !visualTaskCompleted;
+      if (onVisualTaskBlocked) return;
+
       if (currentStep < TOTAL_STEPS - 1) {
         setDirection(1);
         setCurrentStep((s) => Math.min(s + 1, TOTAL_STEPS - 1));
@@ -126,7 +137,7 @@ export default function AssessmentForm() {
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [currentStep, phase]);
+  }, [currentStep, phase, visualTaskCompleted]);
 
   const progress = Math.round((currentStep / (TOTAL_STEPS - 1)) * 100);
 
@@ -147,7 +158,15 @@ export default function AssessmentForm() {
     setCurrentStep((s) => s - 1);
   };
 
-  const currentSection = currentStep >= 1 && currentStep <= 5 ? SECTIONS[currentStep - 1] : null;
+  const sectionIndex =
+    currentStep >= 1 && currentStep < ONEDRIVE_VISUAL_STEP
+      ? currentStep - 1
+      : currentStep > ONEDRIVE_VISUAL_STEP && currentStep <= 6
+        ? currentStep - 2
+        : -1;
+  const currentSection = sectionIndex >= 0 ? SECTIONS[sectionIndex] : null;
+  const isVisualTaskStep = currentStep === ONEDRIVE_VISUAL_STEP;
+  const visualTaskCanProceed = !isVisualTaskStep || visualTaskCompleted;
   const isReport = phase === "report";
   const isLoading = phase === "loading";
 
@@ -378,8 +397,8 @@ export default function AssessmentForm() {
               </motion.div>
             )}
 
-            {/* Steps 1–5: Kompetence */}
-            {!isLoading && !isReport && currentStep >= 1 && currentStep <= 5 && currentSection && (
+            {/* Steps 1–2, 4–6: Kompetence */}
+            {!isLoading && !isReport && currentStep >= 1 && currentStep <= 6 && currentStep !== ONEDRIVE_VISUAL_STEP && currentSection && (
               <motion.div
                 key={`step-${currentStep}`}
                 custom={direction}
@@ -423,8 +442,183 @@ export default function AssessmentForm() {
               </motion.div>
             )}
 
-            {/* Step 6: AI Bonus */}
-            {!isLoading && !isReport && currentStep === 6 && (
+            {/* Step 3: OneDrive vizuální úkol */}
+            {!isLoading && !isReport && isVisualTaskStep && (
+              <motion.div
+                key="step-onedrive"
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+              >
+                <motion.div variants={containerVariants} initial="hidden" animate="visible">
+                  <motion.div variants={itemVariants}>
+                    <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 18 }}>
+                      <div
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 12,
+                          background: "rgba(37, 150, 255, 0.12)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                          fontSize: 20,
+                        }}
+                      >
+                        ☁️
+                      </div>
+                      <div>
+                        <h2
+                          style={{
+                            fontSize: 18,
+                            fontWeight: 700,
+                            fontStyle: "italic",
+                            color: "#040E3C",
+                            marginBottom: 4,
+                          }}
+                        >
+                          {t("assessment.steps.onedriveTask")}
+                        </h2>
+                        <div style={{ fontSize: 13, color: "#6B7280", lineHeight: 1.5 }}>
+                          <MarkdownFeedback text={t("assessmentChatbot.visualTask.onedriveReadonly.instruction")} />
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                  <motion.div variants={itemVariants}>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (!file || !file.type.startsWith("image/")) return;
+                        const reader = new FileReader();
+                        reader.onload = () => setSelectedImage(reader.result as string);
+                        reader.readAsDataURL(file);
+                        e.target.value = "";
+                      }}
+                      style={{ display: "none" }}
+                    />
+                    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                      <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                        <motion.button
+                          type="button"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => fileInputRef.current?.click()}
+                          style={{
+                            width: 44,
+                            height: 44,
+                            flexShrink: 0,
+                            borderRadius: "var(--radius-btn)",
+                            border: "1px solid var(--color-border)",
+                            background: "var(--color-background)",
+                            color: "var(--color-primary)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            cursor: "pointer",
+                          }}
+                          aria-label={t("assessmentChatbot.visualTask.uploadImage")}
+                        >
+                          <Paperclip size={20} strokeWidth={2} />
+                        </motion.button>
+                        <span style={{ fontSize: 14, color: "var(--color-text-secondary)" }}>
+                          {selectedImage
+                            ? t("assessmentChatbot.visualTask.changeImage")
+                            : t("assessmentChatbot.visualTask.uploadHint")}
+                        </span>
+                      </div>
+                      {selectedImage && !visualTaskCompleted && (
+                        <div style={{ display: "flex", gap: 12, alignItems: "flex-end" }}>
+                          <div
+                            style={{
+                              width: 120,
+                              height: 90,
+                              borderRadius: "var(--radius-input)",
+                              overflow: "hidden",
+                              border: "1px solid var(--color-border)",
+                            }}
+                          >
+                            <img
+                              src={selectedImage}
+                              alt="Preview"
+                              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                            />
+                          </div>
+                          <motion.button
+                            type="button"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => {
+                              if (!selectedImage || isAnalyzingVisual) return;
+                              setIsAnalyzingVisual(true);
+                              window.setTimeout(() => {
+                                setIsAnalyzingVisual(false);
+                                setVisualTaskCompleted(true);
+                              }, 2500);
+                            }}
+                            disabled={isAnalyzingVisual}
+                            style={{
+                              padding: "10px 20px",
+                              borderRadius: "var(--radius-btn)",
+                              border: "none",
+                              background: "var(--color-primary)",
+                              color: "white",
+                              fontSize: 14,
+                              fontWeight: 600,
+                              cursor: isAnalyzingVisual ? "not-allowed" : "pointer",
+                            }}
+                          >
+                            {t("assessmentChatbot.send")}
+                          </motion.button>
+                        </div>
+                      )}
+                      {isAnalyzingVisual && (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 10,
+                            padding: "12px 16px",
+                            background: "rgba(37, 150, 255, 0.08)",
+                            borderRadius: "var(--radius-input)",
+                          }}
+                        >
+                          <div
+                            className="ds-spinner"
+                            style={{ width: 24, height: 24, flexShrink: 0 }}
+                            aria-hidden
+                          />
+                          <span style={{ fontSize: 14, color: "var(--color-text-secondary)" }}>
+                            {t("assessmentChatbot.visualTask.analyzing")}
+                          </span>
+                        </div>
+                      )}
+                      {visualTaskCompleted && (
+                        <div
+                          style={{
+                            padding: "12px 16px",
+                            background: "rgba(37, 150, 255, 0.08)",
+                            borderRadius: "var(--radius-input)",
+                          }}
+                        >
+                          <MarkdownFeedback text={t("assessmentChatbot.visualTask.demoFeedback")} />
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+            )}
+
+            {/* Step 7: AI Bonus */}
+            {!isLoading && !isReport && currentStep === 7 && (
               <motion.div
                 key="step-6"
                 custom={direction}
@@ -461,10 +655,10 @@ export default function AssessmentForm() {
               </motion.div>
             )}
 
-            {/* Step 7: Odeslání */}
-            {!isLoading && !isReport && currentStep === 7 && (
+            {/* Step 8: Odeslání */}
+            {!isLoading && !isReport && currentStep === 8 && (
               <motion.div
-                key="step-7"
+                key="step-8"
                 custom={direction}
                 variants={slideVariants}
                 initial="enter"
@@ -554,19 +748,20 @@ export default function AssessmentForm() {
 
             {currentStep < TOTAL_STEPS - 1 ? (
               <motion.button
-                whileHover={{ scale: 1.02, boxShadow: "0 6px 20px rgba(37, 150, 255, 0.4)" }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: visualTaskCanProceed ? 1.02 : 1, boxShadow: visualTaskCanProceed ? "0 6px 20px rgba(37, 150, 255, 0.4)" : "none" }}
+                whileTap={{ scale: visualTaskCanProceed ? 0.98 : 1 }}
                 onClick={goNext}
+                disabled={isVisualTaskStep && !visualTaskCompleted}
                 style={{
                   padding: "10px 24px",
                   borderRadius: 10,
                   border: "none",
-                  background: "#2596FF",
+                  background: visualTaskCanProceed ? "#2596FF" : "#9CA3AF",
                   color: "white",
                   fontSize: 14,
                   fontWeight: 700,
-                  cursor: "pointer",
-                  boxShadow: "0 4px 12px rgba(37, 150, 255, 0.3)",
+                  cursor: visualTaskCanProceed ? "pointer" : "not-allowed",
+                  boxShadow: visualTaskCanProceed ? "0 4px 12px rgba(37, 150, 255, 0.3)" : "none",
                   display: "flex",
                   alignItems: "center",
                   gap: 8,

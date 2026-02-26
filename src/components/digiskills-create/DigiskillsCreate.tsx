@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -75,6 +76,7 @@ const getActivityBadgeStyle = (color: string) => ({
 });
 
 export default function DigiskillsCreate() {
+  const router = useRouter();
   const [phase, setPhase] = useState<Phase>("wizard");
   const [currentStep, setCurrentStep] = useState(0);
   const [messages, setMessages] = useState<ChatMessage[]>(() => [
@@ -974,6 +976,7 @@ export default function DigiskillsCreate() {
                 whileHover={{ scale: 1.02, boxShadow: "0 6px 20px rgba(37, 150, 255, 0.4)" }}
                 whileTap={{ scale: 0.98 }}
                 className="btn-primary"
+                onClick={() => router.push("/creator?saved=1")}
                 style={{
                   padding: "12px 24px",
                   borderRadius: "var(--radius-btn)",

@@ -10,7 +10,7 @@ import type { Language } from "@/context/LanguageContext";
 const NAV_LINKS = [
   { labelKey: "header.nav.onlineCourses", href: "/moje-kurzy" },
   { labelKey: "header.nav.microlearning", href: "/microlearning" },
-  { labelKey: "header.nav.home", href: "/" },
+  { labelKey: "header.nav.assessment", href: "/assessment" },
 ];
 
 const DROPDOWN_ITEMS = [
@@ -20,6 +20,7 @@ const DROPDOWN_ITEMS = [
   { labelKey: "header.dropdown.companyReport", href: "/firma" },
   { labelKey: "header.dropdown.adminModule", href: "/admin/kurzy" },
   { labelKey: "header.dropdown.createCourse", href: "/admin/tvorba-kurzu" },
+  { labelKey: "header.dropdown.digiskillsCreator", href: "/creator" },
   { labelKey: "header.dropdown.logout", href: "/odhlasit" },
 ];
 

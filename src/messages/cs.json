@@ -3,7 +3,7 @@
     "nav": {
       "onlineCourses": "Online kurzy",
       "microlearning": "Microlearning",
-      "home": "Domů"
+      "assessment": "Assessment"
     },
     "licenseUntil": "Plná verze do",
     "dropdown": {
@@ -13,6 +13,7 @@
       "companyReport": "Firemní report",
       "adminModule": "Admin modul",
       "createCourse": "Tvorbu kurzu",
+      "digiskillsCreator": "Digiskills Creator",
       "logout": "Odhlásit se"
     }
   },
@@ -27,7 +28,7 @@
     "welcome": "Vítejte v aplikaci Digiskills. Zjistěte úroveň svých digitálních dovedností a získejte doporučené kurzy.",
     "assessment": {
       "title": "Digitální Assessment",
-      "subtitle": "DigComp 2.1 · 8 kroků · ~5 minut",
+      "subtitle": "DigComp 2.1 · ~15 minut",
       "description": "Otestujte své digitální kompetence v 5 oblastech: informační gramotnost, komunikace, tvorba obsahu, bezpečnost a řešení problémů. Na základě výsledků získáte doporučené kurzy.",
       "cta": "Spustit assessment →"
     },
@@ -61,13 +62,51 @@
     "title": "Digitální Assessment",
     "subtitle": "Mapování digitálních kompetencí DigComp 2.1 · Vyberte způsob vyplnění",
     "formOption": "Vyplnit klasický formulář",
-    "formOptionDesc": "Projděte kroky od identifikace přes jednotlivé kompetence až po odeslání.",
+    "formOptionDesc": "Projděte kroky od identifikace až po odeslání.",
+    "formCta": "Vyplnit",
     "chatbotOption": "Popovídat si s chatbotem",
-    "chatbotOptionDesc": "Odpovězte na otázky v přátelském chatu – pište nebo mluvte.",
+    "chatbotOptionDesc": "Odpovězte na otázky v chatu – pište nebo mluvte.",
+    "chatbotCta": "Začít konverzaci",
+    "voiceOption": "Zavolám si s AI Eliškou",
+    "voiceOptionDesc": "Na telefon vám zavolá náš AI voicebot Eliška.",
+    "voiceCta": "Chci zavolat",
+    "voiceCalling": "Počkejte prosím, budeme vás spojovat s AI Eliškou.",
+    "voiceCallingTitle": "Vyzváníme…",
+    "voiceSuccess": "Eliška je s vámi na telefonu. Příjemný rozhovor!",
+    "voiceSuccessTitle": "Hovor probíhá",
+    "voiceError": "Nepodařilo se zahájit hovor. Zkuste to znovu.",
+    "info": {
+      "badge": "Proč assessment děláme",
+      "title": "Co je Digiskills Assessment a co vám přinese",
+      "lead": "Assessment je rychlé mapování digitálních dovedností v oblastech DigComp 2.1. Pomůže vám i firmě pochopit, kde jsou silné stránky a kde má smysl zaměřit další rozvoj.",
+      "step1Title": "Zodpovíte pár cílených otázek",
+      "step1Desc": "Vyplníte krátké otázky přes formulář, chatbot nebo telefonát s AI.",
+      "step2Title": "Vyhodnotíme vaše výsledky",
+      "step2Desc": "Sestavíme přehled kompetencí, silných stránek i prostoru pro růst.",
+      "step3Title": "Dostanete doporučení kurzů",
+      "step3Desc": "Navrhneme praktické kurzy pro jednotlivce i celou firmu.",
+      "benefitsTitle": "Co díky assessmentu získáte",
+      "benefitsSubtitle": "Konkrétní výstupy, které se dají hned použít v rozvoji lidí i firmy.",
+      "benefit1Title": "Jasný obraz současného stavu",
+      "benefit1Desc": "Okamžitě uvidíte, kde si stojíte napříč klíčovými digitálními oblastmi.",
+      "benefit2Title": "Srozumitelné metriky a porovnání",
+      "benefit2Desc": "Výsledky dostanete v přehledné podobě a v kontextu benchmarku.",
+      "benefit3Title": "Priorita rozvoje podle dopadu",
+      "benefit3Desc": "Snadno určíte, co rozvíjet nejdřív, aby to mělo největší efekt.",
+      "benefit4Title": "Doporučené kurzy na míru",
+      "benefit4Desc": "Systém navrhne konkrétní kurzy odpovídající zjištěným potřebám.",
+      "benchmarkTitle": "Standard v benchmarku",
+      "benchmarkDesc": "Výstupy navazují na firemní report a ukazují nejen skóre, ale i praktické priority pro vzdělávání.",
+      "benchmarkPoint1": "Srovnání s průměrem trhu",
+      "benchmarkPoint2": "Identifikace největšího potenciálu růstu",
+      "benchmarkPoint3": "Návrh firemní vzdělávací cesty",
+      "reportCta": "Ukázka firemního reportu"
+    },
     "steps": {
       "identification": "Identifikace",
       "information": "Informace & Data",
       "communication": "Komunikace",
+      "onedriveTask": "OneDrive – sdílení",
       "content": "Tvorba obsahu",
       "security": "Bezpečnost",
       "problemsolving": "Řešení problémů",
@@ -130,7 +169,19 @@
     "defaultAnswer5": "Návody si vyhledám, většinou to vyřeším sám. IT volám jen když je to opravdu složitější – 8.",
     "defaultAnswer6": "Copilot občas zkusím, Diktování používám. Zatím spíš experimentuji – 6.",
     "send": "Odeslat",
-    "chatbotSubtitle": "Mapování digitálních kompetencí DigComp 2.1 · Chatbot"
+    "chatbotSubtitle": "Mapování digitálních kompetencí DigComp 2.1 · Chatbot",
+    "questionProgress": "Otázka {current} z {total}",
+    "visualTask": {
+      "onedriveReadonly": {
+        "instruction": "Sdílej dokument v OneDrive s právy **pouze pro čtení** (Read-only / Can view). Otevři dialog sdílení, nastav oprávnění na „Pouze prohlížení“ a pošli mi screenshot nastavení."
+      },
+      "uploadHint": "Klikni nebo přetáhni screenshot",
+      "analyzing": "Analyzuji screenshot…",
+      "uploadImage": "Nahrát obrázek",
+      "changeImage": "Změnit obrázek",
+      "imageReady": "Obrázek připraven k odeslání",
+      "demoFeedback": "Děkuji, výsledek jsem si poznamenal. Měl jsi to skoro správně – 7/10."
+    }
   },
   "assessmentRoles": {
     "management": "Management / Vedení",
@@ -185,6 +236,8 @@
     "inTeam": "v týmu",
     "remainingToGoal": "Zbývá k cíli",
     "lessons": "lekcí",
+    "teamPlacement": "Umístění týmu",
+    "outOfTeams": "z 12 týmů",
     "teamPath": "Cesta našeho týmu: Kam směřujeme",
     "done": "Hotovo",
     "inProgress": "Probíhá",
@@ -271,6 +324,36 @@
     "priority": "Priorita {index}",
     "close": "Zavřít",
     "searchPlaceholder": "Hledat kurz (název, popis, úroveň)..."
+  },
+  "creator": {
+    "title": "Digiskills Creator",
+    "subtitle": "Spravujte své kurzy, sledujte prodeje a vytvářejte nový obsah pro marketplace",
+    "myCourses": "Moje kurzy",
+    "salesAndCommissions": "Prodeje a provize",
+    "salesDesc": "Přehled prodejů a provizí z vašich kurzů na marketplace",
+    "salesTableDesc": "Provize po kurzech zobrazíte po rozkliknutí detailu. Aktuální sazba provize: 50 % z ceny kurzu.",
+    "createNew": "Vytvořit nový kurz",
+    "createNewDesc": "Kurz vytvořený pomocí AI půjde do Digiskills marketplace a bude dostupný ostatním uživatelům.",
+    "statusDraft": "Koncept",
+    "statusInReview": "V recenzi",
+    "statusPublished": "Publikován",
+    "edit": "Upravit",
+    "preview": "Náhled",
+    "hide": "Skrýt",
+    "courseCount": "Počet kurzů",
+    "totalSales": "Celkové prodeje",
+    "earnings": "Výdělek (provize)",
+    "savedMessage": "Kurz byl uložen a čeká na schválení",
+    "showCommissions": "Zobrazit provize",
+    "commissionsModalTitle": "Detail provizí",
+    "commissionsClose": "Zavřít",
+    "tableCourse": "Kurz",
+    "tableSales": "Prodeje",
+    "tableCommission": "Provize (Kč)",
+    "tablePrice": "Cena kurzu",
+    "tableRate": "Sazba",
+    "salesOverTime": "Prodeje v čase",
+    "noSalesYet": "Zatím nemáte žádné prodeje."
   },
   "courseDetail": {
     "courses": "Kurzy",

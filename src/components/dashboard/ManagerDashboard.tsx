@@ -66,6 +66,8 @@ const MILESTONE_KEYS = [
   "manager.milestone3",
 ] as const;
 
+const TEAM_RANKING = { place: 3, totalTeams: 12 };
+
 export default function ManagerDashboard() {
   const { t } = useTranslation();
   const activityData = ACTIVITY_DATA.map((d) => ({
@@ -129,7 +131,7 @@ export default function ManagerDashboard() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
+              gridTemplateColumns: "repeat(4, 1fr)",
               gap: 20,
             }}
           >
@@ -185,6 +187,24 @@ export default function ManagerDashboard() {
               </div>
               <div style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>
                 {t("manager.lessons")}
+              </div>
+            </motion.div>
+            <motion.div
+              whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.15)" }}
+              transition={HOVER_TRANSITION}
+              style={{
+                background: "rgba(255,255,255,0.1)",
+                borderRadius: 12,
+                padding: 24,
+                textAlign: "center",
+              }}
+            >
+              <div style={{ fontSize: 36, fontWeight: 800 }}>{TEAM_RANKING.place}</div>
+              <div style={{ fontSize: 14, fontWeight: 600, opacity: 0.9 }}>
+                {t("manager.teamPlacement")}
+              </div>
+              <div style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>
+                {t("manager.outOfTeams")}
               </div>
             </motion.div>
           </div>

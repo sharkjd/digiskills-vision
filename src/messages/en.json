@@ -3,7 +3,7 @@
     "nav": {
       "onlineCourses": "Online courses",
       "microlearning": "Microlearning",
-      "home": "Home"
+      "assessment": "Assessment"
     },
     "licenseUntil": "Full version until",
     "dropdown": {
@@ -13,6 +13,7 @@
       "companyReport": "Company report",
       "adminModule": "Admin module",
       "createCourse": "Create course",
+      "digiskillsCreator": "Digiskills Creator",
       "logout": "Log out"
     }
   },
@@ -27,7 +28,7 @@
     "welcome": "Welcome to the Digiskills app. Discover your digital skills level and get recommended courses.",
     "assessment": {
       "title": "Digital Assessment",
-      "subtitle": "DigComp 2.1 · 8 steps · ~5 minutes",
+      "subtitle": "DigComp 2.1 · ~15 minutes",
       "description": "Test your digital competencies in 5 areas: information literacy, communication, content creation, security, and problem solving. Based on results you will get recommended courses.",
       "cta": "Start assessment →"
     },
@@ -61,13 +62,51 @@
     "title": "Digital Assessment",
     "subtitle": "DigComp 2.1 competency mapping · Choose how to complete",
     "formOption": "Fill classic form",
-    "formOptionDesc": "Go through steps from identification to individual competencies and submission.",
+    "formOptionDesc": "Go through steps from identification to submission.",
+    "formCta": "Fill",
     "chatbotOption": "Chat with chatbot",
-    "chatbotOptionDesc": "Answer questions in a friendly chat – type or speak.",
+    "chatbotOptionDesc": "Answer questions in chat – type or speak.",
+    "chatbotCta": "Start conversation",
+    "voiceOption": "Call with AI Eliška",
+    "voiceOptionDesc": "Our AI voicebot Eliška will call you on the phone.",
+    "voiceCta": "I want to call",
+    "voiceCalling": "Please wait, we are connecting you with AI Eliška.",
+    "voiceCallingTitle": "Ringing…",
+    "voiceSuccess": "Eliška is on the phone with you. Enjoy your conversation!",
+    "voiceSuccessTitle": "Call in progress",
+    "voiceError": "Failed to initiate call. Please try again.",
+    "info": {
+      "badge": "Why this assessment",
+      "title": "What Digiskills Assessment is and what it brings",
+      "lead": "The assessment is a quick mapping of digital skills across DigComp 2.1 domains. It helps both people and companies understand strengths and where focused upskilling makes the biggest impact.",
+      "step1Title": "Answer a few targeted questions",
+      "step1Desc": "Complete short questions via form, chatbot, or AI phone call.",
+      "step2Title": "We evaluate your results",
+      "step2Desc": "You get a clear picture of strengths and growth opportunities.",
+      "step3Title": "Get practical course recommendations",
+      "step3Desc": "We suggest concrete learning paths for individuals and teams.",
+      "benefitsTitle": "What you gain from the assessment",
+      "benefitsSubtitle": "Clear outputs you can use immediately for people and company development.",
+      "benefit1Title": "Clear baseline of current skills",
+      "benefit1Desc": "See where you stand across key digital competency areas right away.",
+      "benefit2Title": "Readable metrics and benchmark view",
+      "benefit2Desc": "Results are shown in a simple format with market context.",
+      "benefit3Title": "Prioritized development focus",
+      "benefit3Desc": "Identify what to improve first for the highest practical impact.",
+      "benefit4Title": "Tailored course recommendations",
+      "benefit4Desc": "The platform suggests courses based on your identified needs.",
+      "benchmarkTitle": "Benchmark standard",
+      "benchmarkDesc": "Outputs connect to the company report and show not just scores, but also practical learning priorities.",
+      "benchmarkPoint1": "Comparison with market average",
+      "benchmarkPoint2": "Biggest growth opportunity identified",
+      "benchmarkPoint3": "Suggested company learning path",
+      "reportCta": "See company report preview"
+    },
     "steps": {
       "identification": "Identification",
       "information": "Information & Data",
       "communication": "Communication",
+      "onedriveTask": "OneDrive – sharing",
       "content": "Content creation",
       "security": "Security",
       "problemsolving": "Problem solving",
@@ -130,7 +169,19 @@
     "defaultAnswer5": "I look up instructions, usually solve it myself. I only call IT when it's really complex – 8.",
     "defaultAnswer6": "I occasionally try Copilot, use Dictation. Still mostly experimenting – 6.",
     "send": "Send",
-    "chatbotSubtitle": "DigComp 2.1 competency mapping · Chatbot"
+    "chatbotSubtitle": "DigComp 2.1 competency mapping · Chatbot",
+    "questionProgress": "Question {current} of {total}",
+    "visualTask": {
+      "onedriveReadonly": {
+        "instruction": "Share a document in OneDrive with **read-only** permissions (Can view). Open the share dialog, set the permission to \"View only\" and send me a screenshot of the settings."
+      },
+      "uploadHint": "Click or drag a screenshot here",
+      "analyzing": "Analyzing screenshot…",
+      "uploadImage": "Upload image",
+      "changeImage": "Change image",
+      "imageReady": "Image ready to send",
+      "demoFeedback": "Thanks, I've noted the result. You had it almost right – 7/10."
+    }
   },
   "assessmentRoles": {
     "management": "Management / Leadership",
@@ -185,6 +236,8 @@
     "inTeam": "in team",
     "remainingToGoal": "Remaining to goal",
     "lessons": "lessons",
+    "teamPlacement": "Team placement",
+    "outOfTeams": "of 12 teams",
     "teamPath": "Our team's path: Where we're heading",
     "done": "Done",
     "inProgress": "In progress",
@@ -271,6 +324,36 @@
     "priority": "Priority {index}",
     "close": "Close",
     "searchPlaceholder": "Search course (name, description, level)..."
+  },
+  "creator": {
+    "title": "Digiskills Creator",
+    "subtitle": "Manage your courses, track sales and create new content for the marketplace",
+    "myCourses": "My courses",
+    "salesAndCommissions": "Sales and commissions",
+    "salesDesc": "Overview of sales and commissions from your courses on the marketplace",
+    "salesTableDesc": "Commission breakdown by course is available in the detail view. Current commission rate: 50% of course price.",
+    "createNew": "Create new course",
+    "createNewDesc": "A course created with AI will go to the Digiskills marketplace and be available to other users.",
+    "statusDraft": "Draft",
+    "statusInReview": "In review",
+    "statusPublished": "Published",
+    "edit": "Edit",
+    "preview": "Preview",
+    "hide": "Hide",
+    "courseCount": "Course count",
+    "totalSales": "Total sales",
+    "earnings": "Earnings (commission)",
+    "savedMessage": "Course saved and awaiting approval",
+    "showCommissions": "Show commissions",
+    "commissionsModalTitle": "Commission details",
+    "commissionsClose": "Close",
+    "tableCourse": "Course",
+    "tableSales": "Sales",
+    "tableCommission": "Commission (CZK)",
+    "tablePrice": "Course price",
+    "tableRate": "Rate",
+    "salesOverTime": "Sales over time",
+    "noSalesYet": "You have no sales yet."
   },
   "courseDetail": {
     "courses": "Courses",
