@@ -6,7 +6,24 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, RefreshCw, Search, X } from "lucide-react";
+import {
+  Check,
+  RefreshCw,
+  Search,
+  X,
+  Users,
+  UserPlus,
+  Trash2,
+  Building2,
+  Settings,
+  Globe,
+  Bell,
+  Eye,
+  Percent,
+  Sparkles,
+  Bot,
+  ArrowRight,
+} from "lucide-react";
 import { getCourseList, type Course } from "@/data/courses";
 import { useLanguage } from "@/context/LanguageContext";
 import { useCompanyCourses } from "@/context/CompanyCoursesContext";
@@ -14,6 +31,42 @@ import { useCompanyCourses } from "@/context/CompanyCoursesContext";
 const DEPLOY_DURATION_MS = 2000;
 const INITIAL_COURSE_COUNT = 6;
 const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: "easeOut" as const },
+  },
+};
+
+const FAKE_TEAMS = [
+  { id: 1, name: "Marketing", members: 12 },
+  { id: 2, name: "IT & Development", members: 28 },
+  { id: 3, name: "HR & People", members: 8 },
+  { id: 4, name: "Sales", members: 15 },
+  { id: 5, name: "Finance", members: 6 },
+];
+
+const FAKE_EMPLOYEES = [
+  { id: 1, name: "Jan Novák", email: "jan.novak@firma.cz", team: "Marketing", role: "Manager" },
+  { id: 2, name: "Marie Svobodová", email: "marie.svobodova@firma.cz", team: "IT & Development", role: "Developer" },
+  { id: 3, name: "Petr Dvořák", email: "petr.dvorak@firma.cz", team: "Sales", role: "Account Manager" },
+  { id: 4, name: "Eva Černá", email: "eva.cerna@firma.cz", team: "HR & People", role: "HR Specialist" },
+  { id: 5, name: "Tomáš Procházka", email: "tomas.prochazka@firma.cz", team: "IT & Development", role: "Team Lead" },
+  { id: 6, name: "Lucie Králová", email: "lucie.kralova@firma.cz", team: "Finance", role: "Accountant" },
+  { id: 7, name: "Martin Veselý", email: "martin.vesely@firma.cz", team: "Marketing", role: "Content Creator" },
+  { id: 8, name: "Kateřina Němcová", email: "katerina.nemcova@firma.cz", team: "Sales", role: "Sales Rep" },
+];
 
 function normalizeSearch(s: string) {
   return s
@@ -172,30 +225,44 @@ function AdminCourseTile({ course, index, onReplace }: AdminCourseTileProps) {
       layout
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -8, scale: 1.02, boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)" }}
+      whileHover={{ y: -4, boxShadow: "0 12px 32px rgba(0,0,0,0.12)" }}
       transition={HOVER_TRANSITION}
-      className="relative flex flex-col overflow-hidden rounded-lg border bg-white shadow-md"
       style={{
-        borderColor: "var(--color-border)",
+        background: "var(--color-background)",
+        borderRadius: 12,
+        border: "1px solid var(--color-border)",
         boxShadow: "0 2px 8px var(--color-card-shadow)",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      {/* Náhledový obrázek */}
-      <div className="relative h-44 flex-shrink-0 bg-gray-100">
+      <div style={{ position: "relative", height: 100, background: "var(--color-breeze)" }}>
         <Image
           src={course.image}
           alt={course.title}
           fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+          style={{ objectFit: "cover" }}
+          sizes="(max-width: 768px) 100vw, 33vw"
         />
         <button
           type="button"
           onClick={onReplace}
-          className="absolute right-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-lg border bg-white/95 px-2.5 py-1.5 text-xs font-semibold shadow-sm transition-colors hover:bg-gray-50"
           style={{
-            borderColor: "var(--color-primary)",
+            position: "absolute",
+            right: 8,
+            top: 8,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 4,
+            padding: "6px 10px",
+            background: "rgba(255,255,255,0.95)",
+            border: "1px solid var(--color-primary)",
+            borderRadius: 8,
+            fontSize: 11,
+            fontWeight: 600,
             color: "var(--color-primary)",
+            cursor: "pointer",
           }}
         >
           <RefreshCw size={12} />
@@ -203,24 +270,70 @@ function AdminCourseTile({ course, index, onReplace }: AdminCourseTileProps) {
         </button>
       </div>
 
-      <div className="flex flex-1 flex-col p-5">
-        <p className="mb-1 text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--color-text-secondary)" }}>
+      <div style={{ padding: 16, flex: 1, display: "flex", flexDirection: "column" }}>
+        <p
+          style={{
+            fontSize: 10,
+            fontWeight: 600,
+            textTransform: "uppercase",
+            letterSpacing: "0.5px",
+            color: "var(--color-text-secondary)",
+            margin: "0 0 4px",
+          }}
+        >
           {t("admin.priority", { index: index + 1 })}
         </p>
-        <h3 className="mb-3 text-lg font-bold leading-tight" style={{ color: "var(--color-digi-sky)" }}>
+        <h3
+          style={{
+            fontSize: 14,
+            fontWeight: 700,
+            color: "var(--color-digi-sky)",
+            margin: "0 0 8px",
+            lineHeight: 1.3,
+          }}
+        >
           {course.title}
         </h3>
 
-        <p className="mb-4 flex-1 text-sm leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
+        <p
+          style={{
+            fontSize: 12,
+            color: "var(--color-text-secondary)",
+            margin: "0 0 12px",
+            lineHeight: 1.5,
+            flex: 1,
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+          }}
+        >
           {course.description}
         </p>
 
-        <div className="flex items-center justify-between border-t pt-3" style={{ borderColor: "var(--color-border)" }}>
-          <span className="text-xs font-medium" style={{ color: "var(--color-text-secondary)" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            paddingTop: 12,
+            borderTop: "1px solid var(--color-border)",
+          }}
+        >
+          <span style={{ fontSize: 11, color: "var(--color-text-secondary)" }}>
             {course.activities} {t("courses.activities")}
           </span>
-          <span className="rounded-lg px-3 py-1 text-xs font-semibold" style={{ backgroundColor: "var(--color-breeze)", color: "var(--color-digi-sky)" }}>
-            {course.duration} • {course.level}
+          <span
+            style={{
+              fontSize: 10,
+              fontWeight: 600,
+              padding: "4px 8px",
+              background: "var(--color-breeze)",
+              borderRadius: 6,
+              color: "var(--color-digi-sky)",
+            }}
+          >
+            {course.duration}
           </span>
         </div>
       </div>
@@ -237,6 +350,15 @@ export default function AdminCourseManagement() {
   const [selectedCourses, setSelectedCourses] = useState<Course[]>(() => courseList.slice(0, INITIAL_COURSE_COUNT));
   const [isDeploying, setIsDeploying] = useState(false);
   const [replaceSlotIndex, setReplaceSlotIndex] = useState<number | null>(null);
+
+  const [orgSettings, setOrgSettings] = useState({
+    orgName: "Acme Corporation s.r.o.",
+    language: "cs" as "cs" | "en",
+    autoAssign: true,
+    minCompletion: 80,
+    notifications: true,
+    publicProfile: false,
+  });
 
   const employeeCount = 2534;
   const selectedCourseIds = useMemo(() => new Set(selectedCourses.map((c) => c.id)), [selectedCourses]);
@@ -276,53 +398,842 @@ export default function AdminCourseManagement() {
 
   return (
     <>
-      <section
-        className="min-h-screen px-6 py-10"
+      <div
         style={{
           backgroundColor: "var(--color-breeze)",
+          minHeight: "100vh",
           fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
         }}
       >
-        <div className="mx-auto max-w-7xl">
-          <motion.header
-            whileHover={{ y: -4, boxShadow: "0 12px 32px rgba(0,0,0,0.1)" }}
-            transition={HOVER_TRANSITION}
-            className="mb-10 rounded-lg border bg-white p-8 shadow-md"
-            style={{ borderColor: "var(--color-border)" }}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          style={{
+            maxWidth: 1200,
+            margin: "0 auto",
+            padding: "40px 24px",
+            display: "flex",
+            flexDirection: "column",
+            gap: 32,
+          }}
+        >
+          {/* HERO BANNER */}
+          <motion.div
+            variants={itemVariants}
+            style={{
+              background: "#040E3C",
+              borderRadius: 16,
+              padding: "36px 32px",
+              color: "white",
+            }}
           >
+            <div style={{ display: "flex", flexDirection: "row", gap: 32, alignItems: "flex-start" }}>
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 20 }}>
+                <div>
+                  <div
+                    style={{
+                      display: "inline-block",
+                      background: "rgba(255,255,255,0.15)",
+                      padding: "6px 14px",
+                      borderRadius: 999,
+                      fontSize: 13,
+                      fontWeight: 600,
+                      marginBottom: 16,
+                    }}
+                  >
+                    Admin Panel
+                  </div>
+                  <h1
+                    style={{
+                      fontSize: 32,
+                      fontWeight: 800,
+                      margin: "0 0 8px",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    Správa firemního vzdělávání
+                  </h1>
+                  <p style={{ fontSize: 15, opacity: 0.85, margin: 0 }}>
+                    Spravujte kurzy, týmy a nastavení vaší organizace na jednom místě.
+                  </p>
+                </div>
+
+                <div style={{ display: "flex", gap: 12 }}>
+                  <Link
+                    href="/admin/tvorba-kurzu"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 8,
+                      padding: "12px 20px",
+                      background: "var(--color-primary)",
+                      border: "none",
+                      borderRadius: 10,
+                      color: "white",
+                      fontSize: 14,
+                      fontWeight: 600,
+                      textDecoration: "none",
+                    }}
+                  >
+                    <Bot size={18} />
+                    Vytvořit kurz pomocí AI
+                  </Link>
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}>
+                <div
+                  style={{
+                    background: "rgba(255,255,255,0.1)",
+                    borderRadius: 12,
+                    padding: 16,
+                    textAlign: "center",
+                    minWidth: 100,
+                  }}
+                >
+                  <div style={{ fontSize: 28, fontWeight: 800 }}>{employeeCount}</div>
+                  <div style={{ fontSize: 12, fontWeight: 500, opacity: 0.8, marginTop: 4 }}>Zaměstnanců</div>
+                </div>
+                <div
+                  style={{
+                    background: "rgba(255,255,255,0.1)",
+                    borderRadius: 12,
+                    padding: 16,
+                    textAlign: "center",
+                    minWidth: 100,
+                  }}
+                >
+                  <div style={{ fontSize: 28, fontWeight: 800 }}>{FAKE_TEAMS.length}</div>
+                  <div style={{ fontSize: 12, fontWeight: 500, opacity: 0.8, marginTop: 4 }}>Týmů</div>
+                </div>
+                <div
+                  style={{
+                    background: "rgba(255,255,255,0.1)",
+                    borderRadius: 12,
+                    padding: 16,
+                    textAlign: "center",
+                    minWidth: 100,
+                  }}
+                >
+                  <div style={{ fontSize: 28, fontWeight: 800, color: "#77F9D9" }}>{selectedCourses.length}</div>
+                  <div style={{ fontSize: 12, fontWeight: 500, opacity: 0.8, marginTop: 4 }}>Aktivních kurzů</div>
+                </div>
+                <div
+                  style={{
+                    background: "rgba(255,255,255,0.1)",
+                    borderRadius: 12,
+                    padding: 16,
+                    textAlign: "center",
+                    minWidth: 100,
+                  }}
+                >
+                  <div style={{ fontSize: 28, fontWeight: 800, color: "#77F9D9" }}>5,49</div>
+                  <div style={{ fontSize: 12, fontWeight: 500, opacity: 0.8, marginTop: 4 }}>Index firmy</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* SEKCE: AKTUÁLNÍ FIREMNÍ KURZY */}
+          <motion.div variants={itemVariants}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+              <h2
+                style={{
+                  fontSize: 22,
+                  fontWeight: 700,
+                  color: "var(--color-text-main)",
+                  margin: 0,
+                  fontStyle: "italic",
+                }}
+              >
+                Aktuální firemní kurzy
+              </h2>
+              <span
+                style={{
+                  fontSize: 13,
+                  color: "var(--color-text-secondary)",
+                }}
+              >
+                {selectedCourses.length} kurzů přiřazeno
+              </span>
+            </div>
+
             <div
-              className="mb-4 h-2 w-40 rounded-full"
               style={{
-                backgroundColor: "var(--color-accent-green)",
-                transform: "skewX(calc(var(--brand-slant-deg) * -1deg))",
-                transformOrigin: "left center",
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: 16,
               }}
-            />
-            <h1 className="mb-3 text-4xl font-bold italic" style={{ color: "var(--color-digi-sky)" }}>
-              Správa firemního vzdělávání
-            </h1>
-            <p className="mb-6 max-w-4xl text-base leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
-              Na základě výsledků assessmentu (Index 5,49) jsme vybrali tyto klíčové kurzy pro rozvoj vaší organizace.
-            </p>
-            <Link
-              href="/admin/tvorba-kurzu"
-              className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:opacity-90"
-              style={{ backgroundColor: "var(--color-primary)" }}
             >
-              Vytvořit kurz pomocí AI
-            </Link>
-          </motion.header>
+              {selectedCourses.map((course, index) => (
+                <AdminCourseTile
+                  key={`${course.id}-${index}`}
+                  course={course}
+                  index={index}
+                  onReplace={() => openReplaceModal(index)}
+                />
+              ))}
+            </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {selectedCourses.map((course, index) => (
-              <AdminCourseTile key={`${course.id}-${index}`} course={course} index={index} onReplace={() => openReplaceModal(index)} />
-            ))}
-          </div>
-        </div>
-      </section>
+          {/* SEKCE: SPRAVOVAT TÝM & LIDI */}
+          <motion.div variants={itemVariants}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                gap: 24,
+              }}
+            >
+              {/* KARTA: SPRAVOVAT TÝM */}
+              <motion.div
+                whileHover={{ y: -4, boxShadow: "0 12px 32px rgba(0,0,0,0.1)" }}
+                transition={HOVER_TRANSITION}
+                style={{
+                  background: "white",
+                  border: "1px solid var(--color-border)",
+                  borderRadius: 16,
+                  padding: 24,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 14,
+                    marginBottom: 20,
+                    paddingBottom: 16,
+                    borderBottom: "1px solid var(--color-border)",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 12,
+                      background: "rgba(37, 150, 255, 0.1)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Users size={24} color="#2596FF" />
+                  </div>
+                  <div>
+                    <h3
+                      style={{
+                        fontSize: 18,
+                        fontWeight: 700,
+                        color: "var(--color-text-main)",
+                        margin: 0,
+                      }}
+                    >
+                      Spravovat týmy
+                    </h3>
+                    <p
+                      style={{
+                        fontSize: 13,
+                        color: "var(--color-text-secondary)",
+                        margin: "4px 0 0",
+                      }}
+                    >
+                      {FAKE_TEAMS.length} týmů v organizaci
+                    </p>
+                  </div>
+                </div>
 
-      <section className="sticky bottom-0 z-20 border-t bg-white/95 px-6 py-5 backdrop-blur" style={{ borderColor: "var(--color-border)" }}>
-        <div className="mx-auto flex max-w-7xl items-center justify-end">
+                <div
+                  style={{
+                    maxHeight: 240,
+                    overflowY: "auto",
+                    marginBottom: 16,
+                  }}
+                >
+                  {FAKE_TEAMS.map((team) => (
+                    <div
+                      key={team.id}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        padding: "12px 0",
+                        borderBottom: "1px solid var(--color-border)",
+                      }}
+                    >
+                      <div>
+                        <div style={{ fontWeight: 600, fontSize: 14, color: "var(--color-text-main)" }}>
+                          {team.name}
+                        </div>
+                        <div style={{ fontSize: 12, color: "var(--color-text-secondary)" }}>
+                          {team.members} členů
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        style={{
+                          padding: "6px 10px",
+                          background: "transparent",
+                          border: "1px solid var(--color-border)",
+                          borderRadius: 6,
+                          cursor: "pointer",
+                          color: "var(--color-text-secondary)",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 4,
+                          fontSize: 12,
+                        }}
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  type="button"
+                  style={{
+                    width: "100%",
+                    padding: "12px 16px",
+                    background: "var(--color-breeze)",
+                    border: "1px dashed var(--color-border)",
+                    borderRadius: 10,
+                    cursor: "pointer",
+                    color: "var(--color-primary)",
+                    fontWeight: 600,
+                    fontSize: 13,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 8,
+                  }}
+                >
+                  <UserPlus size={16} />
+                  Přidat nový tým
+                </button>
+              </motion.div>
+
+              {/* KARTA: SPRAVOVAT LIDI */}
+              <motion.div
+                whileHover={{ y: -4, boxShadow: "0 12px 32px rgba(0,0,0,0.1)" }}
+                transition={HOVER_TRANSITION}
+                style={{
+                  background: "white",
+                  border: "1px solid var(--color-border)",
+                  borderRadius: 16,
+                  padding: 24,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 14,
+                    marginBottom: 20,
+                    paddingBottom: 16,
+                    borderBottom: "1px solid var(--color-border)",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 12,
+                      background: "rgba(119, 249, 217, 0.2)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Building2 size={24} color="#059669" />
+                  </div>
+                  <div>
+                    <h3
+                      style={{
+                        fontSize: 18,
+                        fontWeight: 700,
+                        color: "var(--color-text-main)",
+                        margin: 0,
+                      }}
+                    >
+                      Spravovat lidi
+                    </h3>
+                    <p
+                      style={{
+                        fontSize: 13,
+                        color: "var(--color-text-secondary)",
+                        margin: "4px 0 0",
+                      }}
+                    >
+                      {FAKE_EMPLOYEES.length} zaměstnanců zobrazeno
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    maxHeight: 240,
+                    overflowY: "auto",
+                    marginBottom: 16,
+                  }}
+                >
+                  {FAKE_EMPLOYEES.map((employee) => (
+                    <div
+                      key={employee.id}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        padding: "10px 0",
+                        borderBottom: "1px solid var(--color-border)",
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <div
+                          style={{
+                            width: 36,
+                            height: 36,
+                            borderRadius: "50%",
+                            background: "var(--color-breeze)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: 13,
+                            fontWeight: 600,
+                            color: "var(--color-digi-sky)",
+                          }}
+                        >
+                          {employee.name.split(" ").map((n) => n[0]).join("")}
+                        </div>
+                        <div>
+                          <div style={{ fontWeight: 600, fontSize: 13, color: "var(--color-text-main)" }}>
+                            {employee.name}
+                          </div>
+                          <div style={{ fontSize: 11, color: "var(--color-text-secondary)" }}>
+                            {employee.team} · {employee.role}
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        style={{
+                          padding: "6px 10px",
+                          background: "transparent",
+                          border: "1px solid var(--color-border)",
+                          borderRadius: 6,
+                          cursor: "pointer",
+                          color: "var(--color-text-secondary)",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 4,
+                          fontSize: 12,
+                        }}
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  type="button"
+                  style={{
+                    width: "100%",
+                    padding: "12px 16px",
+                    background: "var(--color-breeze)",
+                    border: "1px dashed var(--color-border)",
+                    borderRadius: 10,
+                    cursor: "pointer",
+                    color: "var(--color-primary)",
+                    fontWeight: 600,
+                    fontSize: 13,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 8,
+                  }}
+                >
+                  <UserPlus size={16} />
+                  Přidat zaměstnance
+                </button>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* SEKCE: NASTAVENÍ ORGANIZACE */}
+          <motion.div variants={itemVariants}>
+            <h2
+              style={{
+                fontSize: 22,
+                fontWeight: 700,
+                color: "var(--color-text-main)",
+                margin: "0 0 20px",
+                fontStyle: "italic",
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+              }}
+            >
+              <Settings size={24} color="var(--color-primary)" />
+              Nastavení organizace
+            </h2>
+
+            <motion.div
+              whileHover={{ y: -4, boxShadow: "0 12px 32px rgba(0,0,0,0.1)" }}
+              transition={HOVER_TRANSITION}
+              style={{
+                background: "white",
+                border: "1px solid var(--color-border)",
+                borderRadius: 16,
+                padding: 28,
+              }}
+            >
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(2, 1fr)",
+                  gap: 24,
+                }}
+              >
+                {/* Název organizace */}
+                <div>
+                  <label
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 600,
+                      color: "#374151",
+                      display: "block",
+                      marginBottom: 8,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px",
+                    }}
+                  >
+                    Název organizace
+                  </label>
+                  <input
+                    type="text"
+                    value={orgSettings.orgName}
+                    onChange={(e) => setOrgSettings({ ...orgSettings, orgName: e.target.value })}
+                    style={{
+                      width: "100%",
+                      padding: "12px 14px",
+                      border: "1px solid var(--color-border-input)",
+                      borderRadius: 10,
+                      fontSize: 14,
+                      color: "var(--color-text-main)",
+                    }}
+                  />
+                </div>
+
+                {/* Jazyk platformy */}
+                <div>
+                  <label
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 600,
+                      color: "#374151",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                      marginBottom: 8,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px",
+                    }}
+                  >
+                    <Globe size={14} />
+                    Jazyk platformy
+                  </label>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: 8,
+                      background: "#F4F5FA",
+                      padding: 4,
+                      borderRadius: 10,
+                    }}
+                  >
+                    {(["cs", "en"] as const).map((lang) => (
+                      <motion.button
+                        key={lang}
+                        type="button"
+                        onClick={() => setOrgSettings({ ...orgSettings, language: lang })}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        style={{
+                          flex: 1,
+                          padding: "10px 16px",
+                          background: orgSettings.language === lang ? "var(--color-primary)" : "transparent",
+                          border: "none",
+                          borderRadius: 8,
+                          cursor: "pointer",
+                          fontSize: 13,
+                          fontWeight: 600,
+                          color: orgSettings.language === lang ? "white" : "#6B7280",
+                        }}
+                      >
+                        {lang === "cs" ? "Čeština" : "English"}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Automatické přiřazování kurzů */}
+                <div>
+                  <label
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 600,
+                      color: "#374151",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                      marginBottom: 8,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px",
+                    }}
+                  >
+                    <Sparkles size={14} />
+                    Automatické přiřazování kurzů
+                  </label>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: 8,
+                      background: "#F4F5FA",
+                      padding: 4,
+                      borderRadius: 10,
+                    }}
+                  >
+                    {[true, false].map((val) => (
+                      <motion.button
+                        key={String(val)}
+                        type="button"
+                        onClick={() => setOrgSettings({ ...orgSettings, autoAssign: val })}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        style={{
+                          flex: 1,
+                          padding: "10px 16px",
+                          background: orgSettings.autoAssign === val
+                            ? val ? "#77F9D9" : "#E5E7EB"
+                            : "transparent",
+                          border: "none",
+                          borderRadius: 8,
+                          cursor: "pointer",
+                          fontSize: 13,
+                          fontWeight: 600,
+                          color: orgSettings.autoAssign === val
+                            ? val ? "#065F46" : "#374151"
+                            : "#6B7280",
+                        }}
+                      >
+                        {val ? "Ano" : "Ne"}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Minimální dokončení kurzu */}
+                <div>
+                  <label
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 600,
+                      color: "#374151",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                      marginBottom: 8,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px",
+                    }}
+                  >
+                    <Percent size={14} />
+                    Minimální dokončení kurzu
+                  </label>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: 8,
+                      background: "#F4F5FA",
+                      padding: 4,
+                      borderRadius: 10,
+                    }}
+                  >
+                    {[70, 80, 90, 100].map((val) => (
+                      <motion.button
+                        key={val}
+                        type="button"
+                        onClick={() => setOrgSettings({ ...orgSettings, minCompletion: val })}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        style={{
+                          flex: 1,
+                          padding: "10px 12px",
+                          background: orgSettings.minCompletion === val ? "var(--color-primary)" : "transparent",
+                          border: "none",
+                          borderRadius: 8,
+                          cursor: "pointer",
+                          fontSize: 13,
+                          fontWeight: 600,
+                          color: orgSettings.minCompletion === val ? "white" : "#6B7280",
+                        }}
+                      >
+                        {val}%
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Notifikace o nových kurzech */}
+                <div>
+                  <label
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 600,
+                      color: "#374151",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                      marginBottom: 8,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px",
+                    }}
+                  >
+                    <Bell size={14} />
+                    Notifikace o nových kurzech
+                  </label>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: 8,
+                      background: "#F4F5FA",
+                      padding: 4,
+                      borderRadius: 10,
+                    }}
+                  >
+                    {[true, false].map((val) => (
+                      <motion.button
+                        key={String(val)}
+                        type="button"
+                        onClick={() => setOrgSettings({ ...orgSettings, notifications: val })}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        style={{
+                          flex: 1,
+                          padding: "10px 16px",
+                          background: orgSettings.notifications === val
+                            ? val ? "#77F9D9" : "#E5E7EB"
+                            : "transparent",
+                          border: "none",
+                          borderRadius: 8,
+                          cursor: "pointer",
+                          fontSize: 13,
+                          fontWeight: 600,
+                          color: orgSettings.notifications === val
+                            ? val ? "#065F46" : "#374151"
+                            : "#6B7280",
+                        }}
+                      >
+                        {val ? "Zapnuto" : "Vypnuto"}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Veřejný profil firmy */}
+                <div>
+                  <label
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 600,
+                      color: "#374151",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                      marginBottom: 8,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px",
+                    }}
+                  >
+                    <Eye size={14} />
+                    Veřejný profil firmy
+                  </label>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: 8,
+                      background: "#F4F5FA",
+                      padding: 4,
+                      borderRadius: 10,
+                    }}
+                  >
+                    {[true, false].map((val) => (
+                      <motion.button
+                        key={String(val)}
+                        type="button"
+                        onClick={() => setOrgSettings({ ...orgSettings, publicProfile: val })}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        style={{
+                          flex: 1,
+                          padding: "10px 16px",
+                          background: orgSettings.publicProfile === val
+                            ? val ? "#77F9D9" : "#E5E7EB"
+                            : "transparent",
+                          border: "none",
+                          borderRadius: 8,
+                          cursor: "pointer",
+                          fontSize: 13,
+                          fontWeight: 600,
+                          color: orgSettings.publicProfile === val
+                            ? val ? "#065F46" : "#374151"
+                            : "#6B7280",
+                        }}
+                      >
+                        {val ? "Veřejný" : "Soukromý"}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Info box */}
+              <div
+                style={{
+                  marginTop: 24,
+                  padding: 16,
+                  background: "#F0F9FF",
+                  border: "1px solid #BAE6FD",
+                  borderRadius: 12,
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: 12,
+                }}
+              >
+                <Settings size={18} color="#0284C7" style={{ flexShrink: 0, marginTop: 2 }} />
+                <p
+                  style={{
+                    fontSize: 13,
+                    color: "#0369A1",
+                    margin: 0,
+                    lineHeight: 1.6,
+                  }}
+                >
+                  Změny nastavení se projeví okamžitě pro všechny zaměstnance ve vaší organizaci.
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* STICKY FOOTER */}
+      <section
+        className="sticky bottom-0 z-20 border-t bg-white/95 px-6 py-5 backdrop-blur"
+        style={{ borderColor: "var(--color-border)" }}
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-end" style={{ maxWidth: 1200 }}>
           <motion.button
             type="button"
             whileHover={{ scale: 1.02, boxShadow: "0 8px 24px rgba(37, 150, 255, 0.45)" }}
@@ -383,7 +1294,9 @@ export default function AdminCourseManagement() {
                 </motion.div>
               </div>
 
-              <h2 className="mb-3 text-2xl font-bold italic text-white">Nasazuji studijní plán pro {employeeCount} zaměstnanců...</h2>
+              <h2 className="mb-3 text-2xl font-bold italic text-white">
+                Nasazuji studijní plán pro {employeeCount} zaměstnanců...
+              </h2>
 
               <div className="mb-2 h-2 w-full overflow-hidden rounded-full" style={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }}>
                 <motion.div

@@ -236,6 +236,76 @@ export default function CompanyStatsDashboard() {
         </div>
       </motion.div>
 
+      {/* Slovní komentář k výsledkům */}
+      <motion.div
+        variants={itemVariants}
+        whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
+        transition={HOVER_TRANSITION}
+        style={{
+          background: "var(--color-background)",
+          borderRadius: 16,
+          padding: "28px 32px",
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 2px 8px var(--color-card-shadow)",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: 20,
+            fontWeight: 700,
+            color: "var(--color-text-main)",
+            margin: "0 0 18px",
+            fontStyle: "italic",
+          }}
+        >
+          Komentář k aktuálním statistikám
+        </h2>
+
+        <div
+          style={{
+            background: "var(--color-breeze)",
+            borderRadius: 12,
+            border: "1px solid var(--color-border)",
+            padding: "18px 20px",
+            display: "flex",
+            flexDirection: "column",
+            gap: 12,
+            color: "var(--color-text-main)",
+            lineHeight: 1.65,
+            fontSize: 14,
+          }}
+        >
+          <p style={{ margin: 0 }}>
+            <span style={{ fontWeight: 700 }}>Zapojení zaměstnanců je silné:</span> aktivně studuje{" "}
+            <span style={{ fontWeight: 700 }}>98 z 124 lidí</span>, což je přibližně{" "}
+            <span style={{ fontWeight: 700 }}>79 % firmy</span>. Je vhodné cíleně podpořit zbývající týmy, aby se
+            zapojení dostalo nad hranici 85 %.
+          </p>
+
+          <p style={{ margin: 0 }}>
+            <span style={{ fontWeight: 700 }}>Výkon firmy je nad trhem:</span> Digiskills Index{" "}
+            <span style={{ fontWeight: 700 }}>6.8</span> je výrazně nad tržním průměrem{" "}
+            <span style={{ fontWeight: 700 }}>5.2</span>. Na úroveň top 10 % firem (
+            <span style={{ fontWeight: 700 }}>8.4</span>) stále chybí rezervy, ale trend potvrzuje velmi dobrou
+            výchozí pozici.
+          </p>
+
+          <p style={{ margin: 0 }}>
+            <span style={{ fontWeight: 700 }}>Nejvíc táhnou témata AI a M365:</span> mezi nejžádanějšími kurzy vedou
+            „AI Promptování pro praxi“ a „ChatGPT v kanceláři“, vysokou sledovanost mají i videa k Excelu a Teams.
+            To je vhodný podklad pro další interní komunikaci i plánování obsahu.
+          </p>
+
+          <p style={{ margin: 0 }}>
+            <span style={{ fontWeight: 700 }}>Studijní výsledky jsou stabilní:</span> celkem je dokončeno{" "}
+            <span style={{ fontWeight: 700 }}>312 kurzů</span>, silně se daří zejména kurzu „Teams & Spolupráce“ (
+            <span style={{ fontWeight: 700 }}>94/124</span>) a „Základy kyberbezpečnosti“ (
+            <span style={{ fontWeight: 700 }}>89/124</span>). Pro další růst dává smysl posílit podporu u datových
+            témat, kde je dokončení zatím nižší.
+          </p>
+        </div>
+      </motion.div>
+
       {/* Graf aktivity + Top studenti */}
       <motion.div
         variants={itemVariants}
