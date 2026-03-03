@@ -1,0 +1,67 @@
+/* Jipka Design Tokens – barevné schéma podle brand identity */
+
+.jipka-theme {
+  /* Logo colors */
+  --jipka-blue: #0d2d5c;
+  --jipka-pink: #e61e53;
+  --jipka-blue-light: #4a90d9;
+  --jipka-yellow: #FFD54F;
+
+  /* Primary – tmavá modrá */
+  --jipka-primary: #0d2d5c;
+  --jipka-primary-hover: #0a2347;
+
+  /* Secondary – růžová */
+  --jipka-secondary: #e61e53;
+  --jipka-secondary-hover: #c91a47;
+
+  /* Accent – světle modrá pro CTA */
+  --jipka-accent: #4a90d9;
+  --jipka-accent-hover: #3d7bc4;
+
+  /* Žlutá pro zvýraznění */
+  --jipka-yellow: #FFD54F;
+  --jipka-yellow-hover: #FFC107;
+
+  /* Text colors */
+  --jipka-text-main: #1A1A1A;
+  --jipka-text-secondary: #6c757d;
+
+  /* Backgrounds */
+  --jipka-background: #ffffff;
+  --jipka-background-light: #F4F5FA;
+  --jipka-background-card: #ffffff;
+
+  /* Borders */
+  --jipka-border: #e9ecef;
+  --jipka-border-input: #ced4da;
+
+  /* Shadows */
+  --jipka-card-shadow: rgba(0, 0, 0, 0.08);
+
+  /* Border radius */
+  --jipka-radius-btn: 8px;
+  --jipka-radius-card: 12px;
+  --jipka-radius-input: 6px;
+
+  /* Activity badge colors */
+  --jipka-badge-video-bg: #E3F2FD;
+  --jipka-badge-video-text: #1565C0;
+  --jipka-badge-video-border: #4a90d9;
+
+  --jipka-badge-exercise-bg: #FCE4EC;
+  --jipka-badge-exercise-text: #c91a47;
+  --jipka-badge-exercise-border: #e61e53;
+
+  --jipka-badge-reflexe-bg: #FFF8E1;
+  --jipka-badge-reflexe-text: #F57C00;
+  --jipka-badge-reflexe-border: #FFD54F;
+
+  /* Progress bar */
+  --jipka-progress-bg: #E5E7EB;
+  --jipka-progress-fill: #4a90d9;
+
+  /* Success/complete states */
+  --jipka-success: #4a90d9;
+  --jipka-success-bg: rgba(74, 144, 217, 0.15);
+}

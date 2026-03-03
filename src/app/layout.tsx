@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Montserrat } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import LayoutSwitcher from "@/components/layout/LayoutSwitcher";
 import Providers from "@/components/Providers";
 import ElevenLabsChatbot from "@/components/ElevenLabsChatbot";
 
@@ -39,9 +38,7 @@ export default function RootLayout({
         style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
       >
         <Providers>
-          <Header />
-          <main style={{ flex: 1 }}>{children}</main>
-          <Footer />
+          <LayoutSwitcher>{children}</LayoutSwitcher>
           <ElevenLabsChatbot />
         </Providers>
       </body>

@@ -1,0 +1,68 @@
+/* TopVision Design Tokens – barevné schéma podle brand identity */
+
+.topvision-theme {
+  /* Logo colors – gradient from green to blue */
+  --tv-green: #7AC143;
+  --tv-green-dark: #5FA030;
+  --tv-cyan: #00AEEF;
+  --tv-blue: #0072BC;
+  --tv-blue-dark: #005A96;
+
+  /* Primary – zelená jako hlavní CTA barva */
+  --tv-primary: #7AC143;
+  --tv-primary-hover: #5FA030;
+
+  /* Secondary – modrá */
+  --tv-secondary: #00AEEF;
+  --tv-secondary-hover: #0097D4;
+
+  /* Accent – oranžová (shodná s Digiskills) */
+  --tv-accent-orange: #F7981C;
+  --tv-accent-orange-hover: #E08A15;
+
+  /* Žluto-zelená pro lime gradient banery */
+  --tv-lime: #BFDC00;
+  --tv-lime-light: #D4E94C;
+
+  /* Text colors */
+  --tv-text-main: #1A1A1A;
+  --tv-text-secondary: #6c757d;
+
+  /* Backgrounds */
+  --tv-background: #ffffff;
+  --tv-background-light: #F4F5FA;
+  --tv-background-card: #ffffff;
+
+  /* Borders */
+  --tv-border: #e9ecef;
+  --tv-border-input: #ced4da;
+
+  /* Shadows */
+  --tv-card-shadow: rgba(0, 0, 0, 0.08);
+
+  /* Border radius */
+  --tv-radius-btn: 8px;
+  --tv-radius-card: 12px;
+  --tv-radius-input: 6px;
+
+  /* Activity badge colors */
+  --tv-badge-video-bg: #E8F5E9;
+  --tv-badge-video-text: #2E7D32;
+  --tv-badge-video-border: #7AC143;
+
+  --tv-badge-workshop-bg: #E3F2FD;
+  --tv-badge-workshop-text: #1565C0;
+  --tv-badge-workshop-border: #00AEEF;
+
+  --tv-badge-exercise-bg: #FFF3E0;
+  --tv-badge-exercise-text: #E65100;
+  --tv-badge-exercise-border: #F7981C;
+
+  /* Progress bar */
+  --tv-progress-bg: #E5E7EB;
+  --tv-progress-fill: #7AC143;
+
+  /* Success/complete states */
+  --tv-success: #7AC143;
+  --tv-success-bg: rgba(122, 193, 67, 0.15);
+}

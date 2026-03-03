@@ -1,0 +1,76 @@
+{
+  "courseTitle": "Angličtina B2 – Upper Intermediate",
+  "instructor": "Lucie Kratochvílová",
+  "instructorRole": "Lektorka a Managing Director Jipka",
+  "duration": "20 h",
+  "activitiesCount": 12,
+  "introText": "Kurz angličtiny na úrovni B2 je určen pokročilým studentům, kteří chtějí zdokonalit gramatiku, rozšířit slovní zásobu a zlepšit poslech i mluvení. E-learning obsahuje videa, interaktivní cvičení, poslechové aktivity a reflexe vašich jazykových cílů.",
+  "introTextShort": "Kurz pro pokročilé – gramatika, slovní zásoba, poslech a mluvení. Videa, cvičení a reflexe.",
+  "usefulTip": "Pravidelnost je klíčem k úspěchu. Věnujte angličtině alespoň 15 minut denně – poslech podcastu, čtení článku nebo krátké cvičení.",
+  "whatYouLearn": [
+    "Prohloubíte gramatiku na úrovni B2 – podmínkové věty, časy, modální slovesa",
+    "Rozšíříte slovní zásobu v oblasti business English a každodenní komunikace",
+    "Zlepšíte poslechové dovednosti prostřednictvím autentických materiálů",
+    "Reflexe a aktivity vám pomohou definovat vaše jazykové cíle"
+  ],
+  "targetAudience": [
+    "Studentům na úrovni B1–B2",
+    "Profesionálům, kteří potřebují angličtinu v práci",
+    "Každému, kdo chce zdokonalit svou angličtinu v vlastním tempu"
+  ],
+  "practicalSkills": [
+    "Gramatika: podmínkové věty, předpřítomný čas, pasivum",
+    "Slovní zásoba: business English, idiomy, frázová slovesa",
+    "Poslech: porozumění rodilým mluvčím, různé přízvuky",
+    "Strategie efektivního učení jazyků"
+  ],
+  "curriculum": [
+    {
+      "section": "Úvod do úrovně B2",
+      "items": [
+        { "id": 1, "type": "Video", "title": "Co znamená úroveň B2 a jak na ni dosáhnout", "desc": "Přehled dovedností na úrovni B2 a tipy pro efektivní učení.", "color": "#0d2d5c" },
+        { "id": 2, "type": "Reflexe", "title": "Reflexe vašich jazykových cílů", "desc": "Pomocí několika otázek si ujasníte, co chcete v angličtině zlepšit.", "color": "#e61e53" },
+        { "id": 3, "type": "Článek", "title": "Tipy pro efektivní učení angličtiny", "desc": "Praktické rady, jak si angličtinu osvojit rychleji a trvaleji.", "color": "#4a90d9" }
+      ]
+    },
+    {
+      "section": "Gramatika",
+      "items": [
+        { "id": 4, "type": "Video", "title": "Podmínkové věty (conditionals)", "desc": "Zero, first, second a third conditional – přehled a příklady.", "color": "#0d2d5c" },
+        { "id": 5, "type": "Cvičení", "title": "Cvičení: podmínkové věty", "desc": "Interaktivní cvičení na procvičení conditionals.", "color": "#e61e53" }
+      ]
+    },
+    {
+      "section": "Slovní zásoba",
+      "items": [
+        { "id": 6, "type": "Video", "title": "Business English – klíčové výrazy", "desc": "Slovní zásoba pro pracovní prostředí a obchodní komunikaci.", "color": "#0d2d5c" },
+        { "id": 7, "type": "Cvičení", "title": "Slovní zásoba: idiomy a frázová slovesa", "desc": "Nejčastější idiomy a phrasal verbs v každodenní angličtině.", "color": "#4a90d9" }
+      ]
+    },
+    {
+      "section": "Poslech a mluvení",
+      "items": [
+        { "id": 8, "type": "Video", "title": "Poslech: konverzace v práci", "desc": "Autentická nahrávka – meeting a small talk.", "color": "#0d2d5c" },
+        { "id": 9, "type": "Poslech", "title": "Poslech: různé přízvuky", "desc": "Britská, americká a další varianty angličtiny.", "color": "#e61e53" },
+        { "id": 10, "type": "Aktivita", "title": "Cvičení mluvení – shadowing", "desc": "Technika shadowing pro zlepšení výslovnosti a plynulosti.", "color": "#4a90d9" }
+      ]
+    },
+    {
+      "section": "Závěr",
+      "items": [
+        { "id": 11, "type": "Reflexe", "title": "Reflexe pokroku", "desc": "Zamyšlení nad tím, co jste se naučili a kam dál.", "color": "#e61e53" },
+        { "id": 12, "type": "Cvičení", "title": "Závěrečný test úrovně B2", "desc": "Ověření znalostí z kurzu.", "color": "#0d2d5c" }
+      ]
+    }
+  ],
+  "reviews": [
+    {
+      "text": "Skvělý přehled gramatiky a praktické tipy pro učení.",
+      "author": "Anonymní účastník"
+    },
+    {
+      "text": "Videa jsou srozumitelná, cvičení mě baví. Doporučuji.",
+      "author": "Anonymní účastník"
+    }
+  ]
+}

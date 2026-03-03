@@ -1,0 +1,81 @@
+{
+  "courseTitle": "Empatický leadership",
+  "instructor": "Barbora Kučerová",
+  "instructorRole": "Lektorka a výzkumnice zaměřená na psychologii a empatii",
+  "duration": "4 h",
+  "price": "7 990 Kč",
+  "priceWithVat": "9 668 Kč s DPH",
+  "location": "Praha 1, Národní 416/37",
+  "nextDate": "6. 3. 2026",
+  "activitiesCount": 12,
+  "introText": "Týmy, které jsou vedeny empatickými vůdci, dosahují lepších výsledků, vyšší produktivity a mají silnějšího týmového ducha. Manažeři, kteří kladou důraz jen na výsledky, obvykle neuspějí, protože přehlížejí význam lidského faktoru. V tomto online kurzu se zaměříte na to, jak pracovat s různými typy osobností v týmu, jaké role můžeme hrát v kolektivu a jak pracovat s emocemi v interpersonální rovině.",
+  "introTextShort": "Týmy vedené empatickými vůdci dosahují lepších výsledků. Kurz se zaměřuje na práci s různými typy osobností a emocemi v týmu.",
+  "usefulTip": "Empatie není slabost, ale síla. Trénujte aktivní naslouchání každý den – začněte s jedním rozhovorem, kde se plně soustředíte na druhou osobu.",
+  "whatYouLearn": [
+    "Seznámíte se s nejnovějšími výzkumy a trendy v oblasti empatického leadershipu",
+    "Představíme si techniky jak je možné pracovat s emocemi a efektivně je regulovat",
+    "Pochopíte principy empatického vedení a jeho význam pro úspěšné řízení týmu",
+    "Vlastní reflexe a aktivity vám pomohou kultivovat váš empatický leadership"
+  ],
+  "targetAudience": [
+    "Manažerům a team leaderům",
+    "Vedoucím pracovníkům",
+    "Osobám zodpovědným za vedení a rozvoj týmu",
+    "Každému, kdo se zajímá o rozvoj svého vůdčího potenciálu"
+  ],
+  "practicalSkills": [
+    "Techniky pro vybudování a posílení důvěry ve vztazích s kolegy a podřízenými",
+    "Strategie pro řešení konfliktů a obtížných situací s důrazem na empatii a porozumění",
+    "Praktické tipy pro rozvoj osobní empatie a schopnosti vcítění se do pocitů a potřeb ostatních",
+    "Interaktivní aktivity a reflexe, které posílí vaše dovednosti"
+  ],
+  "curriculum": [
+    {
+      "section": "Úvod do empatického leadershipu",
+      "items": [
+        { "id": 1, "type": "Video", "title": "Co je empatický leadership a proč je důležitý", "desc": "Základní principy empatického vedení a jeho vliv na výkonnost týmu.", "color": "#7AC143" },
+        { "id": 2, "type": "Reflexe", "title": "Reflexe vlastního stylu vedení", "desc": "Identifikace vlastních silných stránek a oblastí pro rozvoj.", "color": "#00AEEF" },
+        { "id": 3, "type": "Aktivita", "title": "Jak efektivně kultivovat empatii", "desc": "Praktické techniky pro rozvoj empatie v každodenním životě.", "color": "#F7981C" }
+      ]
+    },
+    {
+      "section": "Výzkumy a trendy v empatii",
+      "items": [
+        { "id": 4, "type": "Video", "title": "Nejnovější neurovědecké poznatky", "desc": "Co říká věda o empatii a jejím vlivu na mozek.", "color": "#7AC143" },
+        { "id": 5, "type": "Článek", "title": "Příklady empatických lídrů ve světě", "desc": "Analýza úspěšných lídrů a jejich přístupu k vedení.", "color": "#00AEEF" }
+      ]
+    },
+    {
+      "section": "Techniky komunikace a emoční inteligence",
+      "items": [
+        { "id": 6, "type": "Video", "title": "Transparentní komunikace bez skrytých emocí", "desc": "Jak komunikovat jasně a autenticky.", "color": "#F7981C" },
+        { "id": 7, "type": "Aktivita", "title": "Cvičení empatického vedení", "desc": "Praktické úkoly založené na situacích z pracovního prostředí.", "color": "#7AC143" },
+        { "id": 8, "type": "Cvičení", "title": "Regulace vlastních emocí", "desc": "Techniky pro zvládání stresu a emočních reakcí.", "color": "#00AEEF" }
+      ]
+    },
+    {
+      "section": "Budování důvěry a řešení konfliktů",
+      "items": [
+        { "id": 9, "type": "Video", "title": "Strategie pro budování důvěry", "desc": "Jak vytvořit prostředí psychologické bezpečnosti v týmu.", "color": "#7AC143" },
+        { "id": 10, "type": "Aktivita", "title": "Řešení konfliktů s empatií", "desc": "Konstruktivní přístup k obtížným situacím.", "color": "#F7981C" },
+        { "id": 11, "type": "Reflexe", "title": "Reflexe vlastních zkušeností", "desc": "Zamyšlení nad osvědčenými postupy.", "color": "#00AEEF" }
+      ]
+    },
+    {
+      "section": "Závěr a osobní akční plán",
+      "items": [
+        { "id": 12, "type": "Aktivita", "title": "Vytvoření osobního akčního plánu", "desc": "Konkrétní kroky pro implementaci naučeného do praxe.", "color": "#F7981C" }
+      ]
+    }
+  ],
+  "reviews": [
+    {
+      "text": "Velmi zajímavý obsah a praktické tipy a rady.",
+      "author": "Anonymní účastník"
+    },
+    {
+      "text": "Přehledné a srozumitelné vysvětlení, spousta praktických příkladů.",
+      "author": "Anonymní účastník"
+    }
+  ]
+}
