@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useTranslation } from "@/hooks/useTranslation";
+import { asset } from "@/lib/paths";
 import "@/styles/jipka-tokens.css";
 
 const FOOTER_LINKS = [
@@ -58,7 +59,7 @@ export default function JipkaFooter() {
       >
         <Link href="/jipka" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
           <img
-            src="/images/logo-jipka.svg"
+            src={asset("/images/logo-jipka.svg")}
             alt="Jipka moje jazykovka"
             width={120}
             height={44}

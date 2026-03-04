@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Course } from "@/data/courses";
 import { useTranslation } from "@/hooks/useTranslation";
+import { asset } from "@/lib/paths";
 
 type CatalogCourseCardProps = {
   course: Course;
@@ -34,7 +35,7 @@ export default function CatalogCourseCard({ course, index }: CatalogCourseCardPr
           style={{ backgroundColor: "rgba(255, 255, 255, 0.85)" }}
         >
           <Image
-            src="/Screenshots/Digiskills-logo.png"
+            src={asset("/Screenshots/Digiskills-logo.png")}
             alt="Digiskills"
             width={100}
             height={24}

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from "@/hooks/useTranslation";
+import { asset } from "@/lib/paths";
 import "@/styles/topvision-tokens.css";
 
 const FOOTER_LINKS = [
@@ -59,7 +60,7 @@ export default function TopVisionFooter() {
       >
         <Link href="/topvision" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
           <Image
-            src="/images/topvision-logo.png"
+            src={asset("/images/topvision-logo.png")}
             alt="Top Vision"
             width={120}
             height={30}

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
+import { asset } from "@/lib/paths";
 
 const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
 
@@ -70,26 +71,26 @@ const AMBASSADORS = [
 ];
 
 const M365_PROFICIENCY = [
-  { app: "Outlook", usage: 9.1, proficiency: 7.6, icon: "/logos/Outlook.png", color: "#0078D4" },
-  { app: "Word", usage: 8.2, proficiency: 7.7, icon: "/logos/Word.png", color: "#2B579A" },
-  { app: "Excel", usage: 8.0, proficiency: 7.2, icon: "/logos/Excel.png", color: "#217346" },
-  { app: "Teams", usage: 7.4, proficiency: 6.3, icon: "/logos/Teams.png", color: "#6264A7" },
-  { app: "OneDrive", usage: 7.0, proficiency: 5.7, icon: "/logos/OneDrive.png", color: "#0078D4" },
-  { app: "SharePoint", usage: 5.7, proficiency: 4.7, icon: "/logos/SharePoint.png", color: "#038387" },
-  { app: "OneNote", usage: 4.7, proficiency: 4.3, icon: "/logos/OneNote.png", color: "#7719AA" },
-  { app: "ToDo", usage: 4.5, proficiency: 4.2, icon: "/logos/ToDo.png", color: "#3C78D8" },
-  { app: "Power BI", usage: 2.9, proficiency: 2.6, icon: "/logos/PowerBI.png", color: "#F2C811" },
-  { app: "Forms", usage: 2.7, proficiency: 2.7, icon: "/logos/Forms.png", color: "#035A5A" },
-  { app: "Planner", usage: 2.3, proficiency: 2.2, icon: "/logos/Planner.png", color: "#31752F" },
-  { app: "Copilot", usage: 3.8, proficiency: 3.2, icon: "/logos/Copilot.png", color: "#2596FF" },
+  { app: "Outlook", usage: 9.1, proficiency: 7.6, icon: asset("/logos/Outlook.png"), color: "#0078D4" },
+  { app: "Word", usage: 8.2, proficiency: 7.7, icon: asset("/logos/Word.png"), color: "#2B579A" },
+  { app: "Excel", usage: 8.0, proficiency: 7.2, icon: asset("/logos/Excel.png"), color: "#217346" },
+  { app: "Teams", usage: 7.4, proficiency: 6.3, icon: asset("/logos/Teams.png"), color: "#6264A7" },
+  { app: "OneDrive", usage: 7.0, proficiency: 5.7, icon: asset("/logos/OneDrive.png"), color: "#0078D4" },
+  { app: "SharePoint", usage: 5.7, proficiency: 4.7, icon: asset("/logos/SharePoint.png"), color: "#038387" },
+  { app: "OneNote", usage: 4.7, proficiency: 4.3, icon: asset("/logos/OneNote.png"), color: "#7719AA" },
+  { app: "ToDo", usage: 4.5, proficiency: 4.2, icon: asset("/logos/ToDo.png"), color: "#3C78D8" },
+  { app: "Power BI", usage: 2.9, proficiency: 2.6, icon: asset("/logos/PowerBI.png"), color: "#F2C811" },
+  { app: "Forms", usage: 2.7, proficiency: 2.7, icon: asset("/logos/Forms.png"), color: "#035A5A" },
+  { app: "Planner", usage: 2.3, proficiency: 2.2, icon: asset("/logos/Planner.png"), color: "#31752F" },
+  { app: "Copilot", usage: 3.8, proficiency: 3.2, icon: asset("/logos/Copilot.png"), color: "#2596FF" },
 ];
 
 const RECOMMENDED_COURSES_CONFIG = [
-  { id: 2, titleKey: "companyReport.course1Title", descKey: "companyReport.course1Desc", image: "/courses/Automatizace.webp", durationKey: "3", levelKey: "assessmentLevels.advanced", priorityKey: "companyReport.priorityHigh", priorityLevel: "high" as const },
-  { id: 3, titleKey: "companyReport.course2Title", descKey: "companyReport.course2Desc", image: "/courses/AI.webp", durationKey: "1.5", levelKey: "assessmentLevels.beginner", priorityKey: "companyReport.priorityHigh", priorityLevel: "high" as const },
-  { id: 5, titleKey: "companyReport.course3Title", descKey: "companyReport.course3Desc", image: "/courses/security.png", durationKey: "1.5", levelKey: "assessmentLevels.beginner", priorityKey: "companyReport.priorityMedium", priorityLevel: "medium" as const },
-  { id: 4, titleKey: "companyReport.course4Title", descKey: "companyReport.course4Desc", image: "/courses/excel.webp", durationKey: "2.5", levelKey: "assessmentLevels.intermediate", priorityKey: "companyReport.priorityMedium", priorityLevel: "medium" as const },
-  { id: 1, titleKey: "companyReport.course5Title", descKey: "companyReport.course5Desc", image: "/courses/teams.webp", durationKey: "2", levelKey: "assessmentLevels.intermediate", priorityKey: "companyReport.priorityMedium", priorityLevel: "medium" as const },
+  { id: 2, titleKey: "companyReport.course1Title", descKey: "companyReport.course1Desc", image: asset("/courses/Automatizace.webp"), durationKey: "3", levelKey: "assessmentLevels.advanced", priorityKey: "companyReport.priorityHigh", priorityLevel: "high" as const },
+  { id: 3, titleKey: "companyReport.course2Title", descKey: "companyReport.course2Desc", image: asset("/courses/AI.webp"), durationKey: "1.5", levelKey: "assessmentLevels.beginner", priorityKey: "companyReport.priorityHigh", priorityLevel: "high" as const },
+  { id: 5, titleKey: "companyReport.course3Title", descKey: "companyReport.course3Desc", image: asset("/courses/security.png"), durationKey: "1.5", levelKey: "assessmentLevels.beginner", priorityKey: "companyReport.priorityMedium", priorityLevel: "medium" as const },
+  { id: 4, titleKey: "companyReport.course4Title", descKey: "companyReport.course4Desc", image: asset("/courses/excel.webp"), durationKey: "2.5", levelKey: "assessmentLevels.intermediate", priorityKey: "companyReport.priorityMedium", priorityLevel: "medium" as const },
+  { id: 1, titleKey: "companyReport.course5Title", descKey: "companyReport.course5Desc", image: asset("/courses/teams.webp"), durationKey: "2", levelKey: "assessmentLevels.intermediate", priorityKey: "companyReport.priorityMedium", priorityLevel: "medium" as const },
 ];
 
 export default function CompanyAssessmentReport() {
@@ -403,7 +404,7 @@ export default function CompanyAssessmentReport() {
                 justifyContent: "center",
               }}
             >
-              <Image src="/Screenshots/Symbol Dark.png" alt="" width={28} height={28} style={{ objectFit: "contain" }} />
+              <Image src={asset("/Screenshots/Symbol Dark.png")} alt="" width={28} height={28} style={{ objectFit: "contain" }} />
             </div>
             <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: 0 }}>
               Firemní superschopnosti
@@ -441,7 +442,7 @@ export default function CompanyAssessmentReport() {
                 justifyContent: "center",
               }}
             >
-              <Image src="/Screenshots/Symbol Dark.png" alt="" width={28} height={28} style={{ objectFit: "contain" }} />
+              <Image src={asset("/Screenshots/Symbol Dark.png")} alt="" width={28} height={28} style={{ objectFit: "contain" }} />
             </div>
             <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: 0 }}>
               Firemní prostor pro růst

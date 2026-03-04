@@ -392,14 +392,11 @@ export default function ProfileDashboard() {
             }}
           >
             {MILESTONE_KEYS.map((key, idx) => {
-              const status = idx === 0 ? "active" : "pending";
-              const circleColor =
-                status === "done"
-                  ? "var(--color-accent-green)"
-                  : status === "active"
-                    ? "var(--color-primary)"
-                    : "var(--color-border)";
-              const circleTextColor = status === "pending" ? "var(--color-text-secondary)" : "white";
+              const isActive = idx === 0;
+              const circleColor = isActive ? "var(--color-primary)" : "var(--color-border)";
+              const circleTextColor = isActive ? "white" : "var(--color-text-secondary)";
+              const statusColor = isActive ? "var(--color-primary)" : "var(--color-text-secondary)";
+              const statusLabel = isActive ? t("profile.inProgress") : t("profile.waiting");
               return (
                 <div
                   key={key}
@@ -417,10 +414,10 @@ export default function ProfileDashboard() {
                       fontSize: 16,
                       fontWeight: 800,
                       color: circleTextColor,
-                      boxShadow: status === "active" ? "0 0 0 4px rgba(37,150,255,0.25)" : undefined,
+                      boxShadow: isActive ? "0 0 0 4px rgba(37,150,255,0.25)" : undefined,
                     }}
                   >
-                    {status === "done" ? "✓" : idx + 1}
+                    {idx + 1}
                   </div>
                   <div style={{ textAlign: "center" }}>
                     <div style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-main)" }}>
@@ -431,19 +428,10 @@ export default function ProfileDashboard() {
                         fontSize: 11,
                         fontWeight: 600,
                         marginTop: 4,
-                        color:
-                          status === "done"
-                            ? "var(--color-accent-green)"
-                            : status === "active"
-                              ? "var(--color-primary)"
-                              : "var(--color-text-secondary)",
+                        color: statusColor,
                       }}
                     >
-                      {status === "done"
-                        ? t("profile.done")
-                        : status === "active"
-                          ? t("profile.inProgress")
-                          : t("profile.waiting")}
+                      {statusLabel}
                     </div>
                   </div>
                 </div>

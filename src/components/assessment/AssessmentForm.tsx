@@ -10,6 +10,7 @@ import CheckboxGroup from "./CheckboxGroup";
 import { getSections, getInitialData, type FormData, type SectionData, type SectionKey } from "./assessment-data";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTranslation } from "@/hooks/useTranslation";
+import { asset } from "@/lib/paths";
 import AssessmentSummary from "./AssessmentSummary";
 import { MarkdownFeedback } from "./MarkdownFeedback";
 
@@ -910,7 +911,7 @@ function SectionHeader({
         }}
       >
         <Image
-          src="/Screenshots/Symbol Dark.png"
+          src={asset("/Screenshots/Symbol Dark.png")}
           alt=""
           width={26}
           height={26}

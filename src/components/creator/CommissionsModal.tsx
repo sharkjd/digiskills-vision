@@ -386,7 +386,7 @@ export default function CommissionsModal({
                       fontWeight: 600,
                       color: "var(--color-text-main)",
                     }}
-                    formatter={(value: number) => [
+                    formatter={(value: number | undefined) => [
                       value ?? 0,
                       t("creator.tableSales"),
                     ]}

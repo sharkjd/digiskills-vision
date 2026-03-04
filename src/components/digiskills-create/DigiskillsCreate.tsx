@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import DurationSlider, { DURATION_OPTIONS } from "./DurationSlider";
 import DropZone from "./DropZone";
+import { asset } from "@/lib/paths";
 import mockData from "@/data/digiskills-create-mock.json";
 
 type Phase = "wizard" | "generating" | "result";
@@ -241,7 +242,7 @@ export default function DigiskillsCreate() {
                 }}
               >
                 <Image
-                  src="/Screenshots/Symbol Dark.png"
+                  src={asset("/Screenshots/Symbol Dark.png")}
                   alt=""
                   width={36}
                   height={36}
@@ -363,7 +364,7 @@ export default function DigiskillsCreate() {
                         }}
                       >
                         <Image
-                          src="/Screenshots/Symbol Dark.png"
+                          src={asset("/Screenshots/Symbol Dark.png")}
                           alt=""
                           width={26}
                           height={26}

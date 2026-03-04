@@ -4,6 +4,7 @@ import React, { useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { asset } from "@/lib/paths";
 
 const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
 
@@ -42,18 +43,18 @@ const TALENT_DISTRIBUTION = [
 ];
 
 const M365_PROFICIENCY = [
-  { app: "Outlook", usage: 9.1, proficiency: 7.6, icon: "/logos/Outlook.png", color: "#0078D4" },
-  { app: "Word", usage: 8.2, proficiency: 7.7, icon: "/logos/Word.png", color: "#2B579A" },
-  { app: "Excel", usage: 8.0, proficiency: 7.2, icon: "/logos/Excel.png", color: "#217346" },
-  { app: "Teams", usage: 7.4, proficiency: 6.3, icon: "/logos/Teams.png", color: "#6264A7" },
-  { app: "OneDrive", usage: 7.0, proficiency: 5.7, icon: "/logos/OneDrive.png", color: "#0078D4" },
-  { app: "SharePoint", usage: 5.7, proficiency: 4.7, icon: "/logos/SharePoint.png", color: "#038387" },
-  { app: "OneNote", usage: 4.7, proficiency: 4.3, icon: "/logos/OneNote.png", color: "#7719AA" },
-  { app: "ToDo", usage: 4.5, proficiency: 4.2, icon: "/logos/ToDo.png", color: "#3C78D8" },
-  { app: "Power BI", usage: 2.9, proficiency: 2.6, icon: "/logos/PowerBI.png", color: "#F2C811" },
-  { app: "Forms", usage: 2.7, proficiency: 2.7, icon: "/logos/Forms.png", color: "#035A5A" },
-  { app: "Planner", usage: 2.3, proficiency: 2.2, icon: "/logos/Planner.png", color: "#31752F" },
-  { app: "Copilot", usage: 3.8, proficiency: 3.2, icon: "/logos/Copilot.png", color: "#2596FF" },
+  { app: "Outlook", usage: 9.1, proficiency: 7.6, icon: asset("/logos/Outlook.png"), color: "#0078D4" },
+  { app: "Word", usage: 8.2, proficiency: 7.7, icon: asset("/logos/Word.png"), color: "#2B579A" },
+  { app: "Excel", usage: 8.0, proficiency: 7.2, icon: asset("/logos/Excel.png"), color: "#217346" },
+  { app: "Teams", usage: 7.4, proficiency: 6.3, icon: asset("/logos/Teams.png"), color: "#6264A7" },
+  { app: "OneDrive", usage: 7.0, proficiency: 5.7, icon: asset("/logos/OneDrive.png"), color: "#0078D4" },
+  { app: "SharePoint", usage: 5.7, proficiency: 4.7, icon: asset("/logos/SharePoint.png"), color: "#038387" },
+  { app: "OneNote", usage: 4.7, proficiency: 4.3, icon: asset("/logos/OneNote.png"), color: "#7719AA" },
+  { app: "ToDo", usage: 4.5, proficiency: 4.2, icon: asset("/logos/ToDo.png"), color: "#3C78D8" },
+  { app: "Power BI", usage: 2.9, proficiency: 2.6, icon: asset("/logos/PowerBI.png"), color: "#F2C811" },
+  { app: "Forms", usage: 2.7, proficiency: 2.7, icon: asset("/logos/Forms.png"), color: "#035A5A" },
+  { app: "Planner", usage: 2.3, proficiency: 2.2, icon: asset("/logos/Planner.png"), color: "#31752F" },
+  { app: "Copilot", usage: 3.8, proficiency: 3.2, icon: asset("/logos/Copilot.png"), color: "#2596FF" },
 ];
 
 const DIGCOMP_LABELS = [

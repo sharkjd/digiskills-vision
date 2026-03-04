@@ -8,6 +8,7 @@ import { useRecommendedCourses } from "@/context/RecommendedCoursesContext";
 import { getCourseList, type Course } from "@/data/courses";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTranslation } from "@/hooks/useTranslation";
+import { asset } from "@/lib/paths";
 
 const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
 
@@ -66,11 +67,11 @@ const BENCHMARK_DATA = {
 };
 
 const RECOMMENDED_APPS = [
-  { name: "Power Automate", icon: "/logos/Microsoft_Power_Automate.svg.png" },
-  { name: "Power BI", icon: "/logos/PowerBI.png" },
-  { name: "OneNote", icon: "/logos/OneNote.png" },
-  { name: "Planner", icon: "/logos/Planner.png" },
-  { name: "Forms", icon: "/logos/Forms.png" },
+  { name: "Power Automate", icon: asset("/logos/Microsoft_Power_Automate.svg.png") },
+  { name: "Power BI", icon: asset("/logos/PowerBI.png") },
+  { name: "OneNote", icon: asset("/logos/OneNote.png") },
+  { name: "Planner", icon: asset("/logos/Planner.png") },
+  { name: "Forms", icon: asset("/logos/Forms.png") },
 ];
 
 
@@ -363,7 +364,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
                 justifyContent: "center",
               }}
             >
-              <Image src="/Screenshots/Symbol Dark.png" alt="" width={28} height={28} style={{ objectFit: "contain" }} />
+              <Image src={asset("/Screenshots/Symbol Dark.png")} alt="" width={28} height={28} style={{ objectFit: "contain" }} />
             </div>
             <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: 0 }}>
               Tvé superschopnosti
@@ -401,7 +402,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
                 justifyContent: "center",
               }}
             >
-              <Image src="/Screenshots/Symbol Dark.png" alt="" width={28} height={28} style={{ objectFit: "contain" }} />
+              <Image src={asset("/Screenshots/Symbol Dark.png")} alt="" width={28} height={28} style={{ objectFit: "contain" }} />
             </div>
             <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: 0 }}>
               Prostor pro růst

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { asset } from "@/lib/paths";
 import {
   Sparkles,
   HelpCircle,
@@ -38,12 +39,12 @@ const CHANNEL_OPTIONS = [
   {
     id: "teams" as const,
     name: "Microsoft Teams",
-    icon: "/logos/Teams.png",
+    icon: asset("/logos/Teams.png"),
   },
   {
     id: "whatsapp" as const,
     name: "WhatsApp",
-    icon: "/logos/whatsapp.png",
+    icon: asset("/logos/whatsapp.png"),
   },
   {
     id: "email" as const,

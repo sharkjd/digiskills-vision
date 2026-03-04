@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from "@/hooks/useTranslation";
+import { asset } from "@/lib/paths";
 
 const FOOTER_LINKS = [
   { labelKey: "footer.digiskills", href: "/" },
@@ -57,7 +58,7 @@ export default function Footer() {
       >
         <Link href="/" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
           <Image
-            src="/images/digiskills-logo.png"
+            src={asset("/images/digiskills-logo.png")}
             alt="Digiskills"
             width={120}
             height={30}

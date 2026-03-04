@@ -365,10 +365,11 @@ export default function ManagerDashboard() {
         >
           {MILESTONE_KEYS.map((key, idx) => {
             const status = idx === 0 ? "active" : "pending";
-            const milestone = { id: String(idx + 1), label: t(key), status } as const;
+            const statusColor = status === "active" ? "var(--color-primary)" : "var(--color-text-secondary)";
+            const statusLabel = status === "active" ? t("manager.inProgress") : t("manager.waiting");
             return (
             <div
-              key={milestone.id}
+              key={idx}
               style={{
                 textAlign: "center",
                 padding: "12px 8px",
@@ -383,26 +384,17 @@ export default function ManagerDashboard() {
                   color: "var(--color-text-main)",
                 }}
               >
-                {milestone.label}
+                {t(key)}
               </div>
               <div
                 style={{
                   fontSize: 11,
                   fontWeight: 600,
                   marginTop: 4,
-                  color:
-                    milestone.status === "done"
-                      ? "var(--color-accent-green)"
-                      : milestone.status === "active"
-                        ? "var(--color-primary)"
-                        : "var(--color-text-secondary)",
+                  color: statusColor,
                 }}
               >
-                {milestone.status === "done"
-                  ? t("manager.done")
-                  : milestone.status === "active"
-                    ? t("manager.inProgress")
-                    : t("manager.waiting")}
+                {statusLabel}
               </div>
             </div>
           );

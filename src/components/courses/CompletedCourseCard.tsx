@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { Course } from "@/data/courses";
 import { useTranslation } from "@/hooks/useTranslation";
+import { asset } from "@/lib/paths";
 
 type CompletedCourseCardProps = {
   course: Course;
@@ -60,7 +61,7 @@ export default function CompletedCourseCard({ course }: CompletedCourseCardProps
           style={{ backgroundColor: "rgba(255, 255, 255, 0.85)" }}
         >
           <Image
-            src="/Screenshots/Digiskills-logo.png"
+            src={asset("/Screenshots/Digiskills-logo.png")}
             alt="Digiskills"
             width={100}
             height={24}

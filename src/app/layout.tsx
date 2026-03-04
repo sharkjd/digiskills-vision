@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   title: "Digiskills",
   description: "Digiskills vzdělávací portál",
   icons: {
-    icon: "/favicon.png",
+    icon: "/vize/favicon.png",
   },
 };
 

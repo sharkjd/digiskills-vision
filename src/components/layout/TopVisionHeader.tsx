@@ -5,12 +5,13 @@ import Link from "next/link";
 import { useState } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
 import type { Language } from "@/context/LanguageContext";
+import { asset } from "@/lib/paths";
 import "@/styles/topvision-tokens.css";
 
 const MOCK_USER = {
   name: "Honza Dolejš",
   organization: "Top Vision",
-  avatar: "/images/avatar-honza-v2.png" as string | null,
+  avatar: asset("/images/avatar-honza-v2.png"),
 };
 
 export default function TopVisionHeader() {
@@ -43,7 +44,7 @@ export default function TopVisionHeader() {
           style={{ display: "flex", alignItems: "center", flexShrink: 0 }}
         >
           <Image
-            src="/images/topvision-logo.png"
+            src={asset("/images/topvision-logo.png")}
             alt="Top Vision"
             width={160}
             height={40}

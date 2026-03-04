@@ -18,6 +18,7 @@ import {
 } from "./assessment-data";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTranslation } from "@/hooks/useTranslation";
+import { asset } from "@/lib/paths";
 import { MarkdownFeedback } from "./MarkdownFeedback";
 
 type Phase = "chat" | "loading" | "report";
@@ -281,7 +282,7 @@ export default function AssessmentChatbot() {
               }}
             >
               <Image
-                src="/Screenshots/Symbol Dark.png"
+                src={asset("/Screenshots/Symbol Dark.png")}
                 alt=""
                 width={36}
                 height={36}
@@ -420,7 +421,7 @@ export default function AssessmentChatbot() {
                           }}
                         >
                           <Image
-                            src="/Screenshots/Symbol Dark.png"
+                            src={asset("/Screenshots/Symbol Dark.png")}
                             alt=""
                             width={26}
                             height={26}

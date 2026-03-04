@@ -5,12 +5,13 @@ import Image from "next/image";
 import { useState } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
 import type { Language } from "@/context/LanguageContext";
+import { asset } from "@/lib/paths";
 import "@/styles/jipka-tokens.css";
 
 const MOCK_USER = {
   name: "Honza Dolejš",
   organization: "Jipka",
-  avatar: "/images/avatar-honza-v2.png" as string | null,
+  avatar: asset("/images/avatar-honza-v2.png"),
 };
 
 export default function JipkaHeader() {
@@ -42,7 +43,7 @@ export default function JipkaHeader() {
           style={{ display: "flex", alignItems: "center", flexShrink: 0 }}
         >
           <img
-            src="/images/logo-jipka.svg"
+            src={asset("/images/logo-jipka.svg")}
             alt="Jipka moje jazykovka"
             width={140}
             height={50}

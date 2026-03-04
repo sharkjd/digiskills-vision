@@ -483,7 +483,7 @@ export default function CreatorDashboard() {
                       boxShadow: "0 4px 12px var(--color-card-shadow)",
                     }}
                     labelStyle={{ fontWeight: 600, color: "var(--color-text-main)" }}
-                    formatter={(value: number) => [`${value}`, "Prodeje"]}
+                    formatter={(value: number | undefined) => [`${value ?? 0}`, "Prodeje"]}
                   />
                   <Area
                     type="monotone"

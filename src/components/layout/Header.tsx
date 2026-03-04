@@ -6,10 +6,11 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
 import type { Language } from "@/context/LanguageContext";
+import { asset } from "@/lib/paths";
 
 const NAV_LINKS = [
   { labelKey: "header.nav.onlineCourses", href: "/moje-kurzy" },
-  { labelKey: "header.nav.microlearning", href: "/microlearning" },
+  { labelKey: "header.nav.microlearning", href: null }, // placeholder – nic nedělá
   { labelKey: "header.nav.assessment", href: "/assessment" },
 ];
 
@@ -49,7 +50,7 @@ const DROPDOWN_ITEMS: DropdownItem[] = [
 const MOCK_USER = {
   name: "Honza Dolejš",
   organization: "Digiskills",
-  avatar: "/images/avatar-honza-v2.png" as string | null,
+  avatar: asset("/images/avatar-honza-v2.png"),
   licenseExpiry: "31. 12. 2030",
 };
 
@@ -80,7 +81,7 @@ export default function Header() {
         {/* Logo */}
         <Link href="/" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
           <Image
-            src="/images/digiskills-logo.png"
+            src={asset("/images/digiskills-logo.png")}
             alt="Digiskills"
             width={160}
             height={40}
@@ -100,23 +101,36 @@ export default function Header() {
           }}
         >
           {NAV_LINKS.map((link) => {
-            const isActive = pathname === link.href;
+            const isActive = link.href !== null && pathname === link.href;
+            const baseStyle = {
+              padding: "6px 14px",
+              borderRadius: 6,
+              fontSize: 15,
+              fontWeight: isActive ? 800 : 500,
+              color: isActive
+                ? "var(--color-primary)"
+                : "var(--color-text-secondary)",
+              textDecoration: "none",
+              transition: "color 0.15s",
+            } as const;
+
+            if (link.href === null) {
+              return (
+                <span
+                  key={link.labelKey}
+                  style={{
+                    ...baseStyle,
+                    cursor: "default",
+                    opacity: 0.7,
+                  }}
+                >
+                  {t(link.labelKey)}
+                </span>
+              );
+            }
+
             return (
-              <Link
-                key={link.href}
-                href={link.href}
-                style={{
-                  padding: "6px 14px",
-                  borderRadius: 6,
-                  fontSize: 15,
-                  fontWeight: isActive ? 800 : 500,
-                  color: isActive
-                    ? "var(--color-primary)"
-                    : "var(--color-text-secondary)",
-                  textDecoration: "none",
-                  transition: "color 0.15s",
-                }}
-              >
+              <Link key={link.labelKey} href={link.href} style={baseStyle}>
                 {t(link.labelKey)}
               </Link>
             );

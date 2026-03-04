@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Play, ExternalLink } from "lucide-react";
 import Image from "next/image";
+import { asset } from "@/lib/paths";
 
 type VideoActivityProps = {
   activityId: number;
@@ -32,10 +33,10 @@ const ACTIVITY_CONTENT: Record<
   }
 > = {
   1: {
-    videoThumbnail: "/courses/teams.webp",
+    videoThumbnail: asset("/courses/teams.webp"),
     videoDuration: "8:32",
     youtubeEmbedId: "FBmWaxir8Dg",
-    instructorImage: "/avatars/honza.jpg",
+    instructorImage: asset("/avatars/honza.jpg"),
     instructorName: "Honza Dolejš",
     description:
       "Vývoj je neustále vpředu a s novými nástroji můžete pracovat rychleji i chytřeji. V tomto videu se podíváme na to, jak se technologie mění a jak s tím držet krok. Zjistíte, že adaptace na nové nástroje není tak složitá, jak se může zdát.",
@@ -43,7 +44,7 @@ const ACTIVITY_CONTENT: Record<
     recommended: [],
   },
   2: {
-    videoThumbnail: "/courses/digital-mindset.png",
+    videoThumbnail: asset("/courses/digital-mindset.png"),
     videoDuration: "6:15",
     description:
       "Technologie jako dobrý sluha, ale zlý pán. Naučte se, jak si udržet zdravý vztah s digitálními nástroji a jak je využívat efektivně, aniž byste se stali jejich otroky. Digitální mindset je o rovnováze mezi využíváním technologií a zachováním lidského přístupu.",
@@ -52,13 +53,13 @@ const ACTIVITY_CONTENT: Record<
       {
         id: 4,
         title: "Digitální wellbeing",
-        thumbnail: "/courses/AI.webp",
+        thumbnail: asset("/courses/AI.webp"),
         duration: "1h 30m",
       },
       {
         id: 5,
         title: "Focus a produktivita",
-        thumbnail: "/courses/excel.webp",
+        thumbnail: asset("/courses/excel.webp"),
         duration: "2h 00m",
       },
     ],

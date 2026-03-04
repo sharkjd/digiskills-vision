@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Send, Sparkles, Target, Clock, BookOpen, Zap, RotateCcw } from "lucide-react";
 import Image from "next/image";
 import { useTranslation } from "@/hooks/useTranslation";
+import { asset } from "@/lib/paths";
 
 type ChatMessage = {
   role: "bot" | "user";
@@ -318,7 +319,7 @@ export function GoalChatbot() {
                     }}
                   >
                     <Image
-                      src="/Screenshots/Symbol Dark.png"
+                      src={asset("/Screenshots/Symbol Dark.png")}
                       alt=""
                       width={20}
                       height={20}
@@ -397,7 +398,7 @@ export function GoalChatbot() {
                           }}
                         >
                           <Image
-                            src="/Screenshots/Symbol Dark.png"
+                            src={asset("/Screenshots/Symbol Dark.png")}
                             alt=""
                             width={18}
                             height={18}
