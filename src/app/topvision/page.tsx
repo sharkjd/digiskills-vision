@@ -112,15 +112,6 @@ export default function TopVisionCoursePage() {
       }}
     >
         <div className="max-w-6xl mx-auto px-6 py-8">
-          {/* Breadcrumb */}
-          <div style={{ marginBottom: 16, fontSize: 13, color: "var(--tv-text-secondary)" }}>
-            <span>Úvod</span>
-            <span style={{ margin: "0 8px" }}>›</span>
-            <span>Soft skills</span>
-            <span style={{ margin: "0 8px" }}>›</span>
-            <span style={{ color: "var(--tv-text-main)" }}>Empatický leadership</span>
-          </div>
-
           {/* HERO nadpis */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

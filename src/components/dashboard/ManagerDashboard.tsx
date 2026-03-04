@@ -33,31 +33,39 @@ const itemVariants = {
 };
 
 const ACTIVITY_DATA = [
-  { weekKey: "manager.week", weekNum: 1, lessons: 42 },
-  { weekKey: "manager.week", weekNum: 2, lessons: 58 },
-  { weekKey: "manager.week", weekNum: 3, lessons: 71 },
-  { weekKey: "manager.week", weekNum: 4, lessons: 65 },
-  { weekKey: "manager.week", weekNum: 5, lessons: 89 },
+  { weekKey: "manager.week", weekNum: 1, lessons: 32 },
+  { weekKey: "manager.week", weekNum: 2, lessons: 29 },
+  { weekKey: "manager.week", weekNum: 3, lessons: 25 },
+  { weekKey: "manager.week", weekNum: 4, lessons: 22 },
+  { weekKey: "manager.week", weekNum: 5, lessons: 19 },
 ];
 
 const TOP_STUDENTS = [
-  { name: "Marie Nováková", points: 124, initials: "MN" },
-  { name: "Petr Svoboda", points: 98, initials: "PS" },
-  { name: "Eva Horáková", points: 87, initials: "EH" },
-  { name: "Jan Procházka", points: 76, initials: "JP" },
-  { name: "Lucie Dvořáková", points: 65, initials: "LD" },
+  { name: "Marie Nováková", points: 58, initials: "MN" },
+  { name: "Petr Svoboda", points: 51, initials: "PS" },
+  { name: "Eva Horáková", points: 47, initials: "EH" },
+  { name: "Jan Procházka", points: 42, initials: "JP" },
+  { name: "Lucie Dvořáková", points: 39, initials: "LD" },
+];
+
+const INACTIVE_STUDENTS = [
+  { name: "Tomáš Veselý", points: 2, initials: "TV", inactiveDays: 31 },
+  { name: "Alena Bártová", points: 4, initials: "AB", inactiveDays: 27 },
+  { name: "Karel Urban", points: 6, initials: "KU", inactiveDays: 24 },
+  { name: "Iveta Blažková", points: 8, initials: "IB", inactiveDays: 21 },
+  { name: "Milan Kučera", points: 10, initials: "MK", inactiveDays: 19 },
 ];
 
 const STRENGTHS = [
-  { topic: "Kyberbezpečnost", percent: 92 },
-  { topic: "Excel", percent: 85 },
-  { topic: "Komunikace", percent: 88 },
+  { topic: "Kyberbezpečnost", percent: 54 },
+  { topic: "Excel", percent: 49 },
+  { topic: "Komunikace", percent: 52 },
 ];
 
 const GAPS = [
-  { topic: "Power Automate", percent: 22 },
-  { topic: "AI Promptování", percent: 18 },
-  { topic: "Cloud", percent: 25 },
+  { topic: "Power Automate", percent: 63 },
+  { topic: "AI Promptování", percent: 71 },
+  { topic: "Cloud", percent: 68 },
 ];
 
 const MILESTONE_KEYS = [
@@ -66,27 +74,31 @@ const MILESTONE_KEYS = [
   "manager.milestone3",
 ] as const;
 
-const TEAM_RANKING = { place: 3, totalTeams: 12 };
+const TEAM_DIGISKILLS_INDEX = 4.3;
+const COMPANY_TEAM_MINIMUM = 5.8;
+
+const TEAM_RANKING = { place: 10, totalTeams: 12 };
 
 const COMPLETED_COURSES = [
-  { name: "Základy kyberbezpečnosti", completedBy: 22, total: 24, category: "Bezpečnost" },
-  { name: "Excel pro pokročilé", completedBy: 19, total: 24, category: "M365" },
-  { name: "Efektivní komunikace online", completedBy: 18, total: 24, category: "Soft skills" },
-  { name: "Teams & Spolupráce", completedBy: 21, total: 24, category: "M365" },
-  { name: "Základy datové analýzy", completedBy: 15, total: 24, category: "Data" },
+  { name: "Základy kyberbezpečnosti", completedBy: 9, total: 24, category: "Bezpečnost" },
+  { name: "Excel pro pokročilé", completedBy: 8, total: 24, category: "M365" },
+  { name: "Efektivní komunikace online", completedBy: 7, total: 24, category: "Soft skills" },
+  { name: "Teams & Spolupráce", completedBy: 10, total: 24, category: "M365" },
+  { name: "Základy datové analýzy", completedBy: 6, total: 24, category: "Data" },
 ];
 
 const POPULAR_COURSES = [
-  { name: "AI Promptování pro praxi", students: 20, category: "AI", trend: "+4 tento týden" },
-  { name: "ChatGPT v kanceláři", students: 17, category: "AI", trend: "+3 tento týden" },
-  { name: "Power Automate – začátky", students: 14, category: "Automatizace", trend: "+2 tento týden" },
-  { name: "Prezentace v PowerPoint", students: 13, category: "M365", trend: "stabilní" },
+  { name: "AI Promptování pro praxi", students: 9, category: "AI", trend: "-1 tento týden" },
+  { name: "ChatGPT v kanceláři", students: 8, category: "AI", trend: "-2 tento týden" },
+  { name: "Power Automate – začátky", students: 7, category: "Automatizace", trend: "-1 tento týden" },
+  { name: "Prezentace v PowerPoint", students: 6, category: "M365", trend: "stabilní" },
+  { name: "Teams pro efektivní spolupráci", students: 5, category: "M365", trend: "-1 tento týden" },
 ];
 
 const LOW_COMPLETION_COURSES = [
-  { name: "Cloud Computing základy", completionRate: 18, enrolled: 16, category: "Cloud" },
-  { name: "Power BI přehled", completionRate: 22, enrolled: 14, category: "Data" },
-  { name: "Projektové řízení (MS Project)", completionRate: 25, enrolled: 11, category: "Management" },
+  { name: "Cloud Computing základy", completionRate: 12, enrolled: 17, category: "Cloud" },
+  { name: "Power BI přehled", completionRate: 15, enrolled: 15, category: "Data" },
+  { name: "Projektové řízení (MS Project)", completionRate: 18, enrolled: 13, category: "Management" },
 ];
 
 export default function ManagerDashboard() {
@@ -166,7 +178,7 @@ export default function ManagerDashboard() {
                 textAlign: "center",
               }}
             >
-              <div style={{ fontSize: 36, fontWeight: 800 }}>345</div>
+              <div style={{ fontSize: 36, fontWeight: 800 }}>148</div>
               <div style={{ fontSize: 14, fontWeight: 600, opacity: 0.9 }}>
                 {t("manager.totalStudied")}
               </div>
@@ -184,7 +196,7 @@ export default function ManagerDashboard() {
                 textAlign: "center",
               }}
             >
-              <div style={{ fontSize: 36, fontWeight: 800 }}>18 / 24</div>
+              <div style={{ fontSize: 36, fontWeight: 800 }}>11 / 24</div>
               <div style={{ fontSize: 14, fontWeight: 600, opacity: 0.9 }}>
                 {t("manager.activeMembers")}
               </div>
@@ -202,7 +214,7 @@ export default function ManagerDashboard() {
                 textAlign: "center",
               }}
             >
-              <div style={{ fontSize: 36, fontWeight: 800 }}>120</div>
+              <div style={{ fontSize: 36, fontWeight: 800 }}>286</div>
               <div style={{ fontSize: 14, fontWeight: 600, opacity: 0.9 }}>
                 {t("manager.remainingToGoal")}
               </div>
@@ -231,6 +243,47 @@ export default function ManagerDashboard() {
           </div>
         </div>
       </motion.div>
+
+      {/* B. Varování pod firemním minimem */}
+      {TEAM_DIGISKILLS_INDEX < COMPANY_TEAM_MINIMUM && (
+        <motion.div
+          variants={itemVariants}
+          style={{
+            background: "rgba(255,117,117,0.5)",
+            border: "1px solid #FF7575",
+            borderRadius: 12,
+            padding: "20px 24px",
+            boxShadow: "0 2px 8px var(--color-card-shadow)",
+            display: "flex",
+            flexDirection: "column",
+            gap: 8,
+          }}
+        >
+          <div
+            style={{
+              fontSize: 18,
+              fontWeight: 700,
+              color: "var(--color-text-main)",
+              fontStyle: "italic",
+              margin: 0,
+            }}
+          >
+            Pozor, výsledky vašeho týmu jsou pod minimem firmy.
+          </div>
+          <p
+            style={{
+              margin: 0,
+              fontSize: 14,
+              lineHeight: 1.6,
+              color: "var(--color-text-main)",
+            }}
+          >
+            Aktuálně je tým na hodnotě {TEAM_DIGISKILLS_INDEX.toFixed(1)} z 10, zatímco firemní minimum je{" "}
+            {COMPANY_TEAM_MINIMUM.toFixed(1)}. Doporučujeme během příštích 14 dnů dokončit alespoň 4 rozkoukané
+            kurzy v týmu a přidat minimálně 2 kurzy zaměřené na Power Automate nebo AI promptování.
+          </p>
+        </motion.div>
+      )}
 
       {/* B. Naše Cesta (Team Vision Path) */}
       <motion.div
@@ -311,7 +364,7 @@ export default function ManagerDashboard() {
           }}
         >
           {MILESTONE_KEYS.map((key, idx) => {
-            const status = idx === 0 ? "done" : idx === 1 ? "active" : "pending";
+            const status = idx === 0 ? "active" : "pending";
             const milestone = { id: String(idx + 1), label: t(key), status } as const;
             return (
             <div
@@ -357,12 +410,12 @@ export default function ManagerDashboard() {
         </div>
       </motion.div>
 
-      {/* C. Aktivita Týmu (Graf & Leaderboard) */}
+      {/* C. Aktivita Týmu (Graf + leaderboardy) */}
       <motion.div
         variants={itemVariants}
         style={{
-          display: "grid",
-          gridTemplateColumns: "minmax(400px, 2fr) 1fr",
+          display: "flex",
+          flexDirection: "column",
           gap: 24,
         }}
       >
@@ -450,86 +503,181 @@ export default function ManagerDashboard() {
         </motion.div>
 
         <motion.div
-          whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
-          transition={HOVER_TRANSITION}
+          variants={itemVariants}
           style={{
-            background: "var(--color-background)",
-            borderRadius: 16,
-            padding: "28px",
-            border: "1px solid var(--color-border)",
-            boxShadow: "0 2px 8px var(--color-card-shadow)",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 24,
           }}
         >
-          <h2
+          <motion.div
+            whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
+            transition={HOVER_TRANSITION}
             style={{
-              fontSize: 20,
-              fontWeight: 700,
-              color: "var(--color-text-main)",
-              margin: "0 0 20px",
-              fontStyle: "italic",
+              background: "var(--color-background)",
+              borderRadius: 16,
+              padding: "28px",
+              border: "1px solid var(--color-border)",
+              boxShadow: "0 2px 8px var(--color-card-shadow)",
             }}
           >
-            {t("manager.topStudents")}
-          </h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {TOP_STUDENTS.map((student, index) => (
-              <div
-                key={student.name}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 12,
-                }}
-              >
+            <h2
+              style={{
+                fontSize: 20,
+                fontWeight: 700,
+                color: "var(--color-text-main)",
+                margin: "0 0 20px",
+                fontStyle: "italic",
+              }}
+            >
+              {t("manager.topStudents")}
+            </h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              {TOP_STUDENTS.map((student, index) => (
                 <div
+                  key={student.name}
                   style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: "50%",
-                    background: "var(--color-primary)",
-                    color: "white",
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: 14,
-                    fontWeight: 700,
-                    flexShrink: 0,
+                    gap: 12,
                   }}
                 >
-                  {student.initials}
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
                   <div
                     style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: "50%",
+                      background: "var(--color-primary)",
+                      color: "white",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
                       fontSize: 14,
-                      fontWeight: 600,
-                      color: "var(--color-text-main)",
+                      fontWeight: 700,
+                      flexShrink: 0,
                     }}
                   >
-                    {student.name}
+                    {student.initials}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 600,
+                        color: "var(--color-text-main)",
+                      }}
+                    >
+                      {student.name}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 12,
+                        color: "var(--color-text-secondary)",
+                        marginTop: 2,
+                      }}
+                    >
+                      {student.points} {t("manager.points")}
+                    </div>
                   </div>
                   <div
                     style={{
-                      fontSize: 12,
-                      color: "var(--color-text-secondary)",
-                      marginTop: 2,
+                      fontSize: 16,
+                      fontWeight: 700,
+                      color: "var(--color-primary)",
                     }}
                   >
-                    {student.points} {t("manager.points")}
+                    #{index + 1}
                   </div>
                 </div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div
+            whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
+            transition={HOVER_TRANSITION}
+            style={{
+              background: "var(--color-background)",
+              borderRadius: 16,
+              padding: "28px",
+              border: "1px solid var(--color-border)",
+              boxShadow: "0 2px 8px var(--color-card-shadow)",
+            }}
+          >
+            <h2
+              style={{
+                fontSize: 20,
+                fontWeight: 700,
+                color: "var(--color-text-main)",
+                margin: "0 0 6px",
+                fontStyle: "italic",
+              }}
+            >
+              {t("manager.inactiveStudents")}
+            </h2>
+            <p style={{ margin: "0 0 20px", fontSize: 12, color: "var(--color-text-secondary)" }}>
+              {t("manager.inactiveStudentsDesc")}
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              {INACTIVE_STUDENTS.map((student, index) => (
                 <div
+                  key={student.name}
                   style={{
-                    fontSize: 16,
-                    fontWeight: 700,
-                    color: "var(--color-primary)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
                   }}
                 >
-                  #{index + 1}
+                  <div
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: "50%",
+                      background: index === 0 ? "var(--color-accent-orange)" : "var(--color-border)",
+                      color: index === 0 ? "white" : "var(--color-text-main)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: 14,
+                      fontWeight: 700,
+                      flexShrink: 0,
+                    }}
+                  >
+                    {student.initials}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 600,
+                        color: "var(--color-text-main)",
+                      }}
+                    >
+                      {student.name}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 12,
+                        color: "var(--color-text-secondary)",
+                        marginTop: 2,
+                      }}
+                    >
+                      {student.points} {t("manager.points")} · {student.inactiveDays} {t("manager.daysNoActivity")}
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 700,
+                      color: index === 0 ? "var(--color-accent-orange)" : "var(--color-text-secondary)",
+                    }}
+                  >
+                    #{index + 1}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </motion.div>
         </motion.div>
       </motion.div>
 
@@ -829,7 +977,7 @@ export default function ManagerDashboard() {
               {t("manager.popularCoursesDesc")}
             </p>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, flex: 1, justifyContent: "space-between" }}>
             {POPULAR_COURSES.map((course, idx) => (
               <div
                 key={course.name}
@@ -837,7 +985,7 @@ export default function ManagerDashboard() {
                   display: "flex",
                   alignItems: "center",
                   gap: 14,
-                  padding: "12px 14px",
+                  padding: "16px 14px",
                   background: idx === 0 ? "rgba(37,150,255,0.06)" : "var(--color-breeze)",
                   borderRadius: 10,
                   border: idx === 0 ? "1px solid rgba(37,150,255,0.2)" : "1px solid transparent",

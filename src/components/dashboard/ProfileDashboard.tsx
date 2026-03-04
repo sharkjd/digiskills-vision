@@ -35,26 +35,27 @@ const itemVariants = {
 };
 
 const ACTIVITY_WEEKS = [1, 2, 3, 4, 5];
-const ACTIVITY_LESSONS = [8, 12, 15, 11, 18];
+const ACTIVITY_LESSONS = [2, 3, 1, 4, 2];
 
 const STRENGTHS = [
-  { topic: "Kyberbezpečnost", percent: 92 },
-  { topic: "Excel", percent: 85 },
-  { topic: "Komunikace", percent: 88 },
+  { topic: "Kyberbezpečnost", percent: 58 },
+  { topic: "Excel", percent: 44 },
+  { topic: "Komunikace", percent: 51 },
 ];
 
 const GAPS = [
-  { topic: "Power Automate", percent: 22 },
-  { topic: "AI Promptování", percent: 18 },
-  { topic: "Cloud", percent: 25 },
+  { topic: "Power Automate", percent: 11 },
+  { topic: "AI Promptování", percent: 9 },
+  { topic: "Cloud", percent: 14 },
 ];
 
 const MILESTONE_KEYS = ["manager.milestone1", "manager.milestone2", "manager.milestone3"] as const;
 
 const USER_NAME = "Honza Dolejš";
-const DIGISKILLS_INDEX = 7.3;
-const COMPANY_AVG = 5.52;
+const DIGISKILLS_INDEX = 4.1;
+const COMPANY_AVG = 5.8;
 const BEST_EMPLOYEE = 9.2;
+const COMPANY_MINIMUM = 5.5;
 
 export default function ProfileDashboard() {
   const { t } = useTranslation();
@@ -114,9 +115,9 @@ export default function ProfileDashboard() {
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
               {[
-                { value: "24", label: t("profile.totalStudied"), sub: t("profile.hours") },
-                { value: "12", label: "Aktivní série", sub: "dní v řadě" },
-                { value: "8", label: "Zbývá k cíli", sub: "lekcí" },
+                { value: "9", label: t("profile.totalStudied"), sub: t("profile.hours") },
+                { value: "2", label: "Aktivní série", sub: "dní v řadě" },
+                { value: "23", label: "Zbývá k cíli", sub: "lekcí" },
               ].map((stat) => (
                 <motion.div
                   key={stat.label}
@@ -157,11 +158,52 @@ export default function ProfileDashboard() {
             </div>
             <div style={{ textAlign: "center" }}>
               <div style={{ fontWeight: 700, fontSize: 15 }}>{USER_NAME}</div>
-              <div style={{ fontSize: 12, opacity: 0.75, marginTop: 2 }}>Pořadí: 3. z 47</div>
+              <div style={{ fontSize: 12, opacity: 0.75, marginTop: 2 }}>Pořadí: 39. z 47</div>
             </div>
           </div>
         </div>
       </motion.div>
+
+      {/* B. Varování pod firemním minimem */}
+      {DIGISKILLS_INDEX < COMPANY_MINIMUM && (
+        <motion.div
+          variants={itemVariants}
+          style={{
+            background: "rgba(255,117,117,0.5)",
+            border: "1px solid #FF7575",
+            borderRadius: 12,
+            padding: "20px 24px",
+            boxShadow: "0 2px 8px var(--color-card-shadow)",
+            display: "flex",
+            flexDirection: "column",
+            gap: 8,
+          }}
+        >
+          <div
+            style={{
+              fontSize: 18,
+              fontWeight: 700,
+              color: "var(--color-text-main)",
+              fontStyle: "italic",
+              margin: 0,
+            }}
+          >
+            Pozor, vaše výsledky jsou pod minimem vaší firmy.
+          </div>
+          <p
+            style={{
+              margin: 0,
+              fontSize: 14,
+              lineHeight: 1.6,
+              color: "var(--color-text-main)",
+            }}
+          >
+            Aktuálně jste na hodnotě {DIGISKILLS_INDEX.toFixed(1)} z 10, zatímco firemní minimum je{" "}
+            {COMPANY_MINIMUM.toFixed(1)}. Doporučujeme dokončit alespoň 2 rozkoukané kurzy a během příštích 14 dnů
+            přidat 1 kurz zaměřený na Power Automate nebo AI promptování.
+          </p>
+        </motion.div>
+      )}
 
       {/* B. Digiskills Index – přesunut výš, horizontální karta na celou šířku */}
       <motion.div
@@ -218,7 +260,7 @@ export default function ProfileDashboard() {
               Digiskills Index
             </div>
             <div style={{ fontSize: 13, color: "var(--color-text-secondary)", marginTop: 2 }}>
-              Pořadí: 3. z 47 zaměstnanců
+              Pořadí: 39. z 47 zaměstnanců
             </div>
           </div>
         </div>
@@ -239,6 +281,7 @@ export default function ProfileDashboard() {
           {[
             { label: USER_NAME, value: DIGISKILLS_INDEX, color: "#77F9D9", bold: true },
             { label: "Průměr firmy", value: COMPANY_AVG, color: "var(--color-primary)", bold: false },
+            { label: "Firemní minimum", value: COMPANY_MINIMUM, color: "var(--color-accent-orange)", bold: false },
             { label: "Nejlepší zaměstnanec", value: BEST_EMPLOYEE, color: "var(--color-accent-orange)", bold: false },
           ].map((row) => (
             <div key={row.label}>
@@ -349,7 +392,7 @@ export default function ProfileDashboard() {
             }}
           >
             {MILESTONE_KEYS.map((key, idx) => {
-              const status = idx === 0 ? "done" : idx === 1 ? "active" : "pending";
+              const status = idx === 0 ? "active" : "pending";
               const circleColor =
                 status === "done"
                   ? "var(--color-accent-green)"

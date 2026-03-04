@@ -49,6 +49,14 @@ const TOP_STUDENTS = [
   { name: "Lucie Dvořáková", points: 234, initials: "LD", department: "Obchod" },
 ];
 
+const INACTIVE_STUDENTS = [
+  { name: "Tomáš Veselý", points: 22, initials: "TV", department: "Výroba", inactiveDays: 18 },
+  { name: "Alena Bártová", points: 28, initials: "AB", department: "Podpora", inactiveDays: 14 },
+  { name: "Karel Urban", points: 33, initials: "KU", department: "Logistika", inactiveDays: 12 },
+  { name: "Iveta Blažková", points: 39, initials: "IB", department: "Administrativa", inactiveDays: 10 },
+  { name: "Milan Kučera", points: 44, initials: "MK", department: "Obchod", inactiveDays: 9 },
+];
+
 const POPULAR_COURSES = [
   { name: "AI Promptování pro praxi", students: 84, category: "AI", trend: "+12 tento týden" },
   { name: "ChatGPT v kanceláři", students: 72, category: "AI", trend: "+8 tento týden" },
@@ -306,7 +314,7 @@ export default function CompanyStatsDashboard() {
         </div>
       </motion.div>
 
-      {/* Graf aktivity + Top studenti */}
+      {/* Graf aktivity + žebříčky studentů */}
       <motion.div
         variants={itemVariants}
         style={{
@@ -380,88 +388,182 @@ export default function CompanyStatsDashboard() {
           </div>
         </motion.div>
 
-        <motion.div
-          whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
-          transition={HOVER_TRANSITION}
+        <div
           style={{
-            background: "var(--color-background)",
-            borderRadius: 16,
-            padding: "28px",
-            border: "1px solid var(--color-border)",
-            boxShadow: "0 2px 8px var(--color-card-shadow)",
+            display: "flex",
+            flexDirection: "column",
+            gap: 24,
           }}
         >
-          <h2
+          <motion.div
+            whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
+            transition={HOVER_TRANSITION}
             style={{
-              fontSize: 20,
-              fontWeight: 700,
-              color: "var(--color-text-main)",
-              margin: "0 0 20px",
-              fontStyle: "italic",
+              background: "var(--color-background)",
+              borderRadius: 16,
+              padding: "28px",
+              border: "1px solid var(--color-border)",
+              boxShadow: "0 2px 8px var(--color-card-shadow)",
             }}
           >
-            Top studenti firmy
-          </h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {TOP_STUDENTS.map((student, index) => (
-              <div
-                key={student.name}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 12,
-                }}
-              >
+            <h2
+              style={{
+                fontSize: 20,
+                fontWeight: 700,
+                color: "var(--color-text-main)",
+                margin: "0 0 20px",
+                fontStyle: "italic",
+              }}
+            >
+              Top studenti firmy
+            </h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              {TOP_STUDENTS.map((student, index) => (
                 <div
+                  key={student.name}
                   style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: "50%",
-                    background: index === 0 ? "var(--color-digi-salmon)" : "var(--color-primary)",
-                    color: "white",
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: 14,
-                    fontWeight: 700,
-                    flexShrink: 0,
+                    gap: 12,
                   }}
                 >
-                  {student.initials}
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
                   <div
                     style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: "50%",
+                      background: index === 0 ? "var(--color-digi-salmon)" : "var(--color-primary)",
+                      color: "white",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
                       fontSize: 14,
-                      fontWeight: 600,
-                      color: "var(--color-text-main)",
+                      fontWeight: 700,
+                      flexShrink: 0,
                     }}
                   >
-                    {student.name}
+                    {student.initials}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 600,
+                        color: "var(--color-text-main)",
+                      }}
+                    >
+                      {student.name}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 12,
+                        color: "var(--color-text-secondary)",
+                        marginTop: 2,
+                      }}
+                    >
+                      {student.department} · {student.points} bodů
+                    </div>
                   </div>
                   <div
                     style={{
-                      fontSize: 12,
-                      color: "var(--color-text-secondary)",
-                      marginTop: 2,
+                      fontSize: 16,
+                      fontWeight: 700,
+                      color: index === 0 ? "var(--color-digi-salmon)" : "var(--color-primary)",
                     }}
                   >
-                    {student.department} · {student.points} bodů
+                    #{index + 1}
                   </div>
                 </div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div
+            whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
+            transition={HOVER_TRANSITION}
+            style={{
+              background: "var(--color-background)",
+              borderRadius: 16,
+              padding: "28px",
+              border: "1px solid var(--color-border)",
+              boxShadow: "0 2px 8px var(--color-card-shadow)",
+            }}
+          >
+            <h2
+              style={{
+                fontSize: 20,
+                fontWeight: 700,
+                color: "var(--color-text-main)",
+                margin: "0 0 6px",
+                fontStyle: "italic",
+              }}
+            >
+              Neaktivní studenti
+            </h2>
+            <p style={{ margin: "0 0 20px", fontSize: 12, color: "var(--color-text-secondary)" }}>
+              Opačný žebříček podle nejnižší aktivity
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              {INACTIVE_STUDENTS.map((student, index) => (
                 <div
+                  key={student.name}
                   style={{
-                    fontSize: 16,
-                    fontWeight: 700,
-                    color: index === 0 ? "var(--color-digi-salmon)" : "var(--color-primary)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
                   }}
                 >
-                  #{index + 1}
+                  <div
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: "50%",
+                      background: index === 0 ? "var(--color-accent-orange)" : "var(--color-border)",
+                      color: index === 0 ? "white" : "var(--color-text-main)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: 14,
+                      fontWeight: 700,
+                      flexShrink: 0,
+                    }}
+                  >
+                    {student.initials}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 600,
+                        color: "var(--color-text-main)",
+                      }}
+                    >
+                      {student.name}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 12,
+                        color: "var(--color-text-secondary)",
+                        marginTop: 2,
+                      }}
+                    >
+                      {student.department} · {student.points} bodů · {student.inactiveDays} dní bez aktivity
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 700,
+                      color: index === 0 ? "var(--color-accent-orange)" : "var(--color-text-secondary)",
+                    }}
+                  >
+                    #{index + 1}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
       </motion.div>
 
       {/* Nejoblíbenější kurzy + Nejoblíbenější videa */}

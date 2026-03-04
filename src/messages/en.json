@@ -22,10 +22,13 @@
     }
   },
   "footer": {
+    "digiskills": "Digiskills",
     "events": "Events",
     "blog": "Blog",
     "contact": "Contact",
-    "gdpr": "GDPR"
+    "gdpr": "GDPR",
+    "topVision": "Top Vision",
+    "jipka": "Jipka"
   },
   "home": {
     "title": "Digiskills portal",
@@ -234,8 +237,8 @@
   },
   "manager": {
     "aiInsights": "AI Insights",
-    "teamDoingGreat": "Your team is doing great!",
-    "halfwayText": "You're halfway through the company journey. This week AI is the most trending topic.",
+    "teamDoingGreat": "The team is currently below company average",
+    "halfwayText": "Activity has been declining in recent weeks and the team needs to accelerate learning pace, especially in AI and automation.",
     "totalStudied": "Total studied",
     "hours": "hours",
     "activeMembers": "Active members",
@@ -251,6 +254,9 @@
     "activityOverTime": "Activity over time (last 30 days)",
     "lessonsStudied": "Studied",
     "topStudents": "Top students",
+    "inactiveStudents": "Inactive students",
+    "inactiveStudentsDesc": "Reverse ranking by lowest activity",
+    "daysNoActivity": "days without activity",
     "points": "points",
     "strengths": "What we've mastered (Strengths)",
     "gaps": "Where we have gaps (Growth opportunities)",

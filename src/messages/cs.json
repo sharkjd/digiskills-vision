@@ -22,10 +22,13 @@
     }
   },
   "footer": {
+    "digiskills": "Digiskills",
     "events": "Akce",
     "blog": "Blog",
     "contact": "Kontakt",
-    "gdpr": "GDPR"
+    "gdpr": "GDPR",
+    "topVision": "Top Vision",
+    "jipka": "Jipka"
   },
   "home": {
     "title": "Digiskills portál",
@@ -234,8 +237,8 @@
   },
   "manager": {
     "aiInsights": "AI Insights",
-    "teamDoingGreat": "Vašemu týmu se daří skvěle!",
-    "halfwayText": "Jste za polovinou firemní cesty. Tento týden nejvíce rezonuje téma Umělé inteligence.",
+    "teamDoingGreat": "Tým aktuálně zaostává za firemním průměrem",
+    "halfwayText": "V posledních týdnech aktivita klesá a je potřeba zrychlit tempo studia, zejména v AI a automatizaci.",
     "totalStudied": "Celkem odstudováno",
     "hours": "hodin",
     "activeMembers": "Aktivní členové",
@@ -251,6 +254,9 @@
     "activityOverTime": "Aktivita v čase (posledních 30 dní)",
     "lessonsStudied": "Odstudováno",
     "topStudents": "Top studenti",
+    "inactiveStudents": "Neaktivní studenti",
+    "inactiveStudentsDesc": "Opačný žebříček podle nejnižší aktivity",
+    "daysNoActivity": "dní bez aktivity",
     "points": "bodů",
     "strengths": "Co už ovládáme (Silné stránky)",
     "gaps": "Kde máme mezery (Příležitosti k růstu)",

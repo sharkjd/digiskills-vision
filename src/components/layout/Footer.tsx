@@ -5,10 +5,13 @@ import Link from "next/link";
 import { useTranslation } from "@/hooks/useTranslation";
 
 const FOOTER_LINKS = [
+  { labelKey: "footer.digiskills", href: "/" },
   { labelKey: "footer.events", href: "/akce" },
   { labelKey: "footer.blog", href: "/blog" },
   { labelKey: "footer.contact", href: "/kontakt" },
   { labelKey: "footer.gdpr", href: "/gdpr" },
+  { labelKey: "footer.topVision", href: "/topvision" },
+  { labelKey: "footer.jipka", href: "/jipka" },
 ];
 
 function FacebookIcon() {

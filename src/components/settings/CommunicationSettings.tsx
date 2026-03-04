@@ -163,6 +163,7 @@ export default function CommunicationSettings() {
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(420px, 1fr))",
             gap: 24,
+            alignItems: "stretch",
           }}
         >
           {/* OSOBNÍ NASTAVENÍ */}
@@ -612,7 +613,6 @@ export default function CommunicationSettings() {
               border: "1px solid #E5E7EB",
               borderRadius: 16,
               padding: 28,
-              alignSelf: "start",
             }}
           >
             <div
