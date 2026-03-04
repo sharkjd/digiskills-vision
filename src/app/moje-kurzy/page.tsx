@@ -1,19 +1,45 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRecommendedCourses } from "@/context/RecommendedCoursesContext";
 import { useCompanyCourses } from "@/context/CompanyCoursesContext";
 import { useLanguage } from "@/context/LanguageContext";
-import { getCourseList, getCompletedCourses } from "@/data/courses";
+import { getCourseList, getCompletedCourses, type Course } from "@/data/courses";
 import { useTranslation } from "@/hooks/useTranslation";
-import CatalogCourseCard from "@/components/courses/CatalogCourseCard";
-import CompletedCourseCard from "@/components/courses/CompletedCourseCard";
+
+import CourseHero from "@/components/courses/CourseHero";
+import InProgressCourseCard from "@/components/courses/InProgressCourseCard";
+import CourseCard2 from "@/components/courses/CourseCard2";
+import ProgressStrip from "@/components/courses/ProgressStrip";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: "easeOut" as const },
+  },
+};
+
+const FAKE_USER_NAME = "Honzo";
+const FAKE_DIGISKILLS_INDEX = 7.3;
 
 export default function MojeKurzyPage() {
   const { recommendedCourses } = useRecommendedCourses();
   const { companyCourses } = useCompanyCourses();
   const { language } = useLanguage();
   const { t } = useTranslation();
+  const [completedOpen, setCompletedOpen] = useState(true);
 
   const courseList = getCourseList(language);
   const completedList = getCompletedCourses(language);
@@ -24,155 +50,329 @@ export default function MojeKurzyPage() {
   const mandatoryCompanyCourses =
     companyCourses.length > 0 ? companyCourses : courseList.slice(5, 10);
 
+  const inProgressCourse = myCourses[0];
+  const remainingCourses = myCourses.slice(1);
+
+  const totalCourses = myCourses.length + mandatoryCompanyCourses.length;
+
   return (
     <div
-      className="min-h-screen"
       style={{
-        backgroundColor: "#F4F5FA",
+        minHeight: "100vh",
+        backgroundColor: "var(--color-breeze)",
         fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
       }}
     >
-      <div className="max-w-7xl mx-auto px-6 py-10">
-        <section className="mb-12">
-          <h1
-            className="text-4xl font-bold italic mb-8"
-            style={{ color: "#040E3C" }}
-          >
-            {t("courses.myCourses")}
-          </h1>
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 24px" }}
+      >
+        {/* 1. Hero banner */}
+        <motion.div variants={sectionVariants}>
+          <CourseHero
+            userName={FAKE_USER_NAME}
+            digiskillsIndex={FAKE_DIGISKILLS_INDEX}
+            completedCount={completedList.length}
+            toStudyCount={myCourses.length}
+            mandatoryCount={mandatoryCompanyCourses.length}
+          />
+        </motion.div>
 
-          <div className="flex flex-wrap items-center gap-4 mb-8">
-            <div className="flex flex-col gap-1">
-              <label
-                className="text-xs font-medium"
-                style={{ color: "#6c757d" }}
-              >
-                {t("courses.sortBy")}
-              </label>
-              <select
-                className="px-4 py-2.5 rounded-lg border text-sm min-w-40"
+        {/* 2. Continue studying */}
+        {inProgressCourse && (
+          <motion.section variants={sectionVariants} style={{ marginTop: 32 }}>
+            <div style={{ marginBottom: 16 }}>
+              <h2
                 style={{
-                  backgroundColor: "#fff",
-                  borderColor: "#e9ecef",
-                  color: "#040E3C",
+                  fontSize: 22,
+                  fontWeight: 700,
+                  fontStyle: "italic",
+                  color: "var(--color-text-main)",
+                  margin: 0,
+                  marginBottom: 4,
                 }}
-                defaultValue="default"
               >
-                <option value="default">{t("courses.sortDefault")}</option>
-                <option value="name">{t("courses.sortByName")}</option>
-                <option value="duration">{t("courses.sortByDuration")}</option>
-              </select>
+                {t("dashboard.continueStudy")}
+              </h2>
+              <p style={{ fontSize: 14, color: "var(--color-text-secondary)", margin: 0 }}>
+                {t("dashboard.continueStudyDesc")}
+              </p>
             </div>
+            <InProgressCourseCard
+              course={inProgressCourse}
+              progressPercent={35}
+              completedActivities={Math.round(inProgressCourse.activities * 0.35)}
+            />
+          </motion.section>
+        )}
 
-            <div className="flex flex-col gap-1">
-              <label
-                className="text-xs font-medium"
-                style={{ color: "#6c757d" }}
-              >
-                {t("courses.role")}
-              </label>
-              <select
-                className="px-4 py-2.5 rounded-lg border text-sm min-w-40"
-                style={{
-                  backgroundColor: "#fff",
-                  borderColor: "#e9ecef",
-                  color: "#040E3C",
-                }}
-                defaultValue="default"
-              >
-                <option value="default">{t("courses.sortDefault")}</option>
-                <option value="manager">{t("courses.roleManager")}</option>
-                <option value="specialist">{t("courses.roleSpecialist")}</option>
-                <option value="assistant">{t("courses.roleAssistant")}</option>
-              </select>
-            </div>
+        {/* 3. Progress strip */}
+        <motion.div variants={sectionVariants} style={{ marginTop: 28 }}>
+          <ProgressStrip
+            completed={completedList.length}
+            total={totalCourses + completedList.length}
+          />
+        </motion.div>
 
-            <div className="flex flex-col gap-1 flex-1 max-w-md">
-              <label
-                className="text-xs font-medium"
-                style={{ color: "#6c757d" }}
-              >
-                {t("courses.searchCourse")}
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder={t("courses.searchPlaceholder")}
-                  className="w-full px-4 py-2.5 pl-10 rounded-lg border text-sm"
-                  style={{
-                    backgroundColor: "#fff",
-                    borderColor: "#e9ecef",
-                    color: "#040E3C",
-                  }}
-                />
-                <svg
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4"
-                  style={{ color: "#6c757d" }}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              </div>
-            </div>
+        {/* 4. Recommended courses */}
+        <motion.section variants={sectionVariants} style={{ marginTop: 36 }}>
+          <div style={{ marginBottom: 20 }}>
+            <h2
+              style={{
+                fontSize: 22,
+                fontWeight: 700,
+                fontStyle: "italic",
+                color: "var(--color-text-main)",
+                margin: 0,
+                marginBottom: 4,
+              }}
+            >
+              {t("dashboard.recommendedTitle")}
+            </h2>
+            <p style={{ fontSize: 14, color: "var(--color-text-secondary)", margin: 0 }}>
+              {t("dashboard.recommendedDesc")}
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {myCourses.map((course, index) => (
-              <CatalogCourseCard
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+              gap: 20,
+            }}
+          >
+            {remainingCourses.map((course, index) => (
+              <CourseCard2
                 key={course.id}
                 course={course}
                 index={index}
+                status="new"
+                delay={0.1 + index * 0.08}
               />
             ))}
           </div>
-        </section>
+        </motion.section>
 
-        <section className="mb-12">
-          <h2
-            className="text-2xl font-bold italic mb-6"
-            style={{ color: "#040E3C" }}
+        {/* 5. Mandatory company courses */}
+        <motion.section variants={sectionVariants} style={{ marginTop: 40 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              marginBottom: 20,
+            }}
           >
-            {t("courses.mandatoryCompany")}
-          </h2>
+            <div
+              style={{
+                width: 4,
+                height: 40,
+                borderRadius: 2,
+                background: "var(--color-accent-orange)",
+              }}
+            />
+            <div>
+              <h2
+                style={{
+                  fontSize: 22,
+                  fontWeight: 700,
+                  fontStyle: "italic",
+                  color: "var(--color-text-main)",
+                  margin: 0,
+                  marginBottom: 4,
+                }}
+              >
+                {t("dashboard.mandatoryTitle")}
+              </h2>
+              <p style={{ fontSize: 14, color: "var(--color-text-secondary)", margin: 0 }}>
+                {t("dashboard.mandatoryDesc")}
+              </p>
+            </div>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+              gap: 20,
+            }}
+          >
             {mandatoryCompanyCourses.map((course, index) => (
-              <CatalogCourseCard
+              <CourseCard2
                 key={course.id}
                 course={course}
                 index={index}
+                status="new"
+                isMandatory
+                delay={0.1 + index * 0.08}
               />
             ))}
           </div>
-        </section>
+        </motion.section>
 
-        <div
-          className="h-px mb-10"
-          style={{ backgroundColor: "#e9ecef" }}
-        />
-
-        <div>
-          <h2
-            className="text-2xl font-bold italic mb-6"
-            style={{ color: "#040E3C" }}
+        {/* 6. Completed courses */}
+        <motion.section variants={sectionVariants} style={{ marginTop: 40, marginBottom: 32 }}>
+          <button
+            onClick={() => setCompletedOpen((v) => !v)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+              marginBottom: completedOpen ? 16 : 0,
+            }}
           >
-            {t("courses.completed")}
-          </h2>
+            <h2
+              style={{
+                fontSize: 20,
+                fontWeight: 700,
+                fontStyle: "italic",
+                color: "var(--color-text-main)",
+                margin: 0,
+              }}
+            >
+              {t("dashboard.completedTitle")}
+            </h2>
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: 24,
+                height: 24,
+                borderRadius: 6,
+                background: "var(--color-border)",
+                fontSize: 12,
+                fontWeight: 700,
+                color: "var(--color-text-secondary)",
+              }}
+            >
+              {completedList.length}
+            </span>
+            <motion.svg
+              animate={{ rotate: completedOpen ? 180 : 0 }}
+              transition={{ duration: 0.2 }}
+              width="20"
+              height="20"
+              fill="none"
+              stroke="var(--color-text-secondary)"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </motion.svg>
+          </button>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl">
-            {completedList.map((course) => (
-              <CompletedCourseCard key={course.id} course={course} />
-            ))}
-          </div>
+          {completedOpen && (
+            <p style={{ fontSize: 14, color: "var(--color-text-secondary)", margin: 0, marginBottom: 16 }}>
+              {t("dashboard.completedSubtitle")}
+            </p>
+          )}
+
+          <AnimatePresence>
+            {completedOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                style={{ overflow: "hidden" }}
+              >
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+                    gap: 16,
+                  }}
+                >
+                  {completedList.map((course, index) => (
+                    <CompletedMiniCard key={course.id} course={course} delay={index * 0.1} />
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.section>
+      </motion.div>
+    </div>
+  );
+}
+
+function CompletedMiniCard({ course, delay }: { course: Course; delay: number }) {
+  const { t } = useTranslation();
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.3 }}
+      style={{
+        background: "var(--color-background)",
+        borderRadius: "var(--radius-card)",
+        border: "1px solid var(--color-border)",
+        overflow: "hidden",
+        boxShadow: "0 1px 4px var(--color-card-shadow)",
+        display: "flex",
+        alignItems: "center",
+        gap: 14,
+        padding: "12px 16px",
+      }}
+    >
+      <div
+        style={{
+          position: "relative",
+          width: 56,
+          height: 56,
+          borderRadius: 10,
+          overflow: "hidden",
+          flexShrink: 0,
+        }}
+      >
+        <Image
+          src={course.image}
+          alt={course.title}
+          fill
+          className="object-cover"
+          sizes="56px"
+        />
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "rgba(16, 185, 129, 0.7)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <svg width="20" height="20" fill="none" stroke="white" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+          </svg>
         </div>
       </div>
-    </div>
+
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <h4
+          style={{
+            fontSize: 14,
+            fontWeight: 700,
+            color: "var(--color-text-main)",
+            margin: 0,
+            marginBottom: 2,
+            whiteSpace: "nowrap" as const,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {course.title}
+        </h4>
+        <span style={{ fontSize: 12, color: "#10B981", fontWeight: 600 }}>
+          {t("dashboard.completed")}
+        </span>
+      </div>
+    </motion.div>
   );
 }
