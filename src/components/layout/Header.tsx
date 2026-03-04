@@ -35,8 +35,9 @@ const DROPDOWN_ITEMS: DropdownItem[] = [
     type: "group",
     labelKey: "header.dropdown.assessment",
     children: [
-      { labelKey: "header.dropdown.assessmentIndividual", href: "/assessment/osobni" },
+      { labelKey: "header.dropdown.assessmentIndividual", href: "/assessment" },
       { labelKey: "header.dropdown.assessmentCompany", href: "/firma" },
+      { labelKey: "header.dropdown.assessmentComparison", href: "/firma/srovnani" },
     ],
   },
   { type: "link", labelKey: "header.dropdown.notificationSettings", href: "/firma/nastaveni" },

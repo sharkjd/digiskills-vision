@@ -304,13 +304,13 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
         </div>
       </div>
 
-      {/* SLOVNÍ VYHODNOCENÍ – Digi Breeze pozadí */}
+      {/* SLOVNÍ VYHODNOCENÍ */}
       <div
         style={{
-          background: "#F4F5FA",
+          background: "var(--color-background)",
           borderRadius: 16,
           padding: "32px 36px",
-          border: "1px solid #E5E7EB",
+          border: "1px solid var(--color-border)",
         }}
       >
         <h2 style={{ fontSize: 20, fontWeight: 700, color: "#040E3C", margin: "0 0 24px" }}>
