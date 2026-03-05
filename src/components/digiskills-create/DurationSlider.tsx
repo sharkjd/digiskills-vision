@@ -1,13 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useTranslation } from "@/hooks/useTranslation";
 
-export const DURATION_OPTIONS = [
-  "Rychlovka (15 min)",
-  "Krátký (30 min)",
-  "Střední (1 h)",
-  "Rozsáhlý (1,5 h)",
-  "Hloubkový ponor (2 h+)",
+const DURATION_KEYS = [
+  "digiskillsCreate.duration1",
+  "digiskillsCreate.duration2",
+  "digiskillsCreate.duration3",
+  "digiskillsCreate.duration4",
+  "digiskillsCreate.duration5",
 ] as const;
 
 interface DurationSliderProps {
@@ -16,7 +17,8 @@ interface DurationSliderProps {
 }
 
 export default function DurationSlider({ value, onChange }: DurationSliderProps) {
-  const percentage = (value / (DURATION_OPTIONS.length - 1)) * 100;
+  const { t } = useTranslation();
+  const percentage = (value / (DURATION_KEYS.length - 1)) * 100;
 
   return (
     <div style={{ marginBottom: 18 }}>
@@ -30,7 +32,7 @@ export default function DurationSlider({ value, onChange }: DurationSliderProps)
             lineHeight: 1.3,
           }}
         >
-          Krátký
+          {t("digiskillsCreate.durationShort")}
         </span>
 
         <div
@@ -46,8 +48,8 @@ export default function DurationSlider({ value, onChange }: DurationSliderProps)
             const rect = e.currentTarget.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const pct = x / rect.width;
-            const idx = Math.round(pct * (DURATION_OPTIONS.length - 1));
-            onChange(Math.max(0, Math.min(DURATION_OPTIONS.length - 1, idx)));
+            const idx = Math.round(pct * (DURATION_KEYS.length - 1));
+            onChange(Math.max(0, Math.min(DURATION_KEYS.length - 1, idx)));
           }}
         >
           <motion.div
@@ -90,7 +92,7 @@ export default function DurationSlider({ value, onChange }: DurationSliderProps)
             lineHeight: 1.3,
           }}
         >
-          Dlouhý
+          {t("digiskillsCreate.durationLong")}
         </span>
 
         <motion.div
@@ -109,7 +111,7 @@ export default function DurationSlider({ value, onChange }: DurationSliderProps)
             boxShadow: "0 4px 12px rgba(37, 150, 255, 0.35)",
           }}
         >
-          {DURATION_OPTIONS[value]}
+          {t(DURATION_KEYS[value])}
         </motion.div>
       </div>
     </div>

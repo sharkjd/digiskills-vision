@@ -144,7 +144,7 @@ export default function ManagerDashboard() {
                 marginBottom: 16,
               }}
             >
-              AI Insights
+              {t("manager.aiInsights")}
             </div>
             <h1
               style={{

@@ -6,117 +6,46 @@ import {
   ArrowRight,
   Bot,
   BookOpen,
-  CheckCircle2,
   Clock,
-  Edit3,
-  FileText,
   Layers3,
   PenTool,
   Sparkles,
   Target,
-  TrendingUp,
-  Upload,
-  Users,
-  Zap,
 } from "lucide-react";
 import DigiskillsCreate from "@/components/digiskills-create/DigiskillsCreate";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type CreationMode = "ai" | null;
 
-const CREATOR_BENEFITS = [
-  {
-    icon: Clock,
-    title: "Rychle od nápadu k obsahu",
-    description: "Místo dlouhého skládání osnovy začnete během chvíle. AI navrhne strukturu a vy jen doladíte detaily.",
-    gradient: "linear-gradient(135deg, #2596FF 0%, #1F80D9 100%)",
-    shadowColor: "rgba(37, 150, 255, 0.3)",
-  },
-  {
-    icon: Layers3,
-    title: "Obsah vhodný pro microlearning",
-    description: "Kurz je členěný do kratších, srozumitelných bloků. Lidé se učí průběžně a zvládnou to i vedle práce.",
-    gradient: "linear-gradient(135deg, #77F9D9 0%, #10B981 100%)",
-    shadowColor: "rgba(119, 249, 217, 0.3)",
-  },
-  {
-    icon: Target,
-    title: "AI navrhne strukturu",
-    description: "Stačí popsat téma a cíle. Umělá inteligence vytvoří logickou osnovu a rozdělí obsah do lekcí.",
-    gradient: "linear-gradient(135deg, #F7981C 0%, #EA580C 100%)",
-    shadowColor: "rgba(247, 152, 28, 0.3)",
-  },
-  {
-    icon: Sparkles,
-    title: "Profesionální vzhled bez námahy",
-    description: "Výsledný kurz působí moderně a přehledně. Nemusíte řešit design ani formátování.",
-    gradient: "linear-gradient(135deg, #6366F1 0%, #4F46E5 100%)",
-    shadowColor: "rgba(99, 102, 241, 0.3)",
-  },
-];
-
-const STEPS = [
-  {
-    icon: "1",
-    title: "Popište, co chcete učit",
-    description: "Zadejte téma kurzu, cílovou skupinu a hlavní cíle. AI potřebuje vědět, kam směřujete.",
-  },
-  {
-    icon: "2",
-    title: "Nahrajte své materiály",
-    description: "Přidejte PDF, Word nebo PowerPoint soubory. AI z nich vytáhne klíčové informace.",
-  },
-  {
-    icon: "3",
-    title: "AI vygeneruje kurz na míru",
-    description: "Během pár minut máte hotovou strukturu kurzu s lekcemi, které můžete dále upravit.",
-  },
-];
-
-const COURSE_EXAMPLES = [
-  {
-    title: "Onboarding nových zaměstnanců",
-    description: "Kompletní průvodce pro nováčky – od firemní kultury po praktické postupy.",
-    lessons: 8,
-    duration: "45 min",
-    color: "#2596FF",
-  },
-  {
-    title: "BOZP školení",
-    description: "Bezpečnost práce a požární ochrana v souladu s aktuální legislativou.",
-    lessons: 5,
-    duration: "30 min",
-    color: "#10B981",
-  },
-  {
-    title: "Produktové školení",
-    description: "Detailní znalost produktů pro obchodní tým i zákaznickou podporu.",
-    lessons: 12,
-    duration: "60 min",
-    color: "#F7981C",
-  },
-];
-
-const FAQ_ITEMS = [
-  {
-    question: "Jak dlouho trvá vytvoření kurzu?",
-    answer: "Obvykle 10–20 minut. Záleží na rozsahu materiálů a složitosti tématu. AI pracuje rychle, vy pak kurz jen doladíte.",
-  },
-  {
-    question: "Mohu kurz později upravit?",
-    answer: "Ano, kdykoli. Můžete přidávat lekce, měnit texty, vkládat obrázky nebo videa. Kurz je plně ve vašich rukou.",
-  },
-  {
-    question: "Jaké formáty materiálů mohu nahrát?",
-    answer: "PDF, Word (.docx), PowerPoint (.pptx) a textové soubory. AI z nich extrahuje obsah a vytvoří strukturu kurzu.",
-  },
-  {
-    question: "Je obsah kurzu pouze můj?",
-    answer: "Ano, veškerý obsah zůstává vaším majetkem. Nesdílíme ho s nikým jiným a nepoužíváme k trénování AI.",
-  },
-];
-
 export default function CourseCreationHub() {
+  const { t } = useTranslation();
   const [mode, setMode] = useState<CreationMode>(null);
+
+  const CREATOR_BENEFITS = [
+    { icon: Clock, titleKey: "courseCreation.benefit1Title", descKey: "courseCreation.benefit1Desc", gradient: "linear-gradient(135deg, #2596FF 0%, #1F80D9 100%)", shadowColor: "rgba(37, 150, 255, 0.3)" },
+    { icon: Layers3, titleKey: "courseCreation.benefit2Title", descKey: "courseCreation.benefit2Desc", gradient: "linear-gradient(135deg, #77F9D9 0%, #10B981 100%)", shadowColor: "rgba(119, 249, 217, 0.3)" },
+    { icon: Target, titleKey: "courseCreation.benefit3Title", descKey: "courseCreation.benefit3Desc", gradient: "linear-gradient(135deg, #F7981C 0%, #EA580C 100%)", shadowColor: "rgba(247, 152, 28, 0.3)" },
+    { icon: Sparkles, titleKey: "courseCreation.benefit4Title", descKey: "courseCreation.benefit4Desc", gradient: "linear-gradient(135deg, #6366F1 0%, #4F46E5 100%)", shadowColor: "rgba(99, 102, 241, 0.3)" },
+  ];
+
+  const STEPS = [
+    { icon: "1", titleKey: "courseCreation.step1Title", descKey: "courseCreation.step1Desc" },
+    { icon: "2", titleKey: "courseCreation.step2Title", descKey: "courseCreation.step2Desc" },
+    { icon: "3", titleKey: "courseCreation.step3Title", descKey: "courseCreation.step3Desc" },
+  ];
+
+  const COURSE_EXAMPLES = [
+    { titleKey: "courseCreation.example1Title", descKey: "courseCreation.example1Desc", lessons: 8, duration: "45 min", color: "#2596FF" },
+    { titleKey: "courseCreation.example2Title", descKey: "courseCreation.example2Desc", lessons: 5, duration: "30 min", color: "#10B981" },
+    { titleKey: "courseCreation.example3Title", descKey: "courseCreation.example3Desc", lessons: 12, duration: "60 min", color: "#F7981C" },
+  ];
+
+  const FAQ_ITEMS = [
+    { questionKey: "courseCreation.faq1Q", answerKey: "courseCreation.faq1A" },
+    { questionKey: "courseCreation.faq2Q", answerKey: "courseCreation.faq2A" },
+    { questionKey: "courseCreation.faq3Q", answerKey: "courseCreation.faq3A" },
+    { questionKey: "courseCreation.faq4Q", answerKey: "courseCreation.faq4A" },
+  ];
 
   if (mode === "ai") {
     return (
@@ -140,10 +69,10 @@ export default function CourseCreationHub() {
               margin: "0 0 4px",
             }}
           >
-            Tvorba kurzů
+            {t("courseCreation.title")}
           </h1>
           <p style={{ color: "var(--color-text-secondary)", fontSize: 13, margin: 0 }}>
-            Vyberte způsob tvorby. Pro rychlý start doporučujeme AI asistovanou tvorbu.
+            {t("courseCreation.subtitle")}
           </p>
         </div>
 
@@ -201,7 +130,7 @@ export default function CourseCreationHub() {
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
                 <h2 style={{ fontSize: 17, fontWeight: 700, color: "var(--color-text-main)", margin: 0 }}>
-                  Tvorba pomocí AI
+                  {t("courseCreation.aiCreation")}
                 </h2>
                 <span
                   style={{
@@ -217,11 +146,11 @@ export default function CourseCreationHub() {
                   }}
                 >
                   <Sparkles size={10} />
-                  Doporučeno
+                  {t("courseCreation.recommended")}
                 </span>
               </div>
               <p style={{ fontSize: 13, color: "var(--color-text-secondary)", margin: 0, lineHeight: 1.5 }}>
-                Stačí popsat cíle, nahrát materiály a kurz AI navrhne za vás.
+                {t("courseCreation.aiCreationDesc")}
               </p>
             </div>
           </motion.div>
@@ -275,7 +204,7 @@ export default function CourseCreationHub() {
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
                 <h2 style={{ fontSize: 17, fontWeight: 700, color: "var(--color-text-main)", margin: 0 }}>
-                  Ruční tvorba kurzu
+                  {t("courseCreation.manualCreation")}
                 </h2>
                 <span
                   style={{
@@ -287,11 +216,11 @@ export default function CourseCreationHub() {
                     borderRadius: 5,
                   }}
                 >
-                  Brzy
+                  {t("courseCreation.soon")}
                 </span>
               </div>
               <p style={{ fontSize: 13, color: "var(--color-text-secondary)", margin: 0, lineHeight: 1.5 }}>
-                Standardní ruční tvorba kurzu v našem editoru.
+                {t("courseCreation.manualCreationDesc")}
               </p>
             </div>
           </div>
@@ -320,19 +249,19 @@ export default function CourseCreationHub() {
                   color: "var(--color-text-main)",
                 }}
               >
-                Co získáte s AI tvorbou
+                {t("courseCreation.whatYouGet")}
               </h3>
               <p style={{ margin: "0 0 20px", color: "var(--color-text-secondary)", fontSize: 14, lineHeight: 1.6 }}>
-                Přestaňte trávit hodiny tvorbou obsahu. AI vám pomůže vytvořit profesionální kurz rychle a efektivně.
+                {t("courseCreation.whatYouGetDesc")}
               </p>
 
               <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
                 {[
-                  { text: "Úspora času – kurz místo dnů za minuty", color: "var(--color-primary)" },
-                  { text: "Konzistentní kvalita napříč všemi kurzy", color: "var(--color-accent-orange)" },
-                  { text: "Snadná úprava a aktualizace obsahu", color: "var(--color-primary)" },
+                  { textKey: "courseCreation.bullet1", color: "var(--color-primary)" },
+                  { textKey: "courseCreation.bullet2", color: "var(--color-accent-orange)" },
+                  { textKey: "courseCreation.bullet3", color: "var(--color-primary)" },
                 ].map((item) => (
-                  <div key={item.text} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <div key={item.textKey} style={{ display: "flex", alignItems: "center", gap: 10 }}>
                     <div
                       style={{
                         width: 22,
@@ -354,7 +283,7 @@ export default function CourseCreationHub() {
                         }}
                       />
                     </div>
-                    <span style={{ color: "var(--color-text-main)", fontSize: 13, fontWeight: 500 }}>{item.text}</span>
+                    <span style={{ color: "var(--color-text-main)", fontSize: 13, fontWeight: 500 }}>{t(item.textKey)}</span>
                   </div>
                 ))}
               </div>
@@ -379,7 +308,7 @@ export default function CourseCreationHub() {
                   width: "fit-content",
                 }}
               >
-                Začít tvořit
+                {t("courseCreation.startCreate")}
                 <ArrowRight size={18} />
               </motion.button>
             </div>
@@ -408,7 +337,7 @@ export default function CourseCreationHub() {
                   15 min
                 </div>
                 <p style={{ margin: 0, color: "var(--color-text-secondary)", fontSize: 13 }}>
-                  průměrná doba vytvoření kurzu
+                  {t("courseCreation.avgCreationTime")}
                 </p>
               </div>
 
@@ -418,7 +347,7 @@ export default function CourseCreationHub() {
                     85%
                   </div>
                   <p style={{ margin: 0, color: "var(--color-text-secondary)", fontSize: 11 }}>
-                    spokojených uživatelů
+                    {t("courseCreation.satisfiedUsers")}
                   </p>
                 </div>
                 <div style={{ textAlign: "center" }}>
@@ -426,7 +355,7 @@ export default function CourseCreationHub() {
                     10×
                   </div>
                   <p style={{ margin: 0, color: "var(--color-text-secondary)", fontSize: 11 }}>
-                    rychlejší než ručně
+                    {t("courseCreation.fasterThanManual")}
                   </p>
                 </div>
               </div>
@@ -466,20 +395,20 @@ export default function CourseCreationHub() {
                 }}
               >
                 <Sparkles size={13} />
-                AI-powered tvorba
+                {t("courseCreation.aiPoweredCreation")}
               </div>
               <h2 style={{ fontSize: 28, fontWeight: 800, margin: "0 0 6px", fontStyle: "italic" }}>
-                Vytvořte kurz za pár minut
+                {t("courseCreation.createInMinutes")}
               </h2>
               <p style={{ fontSize: 14, opacity: 0.85, margin: 0, maxWidth: 550 }}>
-                Nahrajte své materiály, popište cíle a nechte AI vytvořit strukturovaný kurz. Ušetříte hodiny práce.
+                {t("courseCreation.createInMinutesDesc")}
               </p>
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
               {STEPS.map((step) => (
                 <motion.div
-                  key={step.title}
+                  key={step.titleKey}
                   whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.15)" }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   style={{
@@ -505,8 +434,8 @@ export default function CourseCreationHub() {
                   >
                     {step.icon}
                   </div>
-                  <p style={{ margin: "0 0 4px", fontWeight: 700, fontSize: 14 }}>{step.title}</p>
-                  <p style={{ margin: 0, opacity: 0.8, fontSize: 12, lineHeight: 1.5 }}>{step.description}</p>
+                  <p style={{ margin: "0 0 4px", fontWeight: 700, fontSize: 14 }}>{t(step.titleKey)}</p>
+                  <p style={{ margin: 0, opacity: 0.8, fontSize: 12, lineHeight: 1.5 }}>{t(step.descKey)}</p>
                 </motion.div>
               ))}
             </div>
@@ -518,7 +447,7 @@ export default function CourseCreationHub() {
               const Icon = benefit.icon;
               return (
                 <motion.div
-                  key={benefit.title}
+                  key={benefit.titleKey}
                   whileHover={{ y: -6, boxShadow: `0 16px 40px ${benefit.shadowColor}` }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   style={{
@@ -546,10 +475,10 @@ export default function CourseCreationHub() {
                     <Icon size={22} color="white" />
                   </div>
                   <h4 style={{ margin: "0 0 6px", color: "var(--color-text-main)", fontWeight: 700, fontSize: 15 }}>
-                    {benefit.title}
+                    {t(benefit.titleKey)}
                   </h4>
                   <p style={{ margin: 0, color: "var(--color-text-secondary)", fontSize: 13, lineHeight: 1.6 }}>
-                    {benefit.description}
+                    {t(benefit.descKey)}
                   </p>
                 </motion.div>
               );
@@ -567,12 +496,12 @@ export default function CourseCreationHub() {
                 color: "var(--color-text-main)",
               }}
             >
-              Příklady kurzů vytvořených AI
+                {t("courseCreation.examplesTitle")}
             </h3>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
               {COURSE_EXAMPLES.map((course) => (
                 <motion.div
-                  key={course.title}
+                  key={course.titleKey}
                   whileHover={{ y: -4, boxShadow: "0 12px 32px rgba(0,0,0,0.1)" }}
                   transition={{ duration: 0.25, ease: "easeOut" }}
                   style={{
@@ -598,10 +527,10 @@ export default function CourseCreationHub() {
                     <BookOpen size={20} color={course.color} />
                   </div>
                   <h4 style={{ margin: "0 0 8px", color: "var(--color-text-main)", fontWeight: 700, fontSize: 15 }}>
-                    {course.title}
+                    {t(course.titleKey)}
                   </h4>
                   <p style={{ margin: "0 0 14px", color: "var(--color-text-secondary)", fontSize: 13, lineHeight: 1.5 }}>
-                    {course.description}
+                    {t(course.descKey)}
                   </p>
                   <div style={{ display: "flex", gap: 8 }}>
                     <span
@@ -614,7 +543,7 @@ export default function CourseCreationHub() {
                         borderRadius: 6,
                       }}
                     >
-                      {course.lessons} lekcí
+                      {course.lessons} {t("courseCreation.lessons")}
                     </span>
                     <span
                       style={{
@@ -645,12 +574,12 @@ export default function CourseCreationHub() {
                 color: "var(--color-text-main)",
               }}
             >
-              Časté otázky k AI tvorbě
+                {t("courseCreation.faqTitle")}
             </h3>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }}>
               {FAQ_ITEMS.map((item) => (
                 <div
-                  key={item.question}
+                  key={item.questionKey}
                   style={{
                     background: "var(--color-background)",
                     borderRadius: 16,
@@ -685,10 +614,10 @@ export default function CourseCreationHub() {
                     >
                       <span style={{ color: "var(--color-primary)", fontSize: 12, fontWeight: 700 }}>?</span>
                     </span>
-                    {item.question}
+                    {t(item.questionKey)}
                   </h4>
                   <p style={{ margin: 0, color: "var(--color-text-secondary)", fontSize: 13, lineHeight: 1.6, paddingLeft: 30 }}>
-                    {item.answer}
+                    {t(item.answerKey)}
                   </p>
                 </div>
               ))}

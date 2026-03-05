@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, ChevronRight } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
 
@@ -11,88 +12,27 @@ type ChatMessage = {
   content: string;
 };
 
-const SUGGESTED_QUESTIONS = [
-  "Jak si vedeme oproti ostatním firmám?",
-  "Kde bychom měli zabrat a co doporučuješ?",
-  "Jaký je trend studia za poslední měsíc?",
-  "Kteří zaměstnanci potřebují podporu?",
-];
+const SUGGESTED_QUESTION_KEYS = [
+  "statsChatbot.suggestedQ1",
+  "statsChatbot.suggestedQ2",
+  "statsChatbot.suggestedQ3",
+  "statsChatbot.suggestedQ4",
+] as const;
 
-const PREDEFINED_ANSWERS: Record<string, string> = {
-  "Jak si vedeme oproti ostatním firmám?": `Skvělá otázka! Na základě dat vidím, že vaše firma je **nad průměrem trhu**.
-
-**Klíčové ukazatele:**
-- Váš Digiskills Index: **6.8 / 10** (průměr trhu je 5.2)
-- Patříte mezi **top 30 %** firem v České republice
-- Aktivita zaměstnanců je o **31 % vyšší** než průměr
-
-**Silné stránky oproti konkurenci:**
-- Kyberbezpečnost (+23 % nad průměrem)
-- MS Teams & Spolupráce (+18 % nad průměrem)
-
-Gratuluju! Jste na dobré cestě. 🎯`,
-
-  "Kde bychom měli zabrat a co doporučuješ?": `Na základě analýzy vašich dat doporučuji zaměřit se na tyto oblasti:
-
-**Největší mezery:**
-1. **AI & Automatizace** (31 % znalostí) - Toto je kritická oblast pro budoucí konkurenceschopnost
-2. **Power BI & Vizualizace** (28 %) - Data-driven rozhodování je klíčové
-3. **Cloud Computing** (24 %) - Základy pro moderní IT infrastrukturu
-
-**Konkrétní doporučení:**
-- Přiřaďte kurz "AI pro každého" všem zaměstnancům
-- Naplánujte workshop Power BI pro manažery
-- Zvažte motivační program pro dokončení kurzů
-
-**Akční plán:**
-Vytvořil bych learning path začínající AI kurzy (nejvyšší priorita) a postupně přidával Power BI. Očekávaný nárůst Digiskills Indexu: +1.2 bodů za 3 měsíce.`,
-
-  "Jaký je trend studia za poslední měsíc?": `Analyzoval jsem aktivitu za posledních 30 dní:
-
-**Celkový trend: 📈 Rostoucí (+24 %)**
-
-**Týdenní přehled:**
-- Týden 1: 156 lekcí
-- Týden 2: 189 lekcí (+21 %)
-- Týden 3: 234 lekcí (+24 %)
-- Týden 4: 198 lekcí (-15 %, pokles o víkendu)
-- Týden 5: 267 lekcí (+35 %) ⭐ Rekord!
-
-**Co funguje:**
-- Nejvíce se studuje v úterý a středu (9:00-11:00)
-- Kurzy AI mají nejvyšší engagement
-- Gamifikace (body a žebříčky) motivuje
-
-**Varování:**
-- 26 zaměstnanců nebylo aktivních více než 2 týdny
-- Doporučuji zaslat jim připomínku`,
-
-  "Kteří zaměstnanci potřebují podporu?": `Identifikoval jsem zaměstnance, kteří by mohli potřebovat podporu:
-
-**Neaktivní více než 14 dní (26 osob):**
-- Většina z oddělení: Výroba (12), Logistika (8)
-- Doporučení: Osobní kontakt + nabídka offline školení
-
-**Nízké dokončení kurzů (18 osob):**
-- Začali více než 3 kurzy, dokončili méně než 30 %
-- Možné příčiny: Nedostatek času, nevhodná náročnost
-- Doporučení: Kratší microlearning formáty
-
-**Potenciální lídři (5 osob):**
-- Marie Nováková, Petr Svoboda, Eva Horáková...
-- Vysoká aktivita, pomohou motivovat ostatní
-- Doporučení: Zapojit jako mentory
-
-Chcete, abych připravil konkrétní akční plán?`,
-};
+const PREDEFINED_ANSWER_KEYS = [
+  "statsChatbot.predefinedAnswer1",
+  "statsChatbot.predefinedAnswer2",
+  "statsChatbot.predefinedAnswer3",
+  "statsChatbot.predefinedAnswer4",
+] as const;
 
 export default function StatsChatbot() {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "bot",
-      content:
-        "Ahoj! 👋 Jsem váš AI asistent pro firemní statistiky. Mohu vám pomoci analyzovat data, identifikovat trendy a navrhnout zlepšení. Na co se chcete zeptat?",
+      content: t("statsChatbot.intro"),
     },
   ]);
   const [inputValue, setInputValue] = useState("");
@@ -116,20 +56,11 @@ export default function StatsChatbot() {
     setIsTyping(true);
 
     setTimeout(() => {
-      const answer =
-        PREDEFINED_ANSWERS[trimmed] ||
-        `Díky za dotaz! Analyzuji data...
-
-Na základě vašich firemních statistik vidím, že:
-- Celkově máte **98 aktivních zaměstnanců** z 124
-- Průměrný Digiskills Index je **6.8 / 10**
-- Za poslední měsíc jste dokončili **47 kurzů**
-
-Můžete se mě zeptat konkrétněji, například:
-- "Jak si vedeme oproti ostatním firmám?"
-- "Kde bychom měli zabrat?"
-- "Jaký je trend studia?"`;
-
+      let answer = t("statsChatbot.defaultAnswer");
+      const idx = SUGGESTED_QUESTION_KEYS.findIndex((key) => t(key) === trimmed);
+      if (idx >= 0) {
+        answer = t(PREDEFINED_ANSWER_KEYS[idx]);
+      }
       setMessages((prev) => [...prev, { role: "bot", content: answer }]);
       setIsTyping(false);
     }, 1200);
@@ -224,8 +155,8 @@ Můžete se mě zeptat konkrétněji, například:
                   <MessageCircle size={22} />
                 </div>
                 <div>
-                  <div style={{ fontSize: 16, fontWeight: 700 }}>Statistiky AI</div>
-                  <div style={{ fontSize: 12, opacity: 0.85 }}>Váš datový asistent</div>
+                  <div style={{ fontSize: 16, fontWeight: 700 }}>{t("statsChatbot.headerTitle")}</div>
+                  <div style={{ fontSize: 12, opacity: 0.85 }}>{t("statsChatbot.headerSubtitle")}</div>
                 </div>
               </div>
               <motion.button
@@ -367,19 +298,19 @@ Můžete se mě zeptat konkrétněji, například:
                     letterSpacing: "0.05em",
                   }}
                 >
-                  Navrhované otázky
+                  {t("statsChatbot.suggestedQuestions")}
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                  {SUGGESTED_QUESTIONS.map((q) => (
+                  {SUGGESTED_QUESTION_KEYS.map((key) => (
                     <motion.button
-                      key={q}
+                      key={key}
                       type="button"
                       whileHover={{
                         x: 4,
                         background: "rgba(255, 117, 117, 0.08)",
                       }}
                       whileTap={{ scale: 0.98 }}
-                      onClick={() => handleSuggestedQuestion(q)}
+                      onClick={() => handleSuggestedQuestion(t(key))}
                       style={{
                         display: "flex",
                         alignItems: "center",
@@ -395,7 +326,7 @@ Můžete se mě zeptat konkrétněji, například:
                         fontWeight: 500,
                       }}
                     >
-                      <span>{q}</span>
+                      <span>{t(key)}</span>
                       <ChevronRight size={16} color="var(--color-text-secondary)" />
                     </motion.button>
                   ))}
@@ -428,7 +359,7 @@ Můžete se mě zeptat konkrétněji, například:
                       handleSend(inputValue);
                     }
                   }}
-                  placeholder="Zeptejte se na statistiky..."
+                  placeholder={t("statsChatbot.placeholder")}
                   style={{
                     flex: 1,
                     padding: "12px 16px",

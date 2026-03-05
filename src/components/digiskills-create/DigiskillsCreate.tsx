@@ -14,10 +14,11 @@ import {
   Pencil,
   MessageCircle,
 } from "lucide-react";
-import DurationSlider, { DURATION_OPTIONS } from "./DurationSlider";
+import DurationSlider from "./DurationSlider";
 import DropZone from "./DropZone";
 import { asset } from "@/lib/paths";
 import mockData from "@/data/digiskills-create-mock.json";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type Phase = "wizard" | "generating" | "result";
 type ChatMessage = { role: "bot" | "user"; content: string; step?: number };
@@ -31,26 +32,13 @@ type CreateFormData = {
   files: File[];
 };
 
-const BOT_QUESTIONS = [
-  "Ahoj! Pojďme vytvořit kurz na míru. O čem bude váš nový kurz? (např. práce s počítačem, prohlížečem, telefonem…)",
-  "Super! Pro koho je kurz určen?",
-  "Co si mají účastníci odnést? Jaké dovednosti nebo znalosti?",
-  "Jak dlouhý by měl kurz být?",
-  "Nahrajte vaše know-how (PDF, dokumenty…) a já z nich vytvořím osnovu.",
+const BOT_QUESTION_KEYS = ["digiskillsCreate.botQ1", "digiskillsCreate.botQ2", "digiskillsCreate.botQ3", "digiskillsCreate.botQ4", "digiskillsCreate.botQ5"] as const;
+const AUDIENCE_OPTIONS: { value: Audience; labelKey: string }[] = [
+  { value: "beginner", labelKey: "digiskillsCreate.audienceBeginner" },
+  { value: "intermediate", labelKey: "digiskillsCreate.audienceIntermediate" },
+  { value: "expert", labelKey: "digiskillsCreate.audienceExpert" },
 ];
-
-const AUDIENCE_OPTIONS: { value: Audience; label: string }[] = [
-  { value: "beginner", label: "Začátečníci – denně používám počítač/telefon, chci využít víc" },
-  { value: "intermediate", label: "Mírně pokročilí" },
-  { value: "expert", label: "Experti" },
-];
-
-const GENERATING_MESSAGES = [
-  "Čtu nahrané materiály a hledám souvislosti…",
-  "Aplikuji Digiskills microlearning metodiku…",
-  "Rozsekávám obsah na videa, články a úkoly…",
-  "Skládám osnovu – počítač, prohlížeč, telefon…",
-];
+const GENERATING_KEYS = ["digiskillsCreate.generating1", "digiskillsCreate.generating2", "digiskillsCreate.generating3", "digiskillsCreate.generating4"] as const;
 
 const getActivityIcon = (type: string) => {
   switch (type.toLowerCase()) {
@@ -80,10 +68,11 @@ const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
 
 export default function DigiskillsCreate() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [phase, setPhase] = useState<Phase>("wizard");
   const [currentStep, setCurrentStep] = useState(0);
   const [messages, setMessages] = useState<ChatMessage[]>(() => [
-    { role: "bot", content: BOT_QUESTIONS[0], step: 0 },
+    { role: "bot", content: t("digiskillsCreate.botQ1"), step: 0 },
   ]);
   const [formData, setFormData] = useState<CreateFormData>({
     topic: "",
@@ -119,8 +108,8 @@ export default function DigiskillsCreate() {
 
   const advanceStep = (nextStep: number) => {
     setCurrentStep(nextStep);
-    if (nextStep < BOT_QUESTIONS.length) {
-      addBotMessage(BOT_QUESTIONS[nextStep], nextStep);
+    if (nextStep < BOT_QUESTION_KEYS.length) {
+      addBotMessage(t(BOT_QUESTION_KEYS[nextStep]), nextStep);
     }
   };
 
@@ -138,8 +127,8 @@ export default function DigiskillsCreate() {
   };
 
   const handleAudienceContinue = () => {
-    const label = AUDIENCE_OPTIONS.find((o) => o.value === formData.audience)?.label ?? "";
-    addUserMessage(label);
+    const labelKey = AUDIENCE_OPTIONS.find((o) => o.value === formData.audience)?.labelKey ?? "";
+    addUserMessage(labelKey ? t(labelKey) : "");
     advanceStep(2);
   };
 
@@ -153,7 +142,8 @@ export default function DigiskillsCreate() {
   };
 
   const handleDurationContinue = () => {
-    addUserMessage(DURATION_OPTIONS[formData.duration]);
+    const durationKeys = ["digiskillsCreate.duration1", "digiskillsCreate.duration2", "digiskillsCreate.duration3", "digiskillsCreate.duration4", "digiskillsCreate.duration5"];
+    addUserMessage(t(durationKeys[formData.duration]));
     advanceStep(4);
   };
 
@@ -165,7 +155,7 @@ export default function DigiskillsCreate() {
     if (phase !== "generating") return;
     const interval = setInterval(() => {
       setGeneratingMessageIndex((i) => {
-        if (i < GENERATING_MESSAGES.length - 1) return i + 1;
+        if (i < GENERATING_KEYS.length - 1) return i + 1;
         clearInterval(interval);
         return i;
       });
@@ -217,15 +207,15 @@ export default function DigiskillsCreate() {
                     marginBottom: 12,
                   }}
                 >
-                  Tvorba kurzu pomocí AI
+                  {t("digiskillsCreate.courseCreationBadge")}
                 </div>
                 <h1 style={{ fontSize: 28, fontWeight: 800, margin: "0 0 6px", fontStyle: "italic" }}>
-                  {phase === "wizard" && "Digiskills.create"}
-                  {phase === "generating" && "Generuji kurz…"}
+                  {phase === "wizard" && t("digiskillsCreate.createTitle")}
+                  {phase === "generating" && t("digiskillsCreate.generatingCourse")}
                 </h1>
                 <p style={{ fontSize: 14, opacity: 0.8, margin: 0 }}>
-                  {phase === "wizard" && `Krok ${currentStep + 1} z 5`}
-                  {phase === "generating" && "AI zpracovává vaše materiály"}
+                  {phase === "wizard" && t("digiskillsCreate.stepOf", { current: currentStep + 1, total: 5 })}
+                  {phase === "generating" && t("digiskillsCreate.generatingTitle")}
                 </p>
               </div>
               <motion.div
@@ -412,7 +402,7 @@ export default function DigiskillsCreate() {
                       value={topicInput}
                       onChange={(e) => setTopicInput(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleTopicSubmit()}
-                      placeholder="Napište téma kurzu..."
+                      placeholder={t("digiskillsCreate.topicPlaceholder")}
                       rows={3}
                       style={{
                         width: "100%",
@@ -447,7 +437,7 @@ export default function DigiskillsCreate() {
                         boxShadow: topicInput.trim() ? "0 4px 16px rgba(37, 150, 255, 0.3)" : "none",
                       }}
                     >
-                      Odeslat
+                      {t("digiskillsCreate.submit")}
                     </motion.button>
                   </div>
                 )}
@@ -477,7 +467,7 @@ export default function DigiskillsCreate() {
                               color: "var(--color-text-main)",
                             }}
                           >
-                            {opt.label}
+                            {t(opt.labelKey)}
                           </motion.div>
                         );
                       })}
@@ -498,7 +488,7 @@ export default function DigiskillsCreate() {
                         boxShadow: "0 4px 16px rgba(37, 150, 255, 0.3)",
                       }}
                     >
-                      Odeslat
+                      {t("digiskillsCreate.submit")}
                     </motion.button>
                   </div>
                 )}
@@ -509,7 +499,7 @@ export default function DigiskillsCreate() {
                       value={goalsInput}
                       onChange={(e) => setGoalsInput(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleGoalsSubmit()}
-                      placeholder="Sepište cíle kurzu..."
+                      placeholder={t("digiskillsCreate.goalsPlaceholder")}
                       rows={4}
                       style={{
                         width: "100%",
@@ -544,7 +534,7 @@ export default function DigiskillsCreate() {
                         boxShadow: goalsInput.trim() ? "0 4px 16px rgba(37, 150, 255, 0.3)" : "none",
                       }}
                     >
-                      Odeslat
+                      {t("digiskillsCreate.submit")}
                     </motion.button>
                   </div>
                 )}
@@ -654,10 +644,10 @@ export default function DigiskillsCreate() {
                       fontSize: 16,
                     }}
                   >
-                    {GENERATING_MESSAGES[generatingMessageIndex]}
+                    {t(GENERATING_KEYS[generatingMessageIndex])}
                   </div>
                   <div style={{ color: "var(--color-text-secondary)", fontSize: 13 }}>
-                    AI zpracovává vaše materiály
+                    {t("digiskillsCreate.generatingTitle")}
                   </div>
                 </div>
               </motion.div>
@@ -719,7 +709,7 @@ export default function DigiskillsCreate() {
                       {(mockData as { publishedDate?: string }).publishedDate ?? "23. listopadu"} · Verze {(mockData as { version?: string }).version ?? "1.0.0"}
                     </p>
                     <p style={{ fontSize: 15, color: "var(--color-text-main)", lineHeight: 1.6 }}>
-                      {(mockData as { introParagraph?: string }).introParagraph ?? "Kurz vás provede od základů až po pokročilé techniky."}
+                      {(mockData as { introParagraph?: string }).introParagraph ?? t("digiskillsCreate.introDefault")}
                     </p>
                   </div>
                   <div
@@ -771,9 +761,9 @@ export default function DigiskillsCreate() {
                     padding: 24,
                   }}
                 >
-                  <h4 style={{ fontSize: 14, fontWeight: 600, color: "var(--color-text-secondary)", marginBottom: 8 }}>Cílovka</h4>
+                  <h4 style={{ fontSize: 14, fontWeight: 600, color: "var(--color-text-secondary)", marginBottom: 8 }}>{t("digiskillsCreate.targetAudienceLabel")}</h4>
                   <p style={{ fontSize: 15, fontWeight: 600, color: "var(--color-text-main)" }}>
-                    {(mockData as { targetAudience?: string }).targetAudience ?? "Manažeři a vedoucí pracovníci"}
+                    {(mockData as { targetAudience?: string }).targetAudience ?? t("digiskillsCreate.targetAudienceDefault")}
                   </p>
                   <p style={{ fontSize: 13, color: "var(--color-text-secondary)", marginTop: 8 }}>20.12.2023</p>
                   <p style={{ fontSize: 13, color: "var(--color-text-secondary)" }}>20.1.2024</p>

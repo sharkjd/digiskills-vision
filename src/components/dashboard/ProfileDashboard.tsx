@@ -116,8 +116,8 @@ export default function ProfileDashboard() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
               {[
                 { value: "9", label: t("profile.totalStudied"), sub: t("profile.hours") },
-                { value: "2", label: "Aktivní série", sub: "dní v řadě" },
-                { value: "23", label: "Zbývá k cíli", sub: "lekcí" },
+                { value: "2", label: t("profile.activeSeries"), sub: t("profile.activeSeriesSub") },
+                { value: "23", label: t("profile.remainingToGoal"), sub: t("profile.remainingToGoalSub") },
               ].map((stat) => (
                 <motion.div
                   key={stat.label}
@@ -158,7 +158,7 @@ export default function ProfileDashboard() {
             </div>
             <div style={{ textAlign: "center" }}>
               <div style={{ fontWeight: 700, fontSize: 15 }}>{USER_NAME}</div>
-              <div style={{ fontSize: 12, opacity: 0.75, marginTop: 2 }}>Pořadí: 39. z 47</div>
+              <div style={{ fontSize: 12, opacity: 0.75, marginTop: 2 }}>{t("profile.rank", { rank: "39", total: "47" })}</div>
             </div>
           </div>
         </div>
@@ -188,7 +188,7 @@ export default function ProfileDashboard() {
               margin: 0,
             }}
           >
-            Pozor, vaše výsledky jsou pod minimem vaší firmy.
+            {t("profile.belowMinimumWarning")}
           </div>
           <p
             style={{
@@ -276,15 +276,15 @@ export default function ProfileDashboard() {
               fontStyle: "italic",
             }}
           >
-            Jak si stojíte v porovnání s ostatními
+            {t("profile.comparisonTitle")}
           </h2>
           {[
-            { label: USER_NAME, value: DIGISKILLS_INDEX, color: "#77F9D9", bold: true },
-            { label: "Průměr firmy", value: COMPANY_AVG, color: "var(--color-primary)", bold: false },
-            { label: "Firemní minimum", value: COMPANY_MINIMUM, color: "var(--color-accent-orange)", bold: false },
-            { label: "Nejlepší zaměstnanec", value: BEST_EMPLOYEE, color: "var(--color-accent-orange)", bold: false },
-          ].map((row) => (
-            <div key={row.label}>
+            { labelKey: null, label: USER_NAME, value: DIGISKILLS_INDEX, color: "#77F9D9", bold: true },
+            { labelKey: "profile.companyAvg", label: null, value: COMPANY_AVG, color: "var(--color-primary)", bold: false },
+            { labelKey: "profile.companyMinimum", label: null, value: COMPANY_MINIMUM, color: "var(--color-accent-orange)", bold: false },
+            { labelKey: "profile.bestEmployee", label: null, value: BEST_EMPLOYEE, color: "var(--color-accent-orange)", bold: false },
+          ].map((row, i) => (
+            <div key={row.labelKey ?? `row-${i}`}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
                 <span
                   style={{
@@ -293,7 +293,7 @@ export default function ProfileDashboard() {
                     color: "var(--color-text-main)",
                   }}
                 >
-                  {row.label}
+                  {row.labelKey ? t(row.labelKey) : row.label}
                 </span>
                 <span style={{ fontSize: 13, fontWeight: 700, color: "var(--color-text-main)" }}>
                   {row.value.toFixed(1)}

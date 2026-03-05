@@ -59,7 +59,7 @@ const CREATOR_NAME = "Honza Dolejš";
 const CREATOR_INITIALS = "HD";
 
 const SALES_COUNTS = [8, 12, 6, 10, 5, 6];
-const MONTH_LABELS = ["Led", "Úno", "Bře", "Dub", "Kvě", "Čvn"];
+const MONTH_KEYS = ["creator.monthJan", "creator.monthFeb", "creator.monthMar", "creator.monthApr", "creator.monthMay", "creator.monthJun"];
 
 const CREATOR_BENEFITS = [
   {
@@ -130,11 +130,11 @@ export default function CreatorDashboard() {
 
   const chartData = useMemo(
     () =>
-      MONTH_LABELS.map((month, i) => ({
-        month,
+      MONTH_KEYS.map((key, i) => ({
+        month: t(key),
         sales: SALES_COUNTS[i],
       })),
-    []
+    [t]
   );
 
   const sortedBySales = useMemo(
@@ -186,7 +186,7 @@ export default function CreatorDashboard() {
                   marginBottom: 16,
                 }}
               >
-                Creator Dashboard
+                {t("creator.badge")}
               </div>
               <h1
                 style={{
@@ -196,10 +196,10 @@ export default function CreatorDashboard() {
                   fontStyle: "italic",
                 }}
               >
-                Vítejte zpět, {CREATOR_NAME.split(" ")[0]}!
+                {t("creator.welcomeBack", { name: CREATOR_NAME.split(" ")[0] })}
               </h1>
               <p style={{ fontSize: 15, opacity: 0.85, margin: 0 }}>
-                Spravujte své kurzy, sledujte prodeje a tvořte nový obsah pomocí AI.
+                {t("creator.heroSubtitle")}
               </p>
             </div>
 
@@ -215,7 +215,7 @@ export default function CreatorDashboard() {
                 }}
               >
                 <div style={{ fontSize: 40, fontWeight: 800 }}>{stats.totalCourses}</div>
-                <div style={{ fontSize: 14, fontWeight: 600, marginTop: 8 }}>Publikovaných kurzů</div>
+                <div style={{ fontSize: 14, fontWeight: 600, marginTop: 8 }}>{t("creator.publishedCourses")}</div>
               </motion.div>
               <motion.div
                 whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.15)" }}
@@ -228,7 +228,7 @@ export default function CreatorDashboard() {
                 }}
               >
                 <div style={{ fontSize: 40, fontWeight: 800 }}>{stats.totalSales}</div>
-                <div style={{ fontSize: 14, fontWeight: 600, marginTop: 8 }}>Celkem prodejů</div>
+                <div style={{ fontSize: 14, fontWeight: 600, marginTop: 8 }}>{t("creator.totalSalesLabel")}</div>
               </motion.div>
               <motion.div
                 whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.15)" }}
@@ -243,7 +243,7 @@ export default function CreatorDashboard() {
                 <div style={{ fontSize: 40, fontWeight: 800, color: "#77F9D9" }}>
                   {stats.totalRevenue.toLocaleString("cs-CZ")} Kč
                 </div>
-                <div style={{ fontSize: 14, fontWeight: 600, marginTop: 8 }}>Celkový výdělek</div>
+                <div style={{ fontSize: 14, fontWeight: 600, marginTop: 8 }}>{t("creator.totalEarnings")}</div>
               </motion.div>
             </div>
           </div>
@@ -268,7 +268,7 @@ export default function CreatorDashboard() {
             </div>
             <div style={{ textAlign: "center" }}>
               <div style={{ fontWeight: 700, fontSize: 15 }}>{CREATOR_NAME}</div>
-              <div style={{ fontSize: 12, opacity: 0.75, marginTop: 2 }}>Tvůrce kurzů</div>
+              <div style={{ fontSize: 12, opacity: 0.75, marginTop: 2 }}>{t("creator.courseCreator")}</div>
             </div>
           </div>
         </div>
@@ -285,7 +285,7 @@ export default function CreatorDashboard() {
             fontStyle: "italic",
           }}
         >
-          Přehled prodejů
+          {t("creator.salesOverview")}
         </h2>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
@@ -310,7 +310,7 @@ export default function CreatorDashboard() {
                 fontStyle: "italic",
               }}
             >
-              Prodeje po kurzech
+              {t("creator.salesByCourse")}
             </h3>
             <div style={{ overflowX: "auto" }}>
               <table
@@ -331,7 +331,7 @@ export default function CreatorDashboard() {
                         fontWeight: 600,
                       }}
                     >
-                      Kurz
+                      {t("creator.tableCourse")}
                     </th>
                     <th
                       style={{
@@ -342,7 +342,7 @@ export default function CreatorDashboard() {
                         fontWeight: 600,
                       }}
                     >
-                      Prodeje
+                      {t("creator.tableSales")}
                     </th>
                     <th
                       style={{
@@ -353,7 +353,7 @@ export default function CreatorDashboard() {
                         fontWeight: 600,
                       }}
                     >
-                      Provize
+                      {t("creator.tableCommission")}
                     </th>
                   </tr>
                 </thead>
@@ -402,7 +402,7 @@ export default function CreatorDashboard() {
                         color: "var(--color-text-main)",
                       }}
                     >
-                      Celkem
+                      {t("creator.tableTotal")}
                     </td>
                     <td
                       style={{
@@ -451,7 +451,7 @@ export default function CreatorDashboard() {
                 fontStyle: "italic",
               }}
             >
-              Prodeje v čase
+              {t("creator.salesOverTime")}
             </h3>
             <div style={{ width: "100%", height: 220 }}>
               <ResponsiveContainer width="100%" height="100%">
@@ -630,7 +630,7 @@ export default function CreatorDashboard() {
               {/* Stats */}
               <div style={{ textAlign: "right", flexShrink: 0 }}>
                 <div style={{ fontSize: 18, fontWeight: 700, color: "var(--color-text-main)" }}>
-                  {course.sales} prodejů
+                  {course.sales} {t("creator.salesCount")}
                 </div>
                 <div style={{ fontSize: 13, color: "var(--color-accent-green)", fontWeight: 600 }}>
                   {course.revenue?.toLocaleString("cs-CZ")} Kč

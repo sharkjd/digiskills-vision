@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -24,66 +24,433 @@ const LEVEL_GROUP_KEYS = [
   "companyReport.experts",
 ] as const;
 
-const COMPANY_DATA = {
-  name: "VIG CZ",
+type DepartmentKey = "all" | "it" | "marketing" | "finance" | "sales" | "hr";
+
+interface DepartmentData {
+  name: string;
+  label: string;
+  respondents: number;
+  companyIndex: number;
+  digcompScores: number[];
+  talentDistribution: { level: number; count: number }[];
+  levelGroups: { percent: number; top30: number }[];
+  improvementPriorities: { area: string; count: number }[];
+  ambassadors: { name: string; index: number }[];
+  m365Proficiency: { app: string; usage: number; proficiency: number }[];
+  superpower: { title: string; score: number; description: string };
+  growthArea: { title: string; score: number; marketAvg: number; description: string };
+}
+
+const DEPARTMENTS_DATA: Record<DepartmentKey, DepartmentData> = {
+  all: {
+    name: "VIG CZ",
+    label: "Celá firma",
+    respondents: 2534,
+    companyIndex: 6.59,
+    digcompScores: [6.4, 4.4, 4.7, 5.4, 6.5],
+    talentDistribution: [
+      { level: 1, count: 13 },
+      { level: 2, count: 117 },
+      { level: 3, count: 240 },
+      { level: 4, count: 341 },
+      { level: 5, count: 436 },
+      { level: 6, count: 535 },
+      { level: 7, count: 419 },
+      { level: 8, count: 307 },
+      { level: 9, count: 104 },
+      { level: 10, count: 22 },
+    ],
+    levelGroups: [
+      { percent: 28, top30: 18 },
+      { percent: 38, top30: 23 },
+      { percent: 29, top30: 39 },
+      { percent: 5, top30: 20 },
+    ],
+    improvementPriorities: [
+      { area: "Automatizace rutinní práce", count: 1288 },
+      { area: "Zapojení AI do každodenní práce", count: 1281 },
+      { area: "Zvládání složitých procesů", count: 962 },
+      { area: "Sdílení informací a know-how", count: 843 },
+      { area: "Přehled úkolů a práce na projektech", count: 533 },
+    ],
+    ambassadors: [
+      { name: "Marie Nováková", index: 9.2 },
+      { name: "Petr Svoboda", index: 8.7 },
+      { name: "Eva Horáková", index: 8.4 },
+      { name: "Jan Procházka", index: 8.1 },
+      { name: "Lucie Dvořáková", index: 7.9 },
+    ],
+    m365Proficiency: [
+      { app: "Outlook", usage: 9.1, proficiency: 7.6 },
+      { app: "Word", usage: 8.2, proficiency: 7.7 },
+      { app: "Excel", usage: 8.0, proficiency: 7.2 },
+      { app: "Teams", usage: 7.4, proficiency: 6.3 },
+      { app: "OneDrive", usage: 7.0, proficiency: 5.7 },
+      { app: "SharePoint", usage: 5.7, proficiency: 4.7 },
+      { app: "OneNote", usage: 4.7, proficiency: 4.3 },
+      { app: "ToDo", usage: 4.5, proficiency: 4.2 },
+      { app: "Power BI", usage: 2.9, proficiency: 2.6 },
+      { app: "Forms", usage: 2.7, proficiency: 2.7 },
+      { app: "Planner", usage: 2.3, proficiency: 2.2 },
+      { app: "Copilot", usage: 3.8, proficiency: 3.2 },
+    ],
+    superpower: {
+      title: "Digitální bezpečnost",
+      score: 6.5,
+      description: "V této oblasti je firma nad průměrem trhu. Skóre 6,5 ukazuje, že zaměstnanci mají solidní základ v ochraně dat a kybernetické bezpečnosti. Interní bezpečnostní kultura je zdravá.",
+    },
+    growthArea: {
+      title: "Tvorba digitálního obsahu",
+      score: 4.4,
+      marketAvg: 5.9,
+      description: "Zde má firma největší potenciál se zlepšit. Aktuální skóre 4,4 výrazně zaostává za průměrem trhu (5,9). Cílené kurzy v této oblasti přinesou nejvyšší ROI vzdělávacích investic.",
+    },
+  },
+  it: {
+    name: "IT & Vývoj",
+    label: "IT & Vývoj",
+    respondents: 312,
+    companyIndex: 7.84,
+    digcompScores: [7.8, 6.2, 7.5, 6.1, 8.2],
+    talentDistribution: [
+      { level: 1, count: 0 },
+      { level: 2, count: 5 },
+      { level: 3, count: 12 },
+      { level: 4, count: 28 },
+      { level: 5, count: 35 },
+      { level: 6, count: 48 },
+      { level: 7, count: 72 },
+      { level: 8, count: 68 },
+      { level: 9, count: 32 },
+      { level: 10, count: 12 },
+    ],
+    levelGroups: [
+      { percent: 14, top30: 18 },
+      { percent: 27, top30: 23 },
+      { percent: 45, top30: 39 },
+      { percent: 14, top30: 20 },
+    ],
+    improvementPriorities: [
+      { area: "Zapojení AI do každodenní práce", count: 187 },
+      { area: "Automatizace rutinní práce", count: 156 },
+      { area: "Sdílení informací a know-how", count: 134 },
+      { area: "Zvládání složitých procesů", count: 98 },
+      { area: "Přehled úkolů a práce na projektech", count: 67 },
+    ],
+    ambassadors: [
+      { name: "Tomáš Černý", index: 9.6 },
+      { name: "Pavel Kovář", index: 9.3 },
+      { name: "Martin Jelínek", index: 9.1 },
+      { name: "Jakub Novotný", index: 8.9 },
+      { name: "Ondřej Marek", index: 8.7 },
+    ],
+    m365Proficiency: [
+      { app: "Outlook", usage: 8.5, proficiency: 7.9 },
+      { app: "Word", usage: 6.8, proficiency: 7.2 },
+      { app: "Excel", usage: 7.2, proficiency: 7.8 },
+      { app: "Teams", usage: 9.2, proficiency: 8.5 },
+      { app: "OneDrive", usage: 8.4, proficiency: 7.8 },
+      { app: "SharePoint", usage: 7.8, proficiency: 7.2 },
+      { app: "OneNote", usage: 5.2, proficiency: 5.1 },
+      { app: "ToDo", usage: 6.1, proficiency: 5.8 },
+      { app: "Power BI", usage: 5.8, proficiency: 5.4 },
+      { app: "Forms", usage: 4.2, proficiency: 4.5 },
+      { app: "Planner", usage: 5.4, proficiency: 5.1 },
+      { app: "Copilot", usage: 7.2, proficiency: 6.8 },
+    ],
+    superpower: {
+      title: "Digitální bezpečnost",
+      score: 8.2,
+      description: "IT oddělení exceluje v oblasti bezpečnosti. Skóre 8,2 je výrazně nad průměrem firmy i trhu. Tým aktivně implementuje bezpečnostní standardy a slouží jako vzor pro ostatní.",
+    },
+    growthArea: {
+      title: "Komunikace a spolupráce",
+      score: 6.1,
+      marketAvg: 7.5,
+      description: "I přes technickou zdatnost má oddělení prostor pro zlepšení v měkkých dovednostech. Doporučujeme kurzy zaměřené na efektivní komunikaci s netechnickými kolegy.",
+    },
+  },
+  marketing: {
+    name: "Marketing",
+    label: "Marketing",
+    respondents: 156,
+    companyIndex: 5.92,
+    digcompScores: [5.8, 7.2, 4.8, 6.8, 5.1],
+    talentDistribution: [
+      { level: 1, count: 2 },
+      { level: 2, count: 8 },
+      { level: 3, count: 18 },
+      { level: 4, count: 28 },
+      { level: 5, count: 32 },
+      { level: 6, count: 35 },
+      { level: 7, count: 22 },
+      { level: 8, count: 8 },
+      { level: 9, count: 2 },
+      { level: 10, count: 1 },
+    ],
+    levelGroups: [
+      { percent: 36, top30: 18 },
+      { percent: 43, top30: 23 },
+      { percent: 19, top30: 39 },
+      { percent: 2, top30: 20 },
+    ],
+    improvementPriorities: [
+      { area: "Zapojení AI do každodenní práce", count: 112 },
+      { area: "Automatizace rutinní práce", count: 89 },
+      { area: "Analýza dat a reporting", count: 78 },
+      { area: "Sdílení informací a know-how", count: 56 },
+      { area: "Zvládání složitých procesů", count: 42 },
+    ],
+    ambassadors: [
+      { name: "Tereza Králová", index: 8.4 },
+      { name: "Barbora Veselá", index: 7.9 },
+      { name: "Kristýna Pokorná", index: 7.6 },
+      { name: "Simona Němcová", index: 7.4 },
+      { name: "Veronika Marková", index: 7.2 },
+    ],
+    m365Proficiency: [
+      { app: "Outlook", usage: 9.2, proficiency: 7.8 },
+      { app: "Word", usage: 8.8, proficiency: 8.2 },
+      { app: "Excel", usage: 6.5, proficiency: 5.4 },
+      { app: "Teams", usage: 8.1, proficiency: 7.2 },
+      { app: "OneDrive", usage: 7.8, proficiency: 6.5 },
+      { app: "SharePoint", usage: 6.2, proficiency: 5.1 },
+      { app: "OneNote", usage: 5.8, proficiency: 5.2 },
+      { app: "ToDo", usage: 4.2, proficiency: 3.8 },
+      { app: "Power BI", usage: 3.2, proficiency: 2.4 },
+      { app: "Forms", usage: 5.4, proficiency: 5.1 },
+      { app: "Planner", usage: 4.8, proficiency: 4.2 },
+      { app: "Copilot", usage: 5.2, proficiency: 4.1 },
+    ],
+    superpower: {
+      title: "Tvorba digitálního obsahu",
+      score: 7.2,
+      description: "Marketing vyniká v tvorbě obsahu. Skóre 7,2 je výrazně nad firemním průměrem. Tým efektivně využívá nástroje pro tvorbu a správu digitálního obsahu.",
+    },
+    growthArea: {
+      title: "Řešení problémů",
+      score: 4.8,
+      marketAvg: 6.2,
+      description: "Oddělení by mohlo těžit z kurzů zaměřených na analytické myšlení a technické řešení problémů. Doporučujeme školení v oblasti datové analýzy.",
+    },
+  },
+  finance: {
+    name: "Finance & Účetnictví",
+    label: "Finance & Účetnictví",
+    respondents: 428,
+    companyIndex: 6.21,
+    digcompScores: [7.1, 3.8, 5.2, 4.9, 6.8],
+    talentDistribution: [
+      { level: 1, count: 4 },
+      { level: 2, count: 22 },
+      { level: 3, count: 48 },
+      { level: 4, count: 72 },
+      { level: 5, count: 98 },
+      { level: 6, count: 92 },
+      { level: 7, count: 58 },
+      { level: 8, count: 26 },
+      { level: 9, count: 6 },
+      { level: 10, count: 2 },
+    ],
+    levelGroups: [
+      { percent: 34, top30: 18 },
+      { percent: 44, top30: 23 },
+      { percent: 20, top30: 39 },
+      { percent: 2, top30: 20 },
+    ],
+    improvementPriorities: [
+      { area: "Automatizace rutinní práce", count: 298 },
+      { area: "Zvládání složitých procesů", count: 245 },
+      { area: "Zapojení AI do každodenní práce", count: 187 },
+      { area: "Přehled úkolů a práce na projektech", count: 134 },
+      { area: "Sdílení informací a know-how", count: 98 },
+    ],
+    ambassadors: [
+      { name: "Jana Benešová", index: 8.8 },
+      { name: "Hana Pospíšilová", index: 8.3 },
+      { name: "Monika Urbánková", index: 8.1 },
+      { name: "Lenka Šťastná", index: 7.8 },
+      { name: "Ivana Kopecká", index: 7.6 },
+    ],
+    m365Proficiency: [
+      { app: "Outlook", usage: 9.4, proficiency: 8.1 },
+      { app: "Word", usage: 7.8, proficiency: 7.2 },
+      { app: "Excel", usage: 9.5, proficiency: 8.8 },
+      { app: "Teams", usage: 6.8, proficiency: 5.4 },
+      { app: "OneDrive", usage: 6.2, proficiency: 5.1 },
+      { app: "SharePoint", usage: 4.8, proficiency: 3.9 },
+      { app: "OneNote", usage: 3.8, proficiency: 3.2 },
+      { app: "ToDo", usage: 4.1, proficiency: 3.8 },
+      { app: "Power BI", usage: 4.2, proficiency: 3.8 },
+      { app: "Forms", usage: 2.1, proficiency: 1.9 },
+      { app: "Planner", usage: 2.4, proficiency: 2.1 },
+      { app: "Copilot", usage: 2.8, proficiency: 2.1 },
+    ],
+    superpower: {
+      title: "Zpracování informací a dat",
+      score: 7.1,
+      description: "Finance excelují v práci s daty. Skóre 7,1 odráží silné analytické dovednosti a pokročilou znalost Excelu. Oddělení efektivně zpracovává velké objemy dat.",
+    },
+    growthArea: {
+      title: "Tvorba digitálního obsahu",
+      score: 3.8,
+      marketAvg: 5.9,
+      description: "Oddělení má značný prostor pro zlepšení v oblasti digitální prezentace a vizualizace. Doporučujeme kurzy Power BI a pokročilé vizualizace dat.",
+    },
+  },
+  sales: {
+    name: "Obchod",
+    label: "Obchod",
+    respondents: 687,
+    companyIndex: 6.08,
+    digcompScores: [5.9, 4.2, 4.5, 7.4, 6.2],
+    talentDistribution: [
+      { level: 1, count: 5 },
+      { level: 2, count: 38 },
+      { level: 3, count: 82 },
+      { level: 4, count: 118 },
+      { level: 5, count: 145 },
+      { level: 6, count: 152 },
+      { level: 7, count: 98 },
+      { level: 8, count: 38 },
+      { level: 9, count: 9 },
+      { level: 10, count: 2 },
+    ],
+    levelGroups: [
+      { percent: 35, top30: 18 },
+      { percent: 43, top30: 23 },
+      { percent: 20, top30: 39 },
+      { percent: 2, top30: 20 },
+    ],
+    improvementPriorities: [
+      { area: "Zapojení AI do každodenní práce", count: 412 },
+      { area: "Automatizace rutinní práce", count: 378 },
+      { area: "Přehled úkolů a práce na projektech", count: 298 },
+      { area: "Sdílení informací a know-how", count: 267 },
+      { area: "Zvládání složitých procesů", count: 189 },
+    ],
+    ambassadors: [
+      { name: "David Horák", index: 8.6 },
+      { name: "Filip Kučera", index: 8.2 },
+      { name: "Lukáš Maršálek", index: 8.0 },
+      { name: "Michal Zeman", index: 7.8 },
+      { name: "Adam Kratochvíl", index: 7.5 },
+    ],
+    m365Proficiency: [
+      { app: "Outlook", usage: 9.6, proficiency: 8.2 },
+      { app: "Word", usage: 8.4, proficiency: 7.8 },
+      { app: "Excel", usage: 7.8, proficiency: 6.5 },
+      { app: "Teams", usage: 8.8, proficiency: 7.4 },
+      { app: "OneDrive", usage: 7.2, proficiency: 5.8 },
+      { app: "SharePoint", usage: 5.4, proficiency: 4.2 },
+      { app: "OneNote", usage: 4.8, proficiency: 4.1 },
+      { app: "ToDo", usage: 5.2, proficiency: 4.8 },
+      { app: "Power BI", usage: 2.4, proficiency: 1.9 },
+      { app: "Forms", usage: 3.1, proficiency: 2.8 },
+      { app: "Planner", usage: 2.8, proficiency: 2.4 },
+      { app: "Copilot", usage: 4.2, proficiency: 3.5 },
+    ],
+    superpower: {
+      title: "Komunikace a spolupráce",
+      score: 7.4,
+      description: "Obchodní tým vyniká v komunikaci. Skóre 7,4 odráží silné prezentační dovednosti a schopnost efektivně spolupracovat s klienty i interními týmy.",
+    },
+    growthArea: {
+      title: "Tvorba digitálního obsahu",
+      score: 4.2,
+      marketAvg: 5.9,
+      description: "Oddělení by mohlo těžit z kurzů zaměřených na tvorbu profesionálních prezentací a nabídek. Doporučujeme školení v designových nástrojích.",
+    },
+  },
+  hr: {
+    name: "HR & Administrativa",
+    label: "HR & Administrativa",
+    respondents: 198,
+    companyIndex: 5.47,
+    digcompScores: [5.2, 4.8, 4.1, 6.2, 5.8],
+    talentDistribution: [
+      { level: 1, count: 3 },
+      { level: 2, count: 14 },
+      { level: 3, count: 28 },
+      { level: 4, count: 42 },
+      { level: 5, count: 48 },
+      { level: 6, count: 35 },
+      { level: 7, count: 18 },
+      { level: 8, count: 7 },
+      { level: 9, count: 2 },
+      { level: 10, count: 1 },
+    ],
+    levelGroups: [
+      { percent: 44, top30: 18 },
+      { percent: 42, top30: 23 },
+      { percent: 13, top30: 39 },
+      { percent: 1, top30: 20 },
+    ],
+    improvementPriorities: [
+      { area: "Automatizace rutinní práce", count: 142 },
+      { area: "Zapojení AI do každodenní práce", count: 128 },
+      { area: "Sdílení informací a know-how", count: 98 },
+      { area: "Přehled úkolů a práce na projektech", count: 87 },
+      { area: "Zvládání složitých procesů", count: 54 },
+    ],
+    ambassadors: [
+      { name: "Petra Havlíčková", index: 7.8 },
+      { name: "Alena Fialová", index: 7.4 },
+      { name: "Markéta Růžičková", index: 7.1 },
+      { name: "Kateřina Šimková", index: 6.9 },
+      { name: "Dagmar Holubová", index: 6.7 },
+    ],
+    m365Proficiency: [
+      { app: "Outlook", usage: 9.2, proficiency: 7.4 },
+      { app: "Word", usage: 8.8, proficiency: 7.8 },
+      { app: "Excel", usage: 6.8, proficiency: 5.2 },
+      { app: "Teams", usage: 7.2, proficiency: 5.8 },
+      { app: "OneDrive", usage: 6.4, proficiency: 4.8 },
+      { app: "SharePoint", usage: 5.2, proficiency: 3.8 },
+      { app: "OneNote", usage: 4.2, proficiency: 3.5 },
+      { app: "ToDo", usage: 3.8, proficiency: 3.2 },
+      { app: "Power BI", usage: 1.8, proficiency: 1.4 },
+      { app: "Forms", usage: 4.8, proficiency: 4.2 },
+      { app: "Planner", usage: 2.1, proficiency: 1.8 },
+      { app: "Copilot", usage: 2.4, proficiency: 1.8 },
+    ],
+    superpower: {
+      title: "Komunikace a spolupráce",
+      score: 6.2,
+      description: "HR oddělení má dobré komunikační dovednosti. Skóre 6,2 odráží schopnost efektivně komunikovat napříč firmou a koordinovat HR procesy.",
+    },
+    growthArea: {
+      title: "Řešení problémů",
+      score: 4.1,
+      marketAvg: 6.2,
+      description: "Oddělení by mohlo těžit z kurzů zaměřených na analytické myšlení a využití dat pro HR rozhodování. Doporučujeme školení v HR analytics.",
+    },
+  },
+};
+
+const MARKET_DATA = {
   period: "18. 11. – 5. 12. 2025",
-  respondents: 2534,
-  companyIndex: 6.59,
   marketAvg: 5.01,
   marketMax: 8.15,
   marketMin: 3.02,
+  digcompMarketAvg: [7.3, 5.9, 6.2, 7.5, 7.1],
+  digcompTop30: [7.7, 6.2, 6.8, 8.1, 7.5],
 };
 
-const DIGCOMP_SCORES = {
-  company: [6.4, 4.4, 4.7, 5.4, 6.5],
-  marketAvg: [7.3, 5.9, 6.2, 7.5, 7.1],
-  top30: [7.7, 6.2, 6.8, 8.1, 7.5],
+const M365_ICONS: Record<string, { icon: string; color: string }> = {
+  Outlook: { icon: asset("/logos/Outlook.png"), color: "#0078D4" },
+  Word: { icon: asset("/logos/Word.png"), color: "#2B579A" },
+  Excel: { icon: asset("/logos/Excel.png"), color: "#217346" },
+  Teams: { icon: asset("/logos/Teams.png"), color: "#6264A7" },
+  OneDrive: { icon: asset("/logos/OneDrive.png"), color: "#0078D4" },
+  SharePoint: { icon: asset("/logos/SharePoint.png"), color: "#038387" },
+  OneNote: { icon: asset("/logos/OneNote.png"), color: "#7719AA" },
+  ToDo: { icon: asset("/logos/ToDo.png"), color: "#3C78D8" },
+  "Power BI": { icon: asset("/logos/PowerBI.png"), color: "#F2C811" },
+  Forms: { icon: asset("/logos/Forms.png"), color: "#035A5A" },
+  Planner: { icon: asset("/logos/Planner.png"), color: "#31752F" },
+  Copilot: { icon: asset("/logos/Copilot.png"), color: "#2596FF" },
 };
-
-const TALENT_DISTRIBUTION = [
-  { level: 1, count: 13 },
-  { level: 2, count: 117 },
-  { level: 3, count: 240 },
-  { level: 4, count: 341 },
-  { level: 5, count: 436 },
-  { level: 6, count: 535 },
-  { level: 7, count: 419 },
-  { level: 8, count: 307 },
-  { level: 9, count: 104 },
-  { level: 10, count: 22 },
-];
-
-
-const IMPROVEMENT_PRIORITIES = [
-  { area: "Automatizace rutinní práce", count: 1288 },
-  { area: "Zapojení AI do každodenní práce", count: 1281 },
-  { area: "Zvládání složitých procesů", count: 962 },
-  { area: "Sdílení informací a know-how", count: 843 },
-  { area: "Přehled úkolů a práce na projektech", count: 533 },
-];
-
-const AMBASSADORS = [
-  { name: "Marie Nováková", index: 9.2 },
-  { name: "Petr Svoboda", index: 8.7 },
-  { name: "Eva Horáková", index: 8.4 },
-  { name: "Jan Procházka", index: 8.1 },
-  { name: "Lucie Dvořáková", index: 7.9 },
-];
-
-const M365_PROFICIENCY = [
-  { app: "Outlook", usage: 9.1, proficiency: 7.6, icon: asset("/logos/Outlook.png"), color: "#0078D4" },
-  { app: "Word", usage: 8.2, proficiency: 7.7, icon: asset("/logos/Word.png"), color: "#2B579A" },
-  { app: "Excel", usage: 8.0, proficiency: 7.2, icon: asset("/logos/Excel.png"), color: "#217346" },
-  { app: "Teams", usage: 7.4, proficiency: 6.3, icon: asset("/logos/Teams.png"), color: "#6264A7" },
-  { app: "OneDrive", usage: 7.0, proficiency: 5.7, icon: asset("/logos/OneDrive.png"), color: "#0078D4" },
-  { app: "SharePoint", usage: 5.7, proficiency: 4.7, icon: asset("/logos/SharePoint.png"), color: "#038387" },
-  { app: "OneNote", usage: 4.7, proficiency: 4.3, icon: asset("/logos/OneNote.png"), color: "#7719AA" },
-  { app: "ToDo", usage: 4.5, proficiency: 4.2, icon: asset("/logos/ToDo.png"), color: "#3C78D8" },
-  { app: "Power BI", usage: 2.9, proficiency: 2.6, icon: asset("/logos/PowerBI.png"), color: "#F2C811" },
-  { app: "Forms", usage: 2.7, proficiency: 2.7, icon: asset("/logos/Forms.png"), color: "#035A5A" },
-  { app: "Planner", usage: 2.3, proficiency: 2.2, icon: asset("/logos/Planner.png"), color: "#31752F" },
-  { app: "Copilot", usage: 3.8, proficiency: 3.2, icon: asset("/logos/Copilot.png"), color: "#2596FF" },
-];
 
 const RECOMMENDED_COURSES_CONFIG = [
   { id: 2, titleKey: "companyReport.course1Title", descKey: "companyReport.course1Desc", image: asset("/courses/Automatizace.webp"), durationKey: "3", levelKey: "assessmentLevels.advanced", priorityKey: "companyReport.priorityHigh", priorityLevel: "high" as const },
@@ -95,6 +462,11 @@ const RECOMMENDED_COURSES_CONFIG = [
 
 export default function CompanyAssessmentReport() {
   const { t } = useTranslation();
+  const [selectedDepartment, setSelectedDepartment] = useState<DepartmentKey>("all");
+  const [showDepartments, setShowDepartments] = useState(false);
+  
+  const currentData = DEPARTMENTS_DATA[selectedDepartment];
+  
   const DIGCOMP_LABELS = DIGCOMP_LABEL_KEYS.map((k) => t(k));
   const DIGCOMP_LEGEND = [
     { short: t("companyReport.legendInfo"), icon: "📊", color: "#FEE2E2", iconBg: "#EF4444" },
@@ -113,23 +485,82 @@ export default function CompanyAssessmentReport() {
     priority: t(c.priorityKey),
     priorityLevel: c.priorityLevel,
   }));
-  const LEVEL_GROUPS = LEVEL_GROUP_KEYS.map((key, i) => {
-    const data = [
-      { percent: 28, top30: 18, color: "#EF4444" },
-      { percent: 38, top30: 23, color: "#F59E0B" },
-      { percent: 29, top30: 39, color: "#2596FF" },
-      { percent: 5, top30: 20, color: "#77F9D9" },
-    ][i];
-    return { name: t(key), ...data };
-  });
+  
+  const LEVEL_GROUPS_COLORS = ["#EF4444", "#F59E0B", "#2596FF", "#77F9D9"];
+  const LEVEL_GROUPS = LEVEL_GROUP_KEYS.map((key, i) => ({
+    name: t(key),
+    percent: currentData.levelGroups[i].percent,
+    top30: currentData.levelGroups[i].top30,
+    color: LEVEL_GROUPS_COLORS[i],
+  }));
 
-  const maxCount = Math.max(...TALENT_DISTRIBUTION.map((d) => d.count));
-  const maxPriority = Math.max(...IMPROVEMENT_PRIORITIES.map((p) => p.count));
-  const indexDiff = COMPANY_DATA.companyIndex - COMPANY_DATA.marketAvg;
-  const indexDiffPercent = ((indexDiff / COMPANY_DATA.marketAvg) * 100).toFixed(1);
+  const maxCount = Math.max(...currentData.talentDistribution.map((d) => d.count));
+  const maxPriority = Math.max(...currentData.improvementPriorities.map((p) => p.count));
+  const indexDiff = currentData.companyIndex - MARKET_DATA.marketAvg;
+  const indexDiffPercent = ((indexDiff / MARKET_DATA.marketAvg) * 100).toFixed(1);
+  
+  const m365WithIcons = currentData.m365Proficiency.map((app) => ({
+    ...app,
+    icon: M365_ICONS[app.app]?.icon || "",
+    color: M365_ICONS[app.app]?.color || "#6B7280",
+  }));
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+      {/* DEPARTMENT SELECTOR */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 16,
+          padding: "16px 24px",
+          background: "white",
+          borderRadius: 12,
+          border: "1px solid var(--color-border)",
+        }}
+      >
+        <label
+          htmlFor="department-select"
+          style={{
+            fontSize: 14,
+            fontWeight: 600,
+            color: "var(--color-text-main)",
+          }}
+        >
+          Oddělení:
+        </label>
+        <select
+          id="department-select"
+          value={selectedDepartment}
+          onChange={(e) => setSelectedDepartment(e.target.value as DepartmentKey)}
+          style={{
+            padding: "10px 16px",
+            paddingRight: 40,
+            fontSize: 14,
+            fontWeight: 500,
+            color: "var(--color-text-main)",
+            background: "var(--color-breeze)",
+            border: "1px solid var(--color-border)",
+            borderRadius: 8,
+            cursor: "pointer",
+            minWidth: 200,
+            appearance: "none",
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23040E3C' d='M2 4l4 4 4-4'/%3E%3C/svg%3E")`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "right 12px center",
+          }}
+        >
+          {(Object.keys(DEPARTMENTS_DATA) as DepartmentKey[]).map((key) => (
+            <option key={key} value={key}>
+              {DEPARTMENTS_DATA[key].label}
+            </option>
+          ))}
+        </select>
+        <span style={{ fontSize: 13, color: "var(--color-text-secondary)" }}>
+          {currentData.respondents.toLocaleString("cs-CZ")} respondentů
+        </span>
+      </div>
+
       {/* EXECUTIVE SUMMARY HEADER */}
       <div
         style={{
@@ -154,10 +585,10 @@ export default function CompanyAssessmentReport() {
             Executive Summary
           </div>
           <h1 style={{ fontSize: 32, fontWeight: 800, margin: "0 0 8px", fontStyle: "italic" }}>
-            Firemní Assessment Report
+            {selectedDepartment === "all" ? "Firemní Assessment Report" : `Assessment Report – ${currentData.name}`}
           </h1>
           <p style={{ fontSize: 15, opacity: 0.85, margin: 0 }}>
-            {COMPANY_DATA.name} • {COMPANY_DATA.period}
+            {selectedDepartment === "all" ? "VIG CZ" : currentData.name} • {MARKET_DATA.period}
           </p>
         </div>
 
@@ -184,7 +615,7 @@ export default function CompanyAssessmentReport() {
                   stroke="#2596FF"
                   strokeWidth="10"
                   strokeLinecap="round"
-                  strokeDasharray={`${(COMPANY_DATA.companyIndex / 10) * 264} 264`}
+                  strokeDasharray={`${(currentData.companyIndex / 10) * 264} 264`}
                   transform="rotate(-90 50 50)"
                 />
               </svg>
@@ -197,11 +628,11 @@ export default function CompanyAssessmentReport() {
                   textAlign: "center",
                 }}
               >
-                <div style={{ fontSize: 28, fontWeight: 800 }}>{COMPANY_DATA.companyIndex}</div>
+                <div style={{ fontSize: 28, fontWeight: 800 }}>{currentData.companyIndex}</div>
               </div>
             </div>
-            <div style={{ fontSize: 14, fontWeight: 600 }}>Firemní Digiskills Index</div>
-            <div style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>Max. trhu: {COMPANY_DATA.marketMax}</div>
+            <div style={{ fontSize: 14, fontWeight: 600 }}>{selectedDepartment === "all" ? "Firemní" : "Oddělení"} Digiskills Index</div>
+            <div style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>Max. trhu: {MARKET_DATA.marketMax}</div>
           </motion.div>
 
           {/* Srovnání s benchmarkem */}
@@ -230,7 +661,7 @@ export default function CompanyAssessmentReport() {
             </div>
             <div style={{ fontSize: 14, fontWeight: 600, marginTop: 8 }}>vs. Průměr trhu</div>
             <div style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>
-              Trh: {COMPANY_DATA.marketAvg} • Vy: {COMPANY_DATA.companyIndex}
+              Trh: {MARKET_DATA.marketAvg} • Vy: {currentData.companyIndex}
             </div>
           </motion.div>
 
@@ -248,9 +679,9 @@ export default function CompanyAssessmentReport() {
               justifyContent: "center",
             }}
           >
-            <div style={{ fontSize: 40, fontWeight: 800 }}>{COMPANY_DATA.respondents.toLocaleString("cs-CZ")}</div>
-            <div style={{ fontSize: 14, fontWeight: 600, marginTop: 8 }}>Zapojených zaměstnanců</div>
-            <div style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>Období: {COMPANY_DATA.period}</div>
+            <div style={{ fontSize: 40, fontWeight: 800 }}>{currentData.respondents.toLocaleString("cs-CZ")}</div>
+            <div style={{ fontSize: 14, fontWeight: 600, marginTop: 8 }}>{selectedDepartment === "all" ? "Zapojených zaměstnanců" : "Respondentů"}</div>
+            <div style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>Období: {MARKET_DATA.period}</div>
           </motion.div>
         </div>
       </div>
@@ -272,9 +703,9 @@ export default function CompanyAssessmentReport() {
           {/* Radar chart (pavouk) */}
           <div style={{ flex: "1 1 360px", minWidth: 300 }}>
             <CompanyRadarChart
-              companyScores={DIGCOMP_SCORES.company}
-              marketAvg={DIGCOMP_SCORES.marketAvg}
-              top30={DIGCOMP_SCORES.top30}
+              companyScores={currentData.digcompScores}
+              marketAvg={MARKET_DATA.digcompMarketAvg}
+              top30={MARKET_DATA.digcompTop30}
               labels={DIGCOMP_LABELS}
               legend={DIGCOMP_LEGEND}
             />
@@ -283,10 +714,13 @@ export default function CompanyAssessmentReport() {
           {/* Digiskills Index chart + legend */}
           <div style={{ flex: "1 1 360px", minWidth: 300 }}>
             <DigiskillsIndexChart
-              companyIndex={COMPANY_DATA.companyIndex}
-              marketAvg={COMPANY_DATA.marketAvg}
-              marketMin={COMPANY_DATA.marketMin}
-              marketMax={COMPANY_DATA.marketMax}
+              companyIndex={currentData.companyIndex}
+              marketAvg={MARKET_DATA.marketAvg}
+              marketMin={MARKET_DATA.marketMin}
+              marketMax={MARKET_DATA.marketMax}
+              showDepartments={showDepartments}
+              onToggleDepartments={() => setShowDepartments(!showDepartments)}
+              selectedDepartment={selectedDepartment}
             />
 
             {/* Legenda kompetencí */}
@@ -308,13 +742,13 @@ export default function CompanyAssessmentReport() {
                       height: 8,
                       borderRadius: "50%",
                       background:
-                        DIGCOMP_SCORES.company[i] >= DIGCOMP_SCORES.marketAvg[i] ? "#2596FF" : "#F7981C",
+                        currentData.digcompScores[i] >= MARKET_DATA.digcompMarketAvg[i] ? "#2596FF" : "#F7981C",
                       flexShrink: 0,
                     }}
                   />
                   <span style={{ fontSize: 13, color: "#374151", flex: 1 }}>{label}</span>
                   <span style={{ fontSize: 13, fontWeight: 700, color: "#040E3C", minWidth: 32 }}>
-                    {DIGCOMP_SCORES.company[i].toFixed(1)}
+                    {currentData.digcompScores[i].toFixed(1)}
                   </span>
                 </motion.div>
               ))}
@@ -361,28 +795,26 @@ export default function CompanyAssessmentReport() {
         </h2>
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           <p style={{ margin: 0, fontSize: 16, lineHeight: 1.9, color: "#1F2937" }}>
-            <strong>{COMPANY_DATA.name}</strong> dosáhla v hodnoceném období celkového Digiskills Indexu{" "}
-            <strong>{COMPANY_DATA.companyIndex.toFixed(2)}</strong>, což je mírně nad průměrem trhu{" "}
-            ({COMPANY_DATA.marketAvg.toFixed(2)}). S více než {COMPANY_DATA.respondents.toLocaleString("cs-CZ")} zapojenými
-            zaměstnanci jde o solidní základ pro cílené rozvíjení digitálních kompetencí.
+            <strong>{currentData.name}</strong> {selectedDepartment === "all" ? "dosáhla" : "dosáhlo"} v hodnoceném období celkového Digiskills Indexu{" "}
+            <strong>{currentData.companyIndex.toFixed(2)}</strong>, což je {indexDiff >= 0 ? "nad" : "pod"} průměrem trhu{" "}
+            ({MARKET_DATA.marketAvg.toFixed(2)}). S {currentData.respondents.toLocaleString("cs-CZ")} {selectedDepartment === "all" ? "zapojenými zaměstnanci" : "respondenty"} jde o solidní základ pro cílené rozvíjení digitálních kompetencí.
           </p>
           <p style={{ margin: 0, fontSize: 16, lineHeight: 1.9, color: "#1F2937" }}>
-            Nejsilnější oblastí firmy je <strong>Digitální bezpečnost</strong> (skóre {DIGCOMP_SCORES.company[4].toFixed(1)})
-            a <strong>Zpracování informací a dat</strong> ({DIGCOMP_SCORES.company[0].toFixed(1)}). Naopak největší
-            prostor pro růst představuje <strong>Tvorba digitálního obsahu</strong> ({DIGCOMP_SCORES.company[1].toFixed(1)})
-            a <strong>Řešení problémů</strong> ({DIGCOMP_SCORES.company[2].toFixed(1)}), kde firma zaostává za průměrem trhu.
+            Nejsilnější oblastí je <strong>{currentData.superpower.title}</strong> (skóre {currentData.superpower.score.toFixed(1)}).
+            Naopak největší prostor pro růst představuje <strong>{currentData.growthArea.title}</strong> ({currentData.growthArea.score.toFixed(1)}),
+            kde {selectedDepartment === "all" ? "firma" : "oddělení"} zaostává za průměrem trhu ({currentData.growthArea.marketAvg.toFixed(1)}).
           </p>
           <p style={{ margin: 0, fontSize: 16, lineHeight: 1.9, color: "#1F2937" }}>
-            Doporučujeme zaměřit vzdělávací investice na kurzy podporující tvorbu obsahu, automatizaci a využití AI v
-            každodenní práci – v souladu s prioritami, které zaměstnanci sami uvedli v assessmentu. Níže najdete kurzy
-            doporučené pro celou organizaci.
+            Doporučujeme zaměřit vzdělávací investice na kurzy podporující oblasti s největším potenciálem růstu – 
+            v souladu s prioritami, které zaměstnanci sami uvedli v assessmentu. Níže najdete kurzy
+            doporučené pro {selectedDepartment === "all" ? "celou organizaci" : "toto oddělení"}.
           </p>
         </div>
       </div>
 
-      {/* FIREMNÍ SUPERSCHOPNOSTI vs PROSTOR PRO RŮST – pod slovní vyhodnocení */}
+      {/* SUPERSCHOPNOSTI vs PROSTOR PRO RŮST */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
-        {/* Superschopnosti firmy – Digi Skills #77F9D9 */}
+        {/* Superschopnosti */}
         <motion.div
           whileHover={{ scale: 1.03 }}
           transition={HOVER_TRANSITION}
@@ -407,20 +839,18 @@ export default function CompanyAssessmentReport() {
               <Image src={asset("/Screenshots/Symbol Dark.png")} alt="" width={28} height={28} style={{ objectFit: "contain" }} />
             </div>
             <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: 0 }}>
-              Firemní superschopnosti
+              {selectedDepartment === "all" ? "Firemní superschopnosti" : "Superschopnosti oddělení"}
             </h3>
           </div>
           <div style={{ fontSize: 20, fontWeight: 800, color: "#040E3C", marginBottom: 8 }}>
-            Digitální bezpečnost
+            {currentData.superpower.title}
           </div>
           <p style={{ fontSize: 14, color: "#040E3C", margin: 0, lineHeight: 1.5 }}>
-            V této oblasti je firma nad průměrem trhu. Skóre <strong>6,5</strong> ukazuje, 
-            že zaměstnanci mají solidní základ v ochraně dat a kybernetické bezpečnosti. 
-            Interní bezpečnostní kultura je zdravá.
+            {currentData.superpower.description}
           </p>
         </motion.div>
 
-        {/* Prostor pro růst firmy – Digi Salmon #FF7575 */}
+        {/* Prostor pro růst */}
         <motion.div
           whileHover={{ scale: 1.03 }}
           transition={HOVER_TRANSITION}
@@ -445,16 +875,14 @@ export default function CompanyAssessmentReport() {
               <Image src={asset("/Screenshots/Symbol Dark.png")} alt="" width={28} height={28} style={{ objectFit: "contain" }} />
             </div>
             <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: 0 }}>
-              Firemní prostor pro růst
+              {selectedDepartment === "all" ? "Firemní prostor pro růst" : "Prostor pro růst"}
             </h3>
           </div>
           <div style={{ fontSize: 20, fontWeight: 800, color: "#040E3C", marginBottom: 8 }}>
-            Tvorba digitálního obsahu
+            {currentData.growthArea.title}
           </div>
           <p style={{ fontSize: 14, color: "#040E3C", margin: 0, lineHeight: 1.5 }}>
-            Zde má firma největší potenciál se zlepšit. Aktuální skóre <strong>4,4</strong> výrazně 
-            zaostává za průměrem trhu (5,9). Cílené kurzy v této oblasti přinesou nejvyšší ROI 
-            vzdělávacích investic.
+            {currentData.growthArea.description}
           </p>
         </motion.div>
       </div>
@@ -476,7 +904,7 @@ export default function CompanyAssessmentReport() {
         </p>
 
         <div style={{ display: "flex", gap: 6, alignItems: "flex-end", height: 200, marginBottom: 16 }}>
-          {TALENT_DISTRIBUTION.map((item) => {
+          {currentData.talentDistribution.map((item) => {
             const height = (item.count / maxCount) * 180;
             let color = "#EF4444";
             if (item.level >= 5 && item.level <= 6) color = "#F59E0B";
@@ -558,9 +986,9 @@ export default function CompanyAssessmentReport() {
           </p>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {IMPROVEMENT_PRIORITIES.map((item, index) => {
+            {currentData.improvementPriorities.map((item, index) => {
               const percentage = ((item.count / maxPriority) * 100).toFixed(0);
-              const realPercentage = ((item.count / COMPANY_DATA.respondents) * 100).toFixed(0);
+              const realPercentage = ((item.count / currentData.respondents) * 100).toFixed(0);
               return (
                 <div key={item.area} style={{ display: "flex", alignItems: "center", gap: 16 }}>
                   <div
@@ -630,7 +1058,7 @@ export default function CompanyAssessmentReport() {
           </h2>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-            {AMBASSADORS.map((person, index) => {
+            {currentData.ambassadors.map((person, index) => {
               const initials = person.name
                 .split(" ")
                 .map((n) => n[0])
@@ -709,7 +1137,7 @@ export default function CompanyAssessmentReport() {
             width: "100%",
           }}
         >
-          {M365_PROFICIENCY.map((app) => (
+          {m365WithIcons.map((app) => (
             <motion.div
               key={app.app}
               whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
@@ -973,16 +1401,31 @@ export default function CompanyAssessmentReport() {
   );
 }
 
+const DEPARTMENT_COLORS: Record<DepartmentKey, string> = {
+  all: "#F7981C",
+  it: "#10B981",
+  marketing: "#8B5CF6",
+  finance: "#3B82F6",
+  sales: "#EC4899",
+  hr: "#F59E0B",
+};
+
 function DigiskillsIndexChart({
   companyIndex,
   marketAvg,
   marketMin,
   marketMax,
+  showDepartments,
+  onToggleDepartments,
+  selectedDepartment,
 }: {
   companyIndex: number;
   marketAvg: number;
   marketMin: number;
   marketMax: number;
+  showDepartments: boolean;
+  onToggleDepartments: () => void;
+  selectedDepartment: DepartmentKey;
 }) {
   const chartMin = Math.floor(marketMin);
   const chartMax = Math.ceil(marketMax + 1);
@@ -993,20 +1436,70 @@ function DigiskillsIndexChart({
   const marketMinPercent = ((marketMin - chartMin) / range) * 100;
   const marketMaxPercent = ((marketMax - chartMin) / range) * 100;
 
+  const departmentLines = (Object.keys(DEPARTMENTS_DATA) as DepartmentKey[])
+    .filter((key) => key !== "all")
+    .map((key) => ({
+      key,
+      label: DEPARTMENTS_DATA[key].label,
+      index: DEPARTMENTS_DATA[key].companyIndex,
+      percent: ((DEPARTMENTS_DATA[key].companyIndex - chartMin) / range) * 100,
+      color: DEPARTMENT_COLORS[key],
+    }));
+
   return (
     <div style={{ marginBottom: 16, fontFamily: "var(--font-montserrat), Montserrat, sans-serif", maxWidth: 440, margin: "0 auto 16px" }}>
-      <h3
-        style={{
-          fontSize: 18,
-          fontWeight: 700,
-          fontStyle: "italic",
-          color: "#040E3C",
-          margin: "0 0 28px",
-          fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
-        }}
-      >
-        Digiskills index
-      </h3>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 28 }}>
+        <h3
+          style={{
+            fontSize: 18,
+            fontWeight: 700,
+            fontStyle: "italic",
+            color: "#040E3C",
+            margin: 0,
+            fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+          }}
+        >
+          Digiskills index
+        </h3>
+        <label
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            cursor: "pointer",
+            fontSize: 12,
+            color: "#6B7280",
+            userSelect: "none",
+          }}
+        >
+          <span>Zobrazit oddělení</span>
+          <div
+            onClick={onToggleDepartments}
+            style={{
+              width: 36,
+              height: 20,
+              borderRadius: 10,
+              background: showDepartments ? "#2596FF" : "#D1D5DB",
+              position: "relative",
+              transition: "background 0.2s",
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: 2,
+                left: showDepartments ? 18 : 2,
+                width: 16,
+                height: 16,
+                borderRadius: "50%",
+                background: "white",
+                boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
+                transition: "left 0.2s",
+              }}
+            />
+          </div>
+        </label>
+      </div>
 
       {/* Hodnoty nad grafem */}
       <div style={{ position: "relative", height: 36, marginBottom: 8 }}>
@@ -1144,7 +1637,27 @@ function DigiskillsIndexChart({
               transform: "skewX(11.3deg)",
             }}
           />
-          {/* Čára – Vaše firma (Digi Orange #F7981C) */}
+          
+          {/* Čáry oddělení */}
+          {showDepartments && departmentLines.map((dept) => (
+            <div
+              key={dept.key}
+              style={{
+                position: "absolute",
+                left: `${dept.percent}%`,
+                top: -10,
+                bottom: -10,
+                width: 2,
+                marginLeft: -1,
+                background: dept.color,
+                borderRadius: 1,
+                transform: "skewX(11.3deg)",
+                opacity: selectedDepartment === "all" || selectedDepartment === dept.key ? 1 : 0.4,
+              }}
+            />
+          ))}
+          
+          {/* Čára – Vaše firma / vybrané oddělení (zvýrazněná) */}
           <div
             style={{
               position: "absolute",
@@ -1153,9 +1666,10 @@ function DigiskillsIndexChart({
               bottom: -10,
               width: 3,
               marginLeft: -1.5,
-              background: "#F7981C",
+              background: selectedDepartment === "all" ? "#F7981C" : DEPARTMENT_COLORS[selectedDepartment],
               borderRadius: 2,
               transform: "skewX(11.3deg)",
+              zIndex: 5,
             }}
           />
           {/* Čára – Max trhu (Digi Skills #77F9D9) */}
@@ -1231,6 +1745,48 @@ function DigiskillsIndexChart({
           Max trhu
         </div>
       </div>
+
+      {/* Legenda oddělení */}
+      {showDepartments && (
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 12,
+            marginTop: 16,
+            padding: "12px 16px",
+            background: "#F4F5FA",
+            borderRadius: 8,
+          }}
+        >
+          {departmentLines.map((dept) => (
+            <div
+              key={dept.key}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                opacity: selectedDepartment === "all" || selectedDepartment === dept.key ? 1 : 0.5,
+              }}
+            >
+              <div
+                style={{
+                  width: 12,
+                  height: 3,
+                  background: dept.color,
+                  borderRadius: 2,
+                }}
+              />
+              <span style={{ fontSize: 11, color: "#374151", fontWeight: 500 }}>
+                {dept.label}
+              </span>
+              <span style={{ fontSize: 11, color: "#6B7280" }}>
+                ({dept.index.toFixed(2).replace(".", ",")})
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

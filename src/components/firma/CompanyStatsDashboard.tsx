@@ -13,6 +13,7 @@ import {
 } from "recharts";
 import StatsApiSection from "./StatsApiSection";
 import StatsChatbot from "./StatsChatbot";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
 
@@ -33,12 +34,12 @@ const itemVariants = {
   },
 };
 
-const ACTIVITY_DATA = [
-  { week: "Týden 1", lessons: 156 },
-  { week: "Týden 2", lessons: 189 },
-  { week: "Týden 3", lessons: 234 },
-  { week: "Týden 4", lessons: 198 },
-  { week: "Týden 5", lessons: 267 },
+const ACTIVITY_DATA_RAW = [
+  { weekNum: 1, lessons: 156 },
+  { weekNum: 2, lessons: 189 },
+  { weekNum: 3, lessons: 234 },
+  { weekNum: 4, lessons: 198 },
+  { weekNum: 5, lessons: 267 },
 ];
 
 const TOP_STUDENTS = [
@@ -86,6 +87,17 @@ const MARKET_AVG = 5.2;
 const TOP_10_PERCENT = 8.4;
 
 export default function CompanyStatsDashboard() {
+  const { t } = useTranslation();
+  const activityData = ACTIVITY_DATA_RAW.map((d) => ({
+    week: t("companyStats.weekN", { n: String(d.weekNum) }),
+    lessons: d.lessons,
+  }));
+  const stats = [
+    { value: "1 248", labelKey: "companyStats.totalHours", subKey: "companyStats.totalHoursSub" },
+    { value: "98 / 124", labelKey: "companyStats.activeEmployees", subKey: "companyStats.activeEmployeesSub" },
+    { value: "312", labelKey: "companyStats.completedCourses", subKey: "companyStats.completedCoursesSub" },
+    { value: "6.8", labelKey: "companyStats.avgIndex", subKey: "companyStats.avgIndexSub" },
+  ];
   return (
     <motion.div
       variants={containerVariants}
@@ -122,7 +134,7 @@ export default function CompanyStatsDashboard() {
                 marginBottom: 16,
               }}
             >
-              Firemní přehled
+              {t("companyStats.badge")}
             </div>
             <h1
               style={{
@@ -132,10 +144,10 @@ export default function CompanyStatsDashboard() {
                 fontStyle: "italic",
               }}
             >
-              Firemní statistiky studia
+              {t("companyStats.title")}
             </h1>
             <p style={{ fontSize: 15, opacity: 0.95, margin: 0, lineHeight: 1.6 }}>
-              Vaše firma studuje o 31 % více než průměr trhu. Zaměstnanci dokončili tento měsíc 47 kurzů.
+              {t("companyStats.subtitle")}
             </p>
           </div>
 
@@ -146,14 +158,9 @@ export default function CompanyStatsDashboard() {
               gap: 20,
             }}
           >
-            {[
-              { value: "1 248", label: "Celkové hodiny", sub: "studia" },
-              { value: "98 / 124", label: "Aktivních zaměstnanců", sub: "tento měsíc" },
-              { value: "312", label: "Dokončených kurzů", sub: "celkem" },
-              { value: "6.8", label: "Průměrný Digiskills Index", sub: "/ 10" },
-            ].map((stat) => (
+            {stats.map((stat) => (
               <motion.div
-                key={stat.label}
+                key={stat.labelKey}
                 whileHover={{ y: -4, boxShadow: "0 8px 24px rgba(0,0,0,0.15)" }}
                 transition={HOVER_TRANSITION}
                 style={{
@@ -165,10 +172,10 @@ export default function CompanyStatsDashboard() {
               >
                 <div style={{ fontSize: 36, fontWeight: 800 }}>{stat.value}</div>
                 <div style={{ fontSize: 14, fontWeight: 600, opacity: 0.95 }}>
-                  {stat.label}
+                  {t(stat.labelKey)}
                 </div>
                 <div style={{ fontSize: 12, opacity: 0.8, marginTop: 4 }}>
-                  {stat.sub}
+                  {t(stat.subKey)}
                 </div>
               </motion.div>
             ))}
@@ -198,15 +205,15 @@ export default function CompanyStatsDashboard() {
             fontStyle: "italic",
           }}
         >
-          Srovnání s trhem
+          {t("companyStats.marketComparison")}
         </h2>
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           {[
-            { label: "Vaše firma", value: COMPANY_INDEX, color: "var(--color-digi-salmon)", bold: true },
-            { label: "Průměr trhu", value: MARKET_AVG, color: "var(--color-primary)", bold: false },
-            { label: "Top 10 % firem", value: TOP_10_PERCENT, color: "var(--color-accent-green)", bold: false },
+            { labelKey: "companyStats.yourCompany", value: COMPANY_INDEX, color: "var(--color-digi-salmon)", bold: true },
+            { labelKey: "companyReport.marketAvg", value: MARKET_AVG, color: "var(--color-primary)", bold: false },
+            { labelKey: "companyStats.top10Percent", value: TOP_10_PERCENT, color: "var(--color-accent-green)", bold: false },
           ].map((row) => (
-            <div key={row.label}>
+            <div key={row.labelKey}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
                 <span
                   style={{
@@ -215,7 +222,7 @@ export default function CompanyStatsDashboard() {
                     color: "var(--color-text-main)",
                   }}
                 >
-                  {row.label}
+                  {t(row.labelKey)}
                 </span>
                 <span style={{ fontSize: 13, fontWeight: 700, color: "var(--color-text-main)" }}>
                   {row.value.toFixed(1)} / 10
@@ -266,7 +273,7 @@ export default function CompanyStatsDashboard() {
             fontStyle: "italic",
           }}
         >
-          Komentář k aktuálním statistikám
+          {t("companyStats.commentTitle")}
         </h2>
 
         <div
@@ -283,34 +290,10 @@ export default function CompanyStatsDashboard() {
             fontSize: 14,
           }}
         >
-          <p style={{ margin: 0 }}>
-            <span style={{ fontWeight: 700 }}>Zapojení zaměstnanců je silné:</span> aktivně studuje{" "}
-            <span style={{ fontWeight: 700 }}>98 z 124 lidí</span>, což je přibližně{" "}
-            <span style={{ fontWeight: 700 }}>79 % firmy</span>. Je vhodné cíleně podpořit zbývající týmy, aby se
-            zapojení dostalo nad hranici 85 %.
-          </p>
-
-          <p style={{ margin: 0 }}>
-            <span style={{ fontWeight: 700 }}>Výkon firmy je nad trhem:</span> Digiskills Index{" "}
-            <span style={{ fontWeight: 700 }}>6.8</span> je výrazně nad tržním průměrem{" "}
-            <span style={{ fontWeight: 700 }}>5.2</span>. Na úroveň top 10 % firem (
-            <span style={{ fontWeight: 700 }}>8.4</span>) stále chybí rezervy, ale trend potvrzuje velmi dobrou
-            výchozí pozici.
-          </p>
-
-          <p style={{ margin: 0 }}>
-            <span style={{ fontWeight: 700 }}>Nejvíc táhnou témata AI a M365:</span> mezi nejžádanějšími kurzy vedou
-            „AI Promptování pro praxi“ a „ChatGPT v kanceláři“, vysokou sledovanost mají i videa k Excelu a Teams.
-            To je vhodný podklad pro další interní komunikaci i plánování obsahu.
-          </p>
-
-          <p style={{ margin: 0 }}>
-            <span style={{ fontWeight: 700 }}>Studijní výsledky jsou stabilní:</span> celkem je dokončeno{" "}
-            <span style={{ fontWeight: 700 }}>312 kurzů</span>, silně se daří zejména kurzu „Teams & Spolupráce“ (
-            <span style={{ fontWeight: 700 }}>94/124</span>) a „Základy kyberbezpečnosti“ (
-            <span style={{ fontWeight: 700 }}>89/124</span>). Pro další růst dává smysl posílit podporu u datových
-            témat, kde je dokončení zatím nižší.
-          </p>
+          <p style={{ margin: 0 }}>{t("companyStats.comment1")}</p>
+          <p style={{ margin: 0 }}>{t("companyStats.comment2")}</p>
+          <p style={{ margin: 0 }}>{t("companyStats.comment3")}</p>
+          <p style={{ margin: 0 }}>{t("companyStats.comment4")}</p>
         </div>
       </motion.div>
 
@@ -343,11 +326,11 @@ export default function CompanyStatsDashboard() {
               fontStyle: "italic",
             }}
           >
-            Aktivita firmy v čase
+            {t("companyStats.activityOverTime")}
           </h2>
           <div style={{ width: "100%", height: 260, minHeight: 260 }}>
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={ACTIVITY_DATA}>
+              <AreaChart data={activityData}>
                 <defs>
                   <linearGradient id="colorCompanyLessons" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="var(--color-digi-salmon)" stopOpacity={0.6} />
@@ -374,7 +357,7 @@ export default function CompanyStatsDashboard() {
                     boxShadow: "0 4px 12px var(--color-card-shadow)",
                   }}
                   labelStyle={{ fontWeight: 600, color: "var(--color-text-main)" }}
-                  formatter={(value) => [`${value ?? 0} lekcí`, "Dokončeno"]}
+                  formatter={(value) => [`${value ?? 0} ${t("courseCreation.lessons")}`, t("companyStats.lessonsCompleted")]}
                 />
                 <Area
                   type="monotone"
@@ -415,7 +398,7 @@ export default function CompanyStatsDashboard() {
                 fontStyle: "italic",
               }}
             >
-              Top studenti firmy
+              {t("companyStats.topStudents")}
             </h2>
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               {TOP_STUDENTS.map((student, index) => (
@@ -498,10 +481,10 @@ export default function CompanyStatsDashboard() {
                 fontStyle: "italic",
               }}
             >
-              Neaktivní studenti
+              {t("companyStats.inactiveStudents")}
             </h2>
             <p style={{ margin: "0 0 20px", fontSize: 12, color: "var(--color-text-secondary)" }}>
-              Opačný žebříček podle nejnižší aktivity
+              {t("companyStats.inactiveSubtitle")}
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               {INACTIVE_STUDENTS.map((student, index) => (
@@ -547,7 +530,7 @@ export default function CompanyStatsDashboard() {
                         marginTop: 2,
                       }}
                     >
-                      {student.department} · {student.points} bodů · {student.inactiveDays} dní bez aktivity
+                      {student.department} · {student.points} {t("companyStats.points")} · {student.inactiveDays} {t("companyStats.daysInactive")}
                     </div>
                   </div>
                   <div
@@ -597,10 +580,10 @@ export default function CompanyStatsDashboard() {
                 fontStyle: "italic",
               }}
             >
-              Nejoblíbenější kurzy
+              {t("companyStats.popularCourses")}
             </h2>
             <p style={{ margin: 0, fontSize: 13, color: "var(--color-text-secondary)" }}>
-              Kurzy s nejvyšším počtem aktivních studentů
+              {t("companyStats.popularCoursesSub")}
             </p>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -662,7 +645,7 @@ export default function CompanyStatsDashboard() {
                     {course.students}
                   </div>
                   <div style={{ fontSize: 10, color: "var(--color-text-secondary)" }}>
-                    studentů
+                    {t("companyStats.students")}
                   </div>
                 </div>
               </div>
@@ -692,10 +675,10 @@ export default function CompanyStatsDashboard() {
                 fontStyle: "italic",
               }}
             >
-              Nejoblíbenější videa
+              {t("companyStats.popularVideos")}
             </h2>
             <p style={{ margin: 0, fontSize: 13, color: "var(--color-text-secondary)" }}>
-              Microlearning videa s nejvyšším počtem zhlédnutí
+              {t("companyStats.popularVideosSub")}
             </p>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -757,7 +740,7 @@ export default function CompanyStatsDashboard() {
                     {video.views}
                   </div>
                   <div style={{ fontSize: 10, color: "var(--color-text-secondary)" }}>
-                    zhlédnutí
+                    {t("companyStats.views")}
                   </div>
                 </div>
               </div>
@@ -789,10 +772,10 @@ export default function CompanyStatsDashboard() {
               fontStyle: "italic",
             }}
           >
-            Přehled kurzů ve firmě
+            {t("companyStats.courseOverview")}
           </h2>
           <p style={{ margin: 0, fontSize: 14, color: "var(--color-text-secondary)" }}>
-            Míra dokončení jednotlivých kurzů napříč všemi zaměstnanci
+            {t("companyStats.courseOverviewSub")}
           </p>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -839,7 +822,7 @@ export default function CompanyStatsDashboard() {
                       color: "var(--color-text-secondary)",
                     }}
                   >
-                    <span>Dokončeno</span>
+                    <span>{t("companyStats.lessonsCompleted")}</span>
                     <span style={{ fontWeight: 700, color: pct >= 60 ? "#059669" : "var(--color-accent-orange)" }}>
                       {pct} %
                     </span>

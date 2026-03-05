@@ -16,6 +16,7 @@ import {
   User,
   Check,
 } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
 
@@ -36,63 +37,37 @@ interface SettingsState {
 }
 
 const CHANNEL_OPTIONS = [
-  {
-    id: "teams" as const,
-    name: "Microsoft Teams",
-    icon: asset("/logos/Teams.png"),
-  },
-  {
-    id: "whatsapp" as const,
-    name: "WhatsApp",
-    icon: asset("/logos/whatsapp.png"),
-  },
-  {
-    id: "email" as const,
-    name: "E-mail",
-    iconComponent: Mail,
-  },
+  { id: "teams" as const, labelKey: "communicationSettings.channelTeams", icon: asset("/logos/Teams.png") },
+  { id: "whatsapp" as const, labelKey: "communicationSettings.channelWhatsapp", icon: asset("/logos/whatsapp.png") },
+  { id: "email" as const, labelKey: "communicationSettings.channelEmail", iconComponent: Mail },
 ];
 
 const MENTOR_STYLES = [
-  {
-    id: "quick" as const,
-    name: "Rychlé tipy",
-    description: "Krátké zprávy pro okamžité použití.",
-    Icon: Sparkles,
-  },
-  {
-    id: "quiz" as const,
-    name: "Zkoušení",
-    description: "AI posílá kvízy a testuje tě.",
-    Icon: HelpCircle,
-  },
-  {
-    id: "deep" as const,
-    name: "Delší povídání",
-    description: "Hlubší vhled do témat.",
-    Icon: MessageSquare,
-  },
+  { id: "quick" as const, nameKey: "communicationSettings.quickTips", descKey: "communicationSettings.quickTipsDesc", Icon: Sparkles },
+  { id: "quiz" as const, nameKey: "communicationSettings.quiz", descKey: "communicationSettings.quizDesc", Icon: HelpCircle },
+  { id: "deep" as const, nameKey: "communicationSettings.deepChat", descKey: "communicationSettings.deepChatDesc", Icon: MessageSquare },
 ];
 
 const FREQUENCY_OPTIONS = [
-  { id: "weekly" as const, label: "1x týdně" },
-  { id: "biweekly" as const, label: "1x za 14 dní" },
-  { id: "off" as const, label: "Vypnout" },
+  { id: "weekly" as const, labelKey: "communicationSettings.weekly" },
+  { id: "biweekly" as const, labelKey: "communicationSettings.biweekly" },
+  { id: "off" as const, labelKey: "communicationSettings.off" },
 ];
 
-const MANAGER_INFO_OPTIONS: { id: ManagerInfoFreq; label: string }[] = [
-  { id: "off", label: "Vypnout" },
-  { id: "biweekly", label: "1x 14 dní" },
-  { id: "monthly", label: "1x měsíc" },
+const MANAGER_INFO_OPTIONS: { id: ManagerInfoFreq; labelKey: string }[] = [
+  { id: "off", labelKey: "communicationSettings.off" },
+  { id: "biweekly", labelKey: "communicationSettings.biweeklyShort" },
+  { id: "monthly", labelKey: "communicationSettings.monthly" },
 ];
 
-const LEADERSHIP_INFO_OPTIONS: { id: LeadershipInfoFreq; label: string }[] = [
-  { id: "off", label: "Vypnout" },
-  { id: "monthly", label: "1x měsíc" },
-  { id: "quarterly", label: "1x kvartál" },
+const LEADERSHIP_INFO_OPTIONS: { id: LeadershipInfoFreq; labelKey: string }[] = [
+  { id: "off", labelKey: "communicationSettings.off" },
+  { id: "monthly", labelKey: "communicationSettings.monthly" },
+  { id: "quarterly", labelKey: "communicationSettings.quarterly" },
 ];
 
 export default function CommunicationSettings() {
+  const { t } = useTranslation();
   const [settings, setSettings] = useState<SettingsState>({
     deliveryChannels: ["teams"],
     mentorStyle: "quick",
@@ -139,7 +114,7 @@ export default function CommunicationSettings() {
                 marginBottom: 16,
               }}
             >
-              Nastavení
+              {t("communicationSettings.badge")}
             </div>
             <h1
               style={{
@@ -149,10 +124,10 @@ export default function CommunicationSettings() {
                 fontStyle: "italic",
               }}
             >
-              Komunikace a notifikace
+              {t("communicationSettings.title")}
             </h1>
             <p style={{ fontSize: 15, opacity: 0.85, margin: 0 }}>
-              Nastavte si, jak a kdy vás bude AI Mentor kontaktovat
+              {t("communicationSettings.subtitle")}
             </p>
           </div>
         </div>
@@ -211,7 +186,7 @@ export default function CommunicationSettings() {
                     margin: 0,
                   }}
                 >
-                  Osobní nastavení
+                  {t("communicationSettings.personalTitle")}
                 </h2>
                 <p
                   style={{
@@ -220,7 +195,7 @@ export default function CommunicationSettings() {
                     margin: "4px 0 0",
                   }}
                 >
-                  Vaše preference pro AI Mentora
+                  {t("communicationSettings.personalSubtitle")}
                 </p>
               </div>
             </div>
@@ -245,7 +220,7 @@ export default function CommunicationSettings() {
                     letterSpacing: "0.5px",
                   }}
                 >
-                  Kanál doručení
+                  {t("communicationSettings.deliveryChannel")}
                 </h3>
                 {settings.mandatoryDelivery && (
                   <Lock size={14} color="#9CA3AF" />
@@ -264,6 +239,7 @@ export default function CommunicationSettings() {
                       return { ...s, deliveryChannels: newChannels };
                     });
                   };
+                  const channelName = "labelKey" in channel ? t(channel.labelKey) : "";
                   return (
                     <motion.button
                       key={channel.id}
@@ -298,15 +274,15 @@ export default function CommunicationSettings() {
                           justifyContent: "center",
                         }}
                       >
-                        {channel.icon ? (
+                        {"icon" in channel && channel.icon ? (
                           <Image
                             src={channel.icon}
-                            alt={channel.name}
+                            alt={channelName}
                             width={36}
                             height={36}
                             style={{ objectFit: "contain" }}
                           />
-                        ) : channel.iconComponent ? (
+                        ) : "iconComponent" in channel && channel.iconComponent ? (
                           <channel.iconComponent
                             size={32}
                             color={isSelected ? "#2596FF" : "#6B7280"}
@@ -320,7 +296,7 @@ export default function CommunicationSettings() {
                           color: isSelected ? "#2596FF" : "#374151",
                         }}
                       >
-                        {channel.name}
+                        {channelName}
                       </span>
                       {isSelected && (
                         <div
@@ -358,7 +334,7 @@ export default function CommunicationSettings() {
                   letterSpacing: "0.5px",
                 }}
               >
-                Styl AI Mentora
+                {t("communicationSettings.mentorStyle")}
               </h3>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {MENTOR_STYLES.map((style) => {
@@ -417,7 +393,7 @@ export default function CommunicationSettings() {
                             marginBottom: 2,
                           }}
                         >
-                          {style.name}
+                          {t(style.nameKey)}
                         </div>
                         <div
                           style={{
@@ -425,7 +401,7 @@ export default function CommunicationSettings() {
                             color: "#6B7280",
                           }}
                         >
-                          {style.description}
+                          {t(style.descKey)}
                         </div>
                       </div>
                       {isSelected && (
@@ -464,7 +440,7 @@ export default function CommunicationSettings() {
                     letterSpacing: "0.5px",
                   }}
                 >
-                  Frekvence zpráv
+                  {t("communicationSettings.frequency")}
                 </h3>
                 {settings.mandatoryDelivery && (
                   <Lock size={14} color="#9CA3AF" />
@@ -522,7 +498,7 @@ export default function CommunicationSettings() {
                       }}
                     >
                       {isDisabled && <Lock size={12} />}
-                      {option.label}
+                      {t(option.labelKey)}
                     </motion.button>
                   );
                 })}
@@ -560,7 +536,7 @@ export default function CommunicationSettings() {
                         lineHeight: 1.5,
                       }}
                     >
-                      Víme, že toto snižuje dosah studia o 10 %.
+                      {t("communicationSettings.frequencyInfo")}
                     </p>
                   </motion.div>
                 )}
@@ -595,8 +571,7 @@ export default function CommunicationSettings() {
                         lineHeight: 1.5,
                       }}
                     >
-                      Nedoporučujeme vypínat notifikace. Váš manažer tuto informaci
-                      uvidí.
+                      {t("communicationSettings.offWarning")}
                     </p>
                   </motion.div>
                 )}
@@ -648,7 +623,7 @@ export default function CommunicationSettings() {
                     margin: 0,
                   }}
                 >
-                  Firemní nastavení
+                  {t("communicationSettings.companyTitle")}
                 </h2>
                 <p
                   style={{
@@ -657,7 +632,7 @@ export default function CommunicationSettings() {
                     margin: "4px 0 0",
                   }}
                 >
-                  Globální pravidla pro celou organizaci
+                  {t("communicationSettings.companySubtitle")}
                 </p>
               </div>
             </div>
@@ -673,9 +648,9 @@ export default function CommunicationSettings() {
                   textTransform: "uppercase",
                   letterSpacing: "0.5px",
                 }}
-              >
-                Povinné zasílání
-              </h3>
+                >
+                  {t("communicationSettings.mandatoryDelivery")}
+                </h3>
               <div
                 style={{
                   display: "flex",
@@ -686,8 +661,8 @@ export default function CommunicationSettings() {
                 }}
               >
                 {[
-                  { id: true, label: "Ano" },
-                  { id: false, label: "Ne" },
+                  { id: true, labelKey: "communicationSettings.yes" },
+                  { id: false, labelKey: "communicationSettings.no" },
                 ].map((option) => {
                   const isSelected = settings.mandatoryDelivery === option.id;
                   return (
@@ -727,7 +702,7 @@ export default function CommunicationSettings() {
                         transition: "all 0.2s ease",
                       }}
                     >
-                      {option.label}
+                      {t(option.labelKey)}
                     </motion.button>
                   );
                 })}
@@ -741,8 +716,8 @@ export default function CommunicationSettings() {
                 }}
               >
                 {settings.mandatoryDelivery
-                  ? "Zaměstnanci nemohou vypnout notifikace od AI Mentora."
-                  : "Zaměstnanci si mohou notifikace vypnout."}
+                  ? t("communicationSettings.mandatoryYes")
+                  : t("communicationSettings.mandatoryNo")}
               </p>
             </div>
 
@@ -757,9 +732,9 @@ export default function CommunicationSettings() {
                   textTransform: "uppercase",
                   letterSpacing: "0.5px",
                 }}
-              >
-                Minimální frekvence
-              </h3>
+                >
+                  {t("communicationSettings.minFrequency")}
+                </h3>
               <div
                 style={{
                   display: "flex",
@@ -770,8 +745,8 @@ export default function CommunicationSettings() {
                 }}
               >
                 {[
-                  { id: "weekly" as const, label: "Týden" },
-                  { id: "biweekly" as const, label: "14 dní" },
+                  { id: "weekly" as const, labelKey: "communicationSettings.week" },
+                  { id: "biweekly" as const, labelKey: "communicationSettings.days14" },
                 ].map((option) => {
                   const isSelected = settings.minFrequency === option.id;
                   return (
@@ -803,7 +778,7 @@ export default function CommunicationSettings() {
                         transition: "all 0.2s ease",
                       }}
                     >
-                      {option.label}
+                      {t(option.labelKey)}
                     </motion.button>
                   );
                 })}
@@ -817,8 +792,8 @@ export default function CommunicationSettings() {
                 }}
               >
                 {settings.minFrequency === "weekly"
-                  ? "Zaměstnanci musí dostávat zprávy minimálně 1x týdně."
-                  : "Zaměstnanci si mohou nastavit frekvenci až 1x za 14 dní."}
+                  ? t("communicationSettings.minWeekly")
+                  : t("communicationSettings.minBiweekly")}
               </p>
             </div>
 
@@ -833,9 +808,9 @@ export default function CommunicationSettings() {
                   textTransform: "uppercase",
                   letterSpacing: "0.5px",
                 }}
-              >
-                Informace manažerům
-              </h3>
+                >
+                  {t("communicationSettings.managerInfo")}
+                </h3>
               <div
                 style={{
                   display: "flex",
@@ -872,7 +847,7 @@ export default function CommunicationSettings() {
                         transition: "all 0.2s ease",
                       }}
                     >
-                      {option.label}
+                      {t(option.labelKey)}
                     </motion.button>
                   );
                 })}
@@ -890,9 +865,9 @@ export default function CommunicationSettings() {
                   textTransform: "uppercase",
                   letterSpacing: "0.5px",
                 }}
-              >
-                Informace vedení firmy
-              </h3>
+                >
+                  {t("communicationSettings.leadershipInfo")}
+                </h3>
               <div
                 style={{
                   display: "flex",
@@ -929,7 +904,7 @@ export default function CommunicationSettings() {
                         transition: "all 0.2s ease",
                       }}
                     >
-                      {option.label}
+                      {t(option.labelKey)}
                     </motion.button>
                   );
                 })}
@@ -962,8 +937,7 @@ export default function CommunicationSettings() {
                   lineHeight: 1.6,
                 }}
               >
-                Tato nastavení ovlivňují všechny zaměstnance ve vaší organizaci.
-                Změny se projeví okamžitě.
+                {t("communicationSettings.infoBox")}
               </p>
             </div>
           </motion.div>

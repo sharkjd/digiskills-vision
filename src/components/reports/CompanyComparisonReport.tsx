@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { asset } from "@/lib/paths";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
 
@@ -57,20 +58,12 @@ const M365_PROFICIENCY = [
   { app: "Copilot", usage: 3.8, proficiency: 3.2, icon: asset("/logos/Copilot.png"), color: "#2596FF" },
 ];
 
-const DIGCOMP_LABELS = [
-  "Zpracování informací a dat",
-  "Tvorba digitálního obsahu",
-  "Řešení problémů",
-  "Komunikace a spolupráce",
-  "Digitální bezpečnost",
-];
-
-const DIGCOMP_LEGEND = [
-  { short: "Informace", icon: "📊", color: "#FEE2E2", iconBg: "#EF4444" },
-  { short: "Obsah", icon: "☁️", color: "#E0F2FE", iconBg: "#0EA5E9" },
-  { short: "Problémy", icon: "🧩", color: "#D1FAE5", iconBg: "#10B981" },
-  { short: "Komunikace", icon: "💬", color: "#EDE9FE", iconBg: "#6366F1" },
-  { short: "Bezpečnost", icon: "✓", color: "#FEF3C7", iconBg: "#F59E0B" },
+const DIGCOMP_LEGEND_RAW = [
+  { shortKey: "companyComparison.legendInfo", icon: "📊", color: "#FEE2E2", iconBg: "#EF4444" },
+  { shortKey: "companyComparison.legendContent", icon: "☁️", color: "#E0F2FE", iconBg: "#0EA5E9" },
+  { shortKey: "companyComparison.legendProblems", icon: "🧩", color: "#D1FAE5", iconBg: "#10B981" },
+  { shortKey: "companyComparison.legendComm", icon: "💬", color: "#EDE9FE", iconBg: "#6366F1" },
+  { shortKey: "companyComparison.legendSecurity", icon: "✓", color: "#FEF3C7", iconBg: "#F59E0B" },
 ];
 
 // ============================================================================
@@ -96,7 +89,21 @@ function generateBaselineDistribution(current: { level: number; count: number }[
 // HLAVNÍ KOMPONENTA
 // ============================================================================
 
+const DIGCOMP_LABEL_KEYS = [
+  "companyComparison.digcomp1",
+  "companyComparison.digcomp2",
+  "companyComparison.digcomp3",
+  "companyComparison.digcomp4",
+  "companyComparison.digcomp5",
+];
+
 export default function CompanyComparisonReport() {
+  const { t } = useTranslation();
+  const digcompLabels = useMemo(() => DIGCOMP_LABEL_KEYS.map((k) => t(k)), [t]);
+  const digcompLegend = useMemo(
+    () => DIGCOMP_LEGEND_RAW.map((l) => ({ ...l, short: t(l.shortKey) })),
+    [t]
+  );
   const baselineData = useMemo(() => {
     const seed = 42;
     
@@ -155,13 +162,17 @@ export default function CompanyComparisonReport() {
               color: "#77F9D9",
             }}
           >
-            Srovnávací měření
+            {t("companyComparison.badge")}
           </div>
           <h1 style={{ fontSize: 32, fontWeight: 800, margin: "0 0 8px", fontStyle: "italic" }}>
-            Srovnávací Firemní Assessment Report
+            {t("companyComparison.title")}
           </h1>
           <p style={{ fontSize: 15, opacity: 0.85, margin: 0 }}>
-            {COMPANY_DATA.name} • Baseline: {COMPANY_DATA.baselinePeriod} → Nyní: {COMPANY_DATA.currentPeriod}
+            {t("companyComparison.headerSubtitle", {
+              name: COMPANY_DATA.name,
+              baseline: COMPANY_DATA.baselinePeriod,
+              current: COMPANY_DATA.currentPeriod,
+            })}
           </p>
         </div>
 
@@ -241,9 +252,9 @@ export default function CompanyComparisonReport() {
                 <div style={{ fontSize: 28, fontWeight: 800 }}>{COMPANY_DATA.companyIndex}</div>
               </div>
             </div>
-            <div style={{ fontSize: 14, fontWeight: 600 }}>Firemní Digiskills Index</div>
+            <div style={{ fontSize: 14, fontWeight: 600 }}>{t("companyComparison.companyIndex")}</div>
             <div style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>
-              Baseline: {baselineData.companyIndex.toFixed(2)}
+              {t("companyComparison.baselineLabel")}: {baselineData.companyIndex.toFixed(2)}
             </div>
           </motion.div>
 
@@ -277,9 +288,9 @@ export default function CompanyComparisonReport() {
               </svg>
               +{indexDeltaPercent}%
             </div>
-            <div style={{ fontSize: 14, fontWeight: 600, marginTop: 8 }}>Celkové zlepšení</div>
+            <div style={{ fontSize: 14, fontWeight: 600, marginTop: 8 }}>{t("companyComparison.totalImprovement")}</div>
             <div style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>
-              vs. vstupní měření
+              {t("companyComparison.vsBaseline")}
             </div>
           </motion.div>
 
@@ -298,9 +309,9 @@ export default function CompanyComparisonReport() {
             }}
           >
             <div style={{ fontSize: 40, fontWeight: 800 }}>{COMPANY_DATA.respondents.toLocaleString("cs-CZ")}</div>
-            <div style={{ fontSize: 14, fontWeight: 600, marginTop: 8 }}>Zapojených zaměstnanců</div>
+            <div style={{ fontSize: 14, fontWeight: 600, marginTop: 8 }}>{t("companyComparison.employeesEngaged")}</div>
             <div style={{ fontSize: 12, opacity: 0.7, marginTop: 4 }}>
-              Baseline: {baselineData.respondents.toLocaleString("cs-CZ")}
+              {t("companyComparison.baselineLabel")}: {baselineData.respondents.toLocaleString("cs-CZ")}
             </div>
           </motion.div>
 
@@ -318,13 +329,13 @@ export default function CompanyComparisonReport() {
               justifyContent: "center",
             }}
           >
-            <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 12 }}>Trend vývoje</div>
+            <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 12 }}>{t("companyComparison.trendTitle")}</div>
             <SparklineChart 
               baseline={baselineData.companyIndex} 
               current={COMPANY_DATA.companyIndex} 
             />
             <div style={{ fontSize: 12, opacity: 0.7, marginTop: 8 }}>
-              Baseline → Nyní
+              {t("companyComparison.baselineToNow")}
             </div>
           </motion.div>
         </div>
@@ -340,7 +351,7 @@ export default function CompanyComparisonReport() {
         }}
       >
         <h2 style={{ fontSize: 20, fontWeight: 700, color: "#040E3C", margin: "0 0 24px", fontStyle: "italic" }}>
-          Porovnání kompetencí – Předtím vs. Nyní
+          {t("companyComparison.competenceComparison")}
         </h2>
 
         <div style={{ display: "flex", gap: 32, alignItems: "flex-start", flexWrap: "wrap" }}>
@@ -349,19 +360,19 @@ export default function CompanyComparisonReport() {
             <ComparisonRadarChart
               baselineScores={baselineData.digcompScores}
               currentScores={DIGCOMP_SCORES.company}
-              labels={DIGCOMP_LABELS}
-              legend={DIGCOMP_LEGEND}
+              labels={digcompLabels}
+              legend={digcompLegend}
             />
           </div>
 
           {/* Tabulka kategorií s rozdílem */}
           <div style={{ flex: "1 1 360px", minWidth: 300 }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, color: "#040E3C", margin: "0 0 16px" }}>
-              Detailní srovnání kategorií
+              {t("companyComparison.categoryDetail")}
             </h3>
             
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {DIGCOMP_LABELS.map((label, i) => {
+              {digcompLabels.map((label, i) => {
                 const baseline = baselineData.digcompScores[i];
                 const current = DIGCOMP_SCORES.company[i];
                 const delta = current - baseline;
@@ -386,7 +397,7 @@ export default function CompanyComparisonReport() {
                         width: 32,
                         height: 32,
                         borderRadius: "50%",
-                        background: DIGCOMP_LEGEND[i].iconBg,
+                        background: digcompLegend[i].iconBg,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -394,7 +405,7 @@ export default function CompanyComparisonReport() {
                         flexShrink: 0,
                       }}
                     >
-                      {DIGCOMP_LEGEND[i].icon}
+                      {digcompLegend[i].icon}
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 13, fontWeight: 600, color: "#040E3C", marginBottom: 2 }}>
@@ -446,11 +457,11 @@ export default function CompanyComparisonReport() {
             >
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 <div style={{ width: 16, height: 3, background: "rgba(37, 150, 255, 0.4)", borderRadius: 2 }} />
-                <span style={{ fontSize: 11, color: "#6B7280", fontWeight: 500 }}>Vy předtím</span>
+                <span style={{ fontSize: 11, color: "#6B7280", fontWeight: 500 }}>{t("companyComparison.youBefore")}</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 <div style={{ width: 16, height: 3, background: "#2596FF", borderRadius: 2 }} />
-                <span style={{ fontSize: 11, color: "#374151", fontWeight: 500 }}>Vaše firma nyní</span>
+                <span style={{ fontSize: 11, color: "#374151", fontWeight: 500 }}>{t("companyComparison.yourCompanyNow")}</span>
               </div>
             </div>
           </div>
@@ -485,11 +496,10 @@ export default function CompanyComparisonReport() {
         </div>
         <div style={{ color: "#040E3C" }}>
           <h3 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 4px" }}>
-            Dobrá práce! Patříte mezi špičky
+            {t("companyComparison.goodWork")}
           </h3>
           <p style={{ fontSize: 14, margin: 0, opacity: 0.85 }}>
-            Vaše firma zaznamenala zlepšení o {indexDeltaPercent}% od vstupního měření. 
-            Investice do vzdělávání se vyplácí!
+            {t("companyComparison.goodWorkSub", { percent: indexDeltaPercent })}
           </p>
         </div>
       </div>
@@ -504,10 +514,10 @@ export default function CompanyComparisonReport() {
         }}
       >
         <h2 style={{ fontSize: 20, fontWeight: 700, color: "#040E3C", margin: "0 0 8px", fontStyle: "italic" }}>
-          Talent Pipeline – Srovnání distribuce
+          {t("companyComparison.talentPipeline")}
         </h2>
         <p style={{ fontSize: 14, color: "#6B7280", margin: "0 0 24px" }}>
-          Posun v distribuci digitálních kompetencí zaměstnanců (škála 1–10)
+          {t("companyComparison.talentPipelineSub")}
         </p>
 
         <div style={{ display: "flex", gap: 8, alignItems: "flex-end", height: 220, marginBottom: 16 }}>
@@ -568,7 +578,7 @@ export default function CompanyComparisonReport() {
                       borderRadius: "4px 4px 0 0",
                       cursor: "pointer",
                     }}
-                    title={`Baseline: ${baselineItem.count}`}
+                    title={`${t("companyComparison.baselineLabel")}: ${baselineItem.count}`}
                   />
                   {/* Current bar (barevná) */}
                   <motion.div
@@ -582,7 +592,7 @@ export default function CompanyComparisonReport() {
                       cursor: "pointer",
                       transformOrigin: "bottom",
                     }}
-                    title={`Nyní: ${item.count}`}
+                    title={`${t("companyComparison.nowLabel")}: ${item.count}`}
                   />
                 </div>
                 <span style={{ fontSize: 12, color: "#6B7280", fontWeight: 600 }}>{item.level}</span>
@@ -595,11 +605,11 @@ export default function CompanyComparisonReport() {
         <div style={{ display: "flex", gap: 24, justifyContent: "center", marginTop: 20 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <div style={{ width: 16, height: 12, background: "#D1D5DB", borderRadius: 3 }} />
-            <span style={{ fontSize: 12, color: "#6B7280" }}>Úvodní měření</span>
+            <span style={{ fontSize: 12, color: "#6B7280" }}>{t("companyComparison.baseline")}</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <div style={{ width: 16, height: 12, background: "#2596FF", borderRadius: 3 }} />
-            <span style={{ fontSize: 12, color: "#374151", fontWeight: 500 }}>Srovnávací měření</span>
+            <span style={{ fontSize: 12, color: "#374151", fontWeight: 500 }}>{t("companyComparison.comparison")}</span>
           </div>
         </div>
       </div>
@@ -614,10 +624,10 @@ export default function CompanyComparisonReport() {
         }}
       >
         <h2 style={{ fontSize: 20, fontWeight: 700, color: "#040E3C", margin: "0 0 8px", fontStyle: "italic" }}>
-          Pokročilost v M365 aplikacích – Srovnání
+          {t("companyComparison.m365Title")}
         </h2>
         <p style={{ fontSize: 14, color: "#6B7280", margin: "0 0 24px" }}>
-          Posun v pokročilosti jednotlivých aplikací (škála 1–10)
+          {t("companyComparison.m365Sub")}
         </p>
 
         <div

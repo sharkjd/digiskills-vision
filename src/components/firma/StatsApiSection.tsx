@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Download, Key, Copy, Check, Code, Database, BarChart3 } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
 
@@ -23,30 +24,15 @@ function generateUUID() {
   });
 }
 
-const API_ENDPOINTS = [
-  {
-    method: "GET",
-    path: "/api/v1/stats/overview",
-    description: "Souhrnné statistiky firmy",
-  },
-  {
-    method: "GET",
-    path: "/api/v1/stats/activity",
-    description: "Aktivita zaměstnanců v čase",
-  },
-  {
-    method: "GET",
-    path: "/api/v1/courses",
-    description: "Seznam kurzů a míra dokončení",
-  },
-  {
-    method: "GET",
-    path: "/api/v1/employees",
-    description: "Statistiky jednotlivých zaměstnanců",
-  },
+const API_ENDPOINT_KEYS = [
+  { method: "GET", path: "/api/v1/stats/overview", descKey: "statsApi.endpointOverview" },
+  { method: "GET", path: "/api/v1/stats/activity", descKey: "statsApi.endpointActivity" },
+  { method: "GET", path: "/api/v1/courses", descKey: "statsApi.endpointCourses" },
+  { method: "GET", path: "/api/v1/employees", descKey: "statsApi.endpointEmployees" },
 ];
 
 export default function StatsApiSection() {
+  const { t } = useTranslation();
   const [apiKey, setApiKey] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [downloading, setDownloading] = useState(false);
@@ -64,7 +50,7 @@ export default function StatsApiSection() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      alert("Nepodařilo se zkopírovat klíč");
+      alert(t("statsApi.copyError"));
     }
   };
 
@@ -79,9 +65,9 @@ export default function StatsApiSection() {
               version: "1.0",
               description:
                 "Power BI template pro napojení na Digiskills API. Importujte tento soubor do Power BI Desktop a zadejte svůj API klíč.",
-              endpoints: API_ENDPOINTS.map((e) => ({
+              endpoints: API_ENDPOINT_KEYS.map((e) => ({
                 url: `https://api.digiskills.cz${e.path}`,
-                description: e.description,
+                description: t(e.descKey),
               })),
             },
             null,
@@ -144,10 +130,10 @@ export default function StatsApiSection() {
                 fontStyle: "italic",
               }}
             >
-              API napojení & Export dat
+              {t("statsApi.title")}
             </h2>
             <p style={{ fontSize: 14, opacity: 0.85, margin: "4px 0 0" }}>
-              Exportujte statistiky do vlastních systémů
+              {t("statsApi.subtitle")}
             </p>
           </div>
         </div>
@@ -165,9 +151,7 @@ export default function StatsApiSection() {
               margin: 0,
             }}
           >
-            Propojte Digiskills statistiky s vašimi interními systémy. Pomocí REST API můžete
-            získávat data o studiu zaměstnanců v reálném čase a vizualizovat je v Power BI,
-            Tableau nebo vlastních dashboardech.
+            {t("statsApi.description")}
           </p>
         </div>
 
@@ -208,10 +192,10 @@ export default function StatsApiSection() {
               </div>
               <div>
                 <div style={{ fontSize: 15, fontWeight: 700, color: "var(--color-text-main)" }}>
-                  Power BI šablona
+                  {t("statsApi.powerBiTitle")}
                 </div>
                 <div style={{ fontSize: 12, color: "var(--color-text-secondary)" }}>
-                  Předpřipravený dashboard
+                  {t("statsApi.powerBiSubtitle")}
                 </div>
               </div>
             </div>
@@ -223,7 +207,7 @@ export default function StatsApiSection() {
                 lineHeight: 1.6,
               }}
             >
-              Stáhněte si šablonu s předpřipravenými vizualizacemi pro rychlé nasazení.
+              {t("statsApi.powerBiDesc")}
             </p>
             <motion.button
               type="button"
@@ -249,7 +233,7 @@ export default function StatsApiSection() {
               }}
             >
               <Download size={18} />
-              {downloading ? "Stahuji..." : "Stáhnout šablonu"}
+              {downloading ? t("statsApi.downloading") : t("statsApi.downloadTemplate")}
             </motion.button>
           </motion.div>
 
@@ -281,10 +265,10 @@ export default function StatsApiSection() {
               </div>
               <div>
                 <div style={{ fontSize: 15, fontWeight: 700, color: "var(--color-text-main)" }}>
-                  API klíč
+                  {t("statsApi.apiKeyTitle")}
                 </div>
                 <div style={{ fontSize: 12, color: "var(--color-text-secondary)" }}>
-                  Pro autentizaci požadavků
+                  {t("statsApi.apiKeySubtitle")}
                 </div>
               </div>
             </div>
@@ -296,7 +280,7 @@ export default function StatsApiSection() {
                 lineHeight: 1.6,
               }}
             >
-              Vygenerujte si API klíč pro přístup k vašim statistikám.
+              {t("statsApi.apiKeyDesc")}
             </p>
 
             <AnimatePresence mode="wait">
@@ -327,7 +311,7 @@ export default function StatsApiSection() {
                   }}
                 >
                   <Key size={18} />
-                  Vygenerovat API klíč
+                  {t("statsApi.generateKey")}
                 </motion.button>
               ) : (
                 <motion.div
@@ -399,7 +383,7 @@ export default function StatsApiSection() {
                       cursor: "pointer",
                     }}
                   >
-                    Vygenerovat nový klíč
+                    {t("statsApi.generateNewKey")}
                   </motion.button>
                 </motion.div>
               )}
@@ -419,7 +403,7 @@ export default function StatsApiSection() {
                 margin: 0,
               }}
             >
-              Dostupné API endpointy
+              {t("statsApi.endpointsTitle")}
             </h3>
           </div>
           <div
@@ -430,7 +414,7 @@ export default function StatsApiSection() {
               fontFamily: "monospace",
             }}
           >
-            {API_ENDPOINTS.map((endpoint, idx) => (
+            {API_ENDPOINT_KEYS.map((endpoint, idx) => (
               <div
                 key={endpoint.path}
                 style={{
@@ -439,7 +423,7 @@ export default function StatsApiSection() {
                   gap: 12,
                   padding: "10px 0",
                   borderBottom:
-                    idx < API_ENDPOINTS.length - 1 ? "1px solid rgba(255,255,255,0.1)" : "none",
+                    idx < API_ENDPOINT_KEYS.length - 1 ? "1px solid rgba(255,255,255,0.1)" : "none",
                 }}
               >
                 <span
@@ -458,7 +442,7 @@ export default function StatsApiSection() {
                 <div style={{ flex: 1 }}>
                   <div style={{ color: "#f8f8f2", fontSize: 13 }}>{endpoint.path}</div>
                   <div style={{ color: "#6b7280", fontSize: 12, marginTop: 4 }}>
-                    {endpoint.description}
+                    {t(endpoint.descKey)}
                   </div>
                 </div>
               </div>
@@ -472,7 +456,7 @@ export default function StatsApiSection() {
               margin: "12px 0 0",
             }}
           >
-            Všechny požadavky vyžadují hlavičku{" "}
+            {t("statsApi.authHeader")}{" "}
             <code
               style={{
                 background: "var(--color-breeze)",

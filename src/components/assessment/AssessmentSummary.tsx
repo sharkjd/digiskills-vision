@@ -217,9 +217,9 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
               <div style={{ fontSize: 12, opacity: 0.7 }}>/ 10</div>
             </div>
           </div>
-          <div style={{ marginTop: 8, fontSize: 13, fontWeight: 600 }}>Digiskills Index</div>
+          <div style={{ marginTop: 8, fontSize: 13, fontWeight: 600 }}>{t("assessmentSummary.digiskillsIndex")}</div>
           <div style={{ marginTop: 12, fontSize: 12, opacity: 0.7 }}>
-            Pořadí ve firmě: 3. místo z 47 zaměstnanců
+            {t("assessmentSummary.companyRank", { rank: "3", total: "47" })}
           </div>
         </div>
       </div>
@@ -315,27 +315,25 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
         }}
       >
         <h2 style={{ fontSize: 20, fontWeight: 700, color: "#040E3C", margin: "0 0 24px" }}>
-          Slovní vyhodnocení
+          {t("assessmentSummary.verbalEvaluation")}
         </h2>
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           <p style={{ margin: 0, fontSize: 16, lineHeight: 1.9, color: "#1F2937" }}>
-            <strong>Gratulujeme, Honzo!</strong> Na základě tvých odpovědí jsi byl zařazen do úrovně{" "}
-            <strong>Digitální expert</strong>.
+            <strong>{t("assessmentSummary.congrats", { name: formData.name.split(" ")[0] || formData.name })}</strong>{" "}
+            {t("assessmentSummary.congratsText1")} <strong>{levelInfo.label}</strong>.
           </p>
           <p style={{ margin: 0, fontSize: 16, lineHeight: 1.9, color: "#1F2937" }}>
-            Tvůj celkový <strong>Digiskills Index 7,3</strong> ukazuje, že v digitálním prostředí se pohybuješ s
-            vysokou mírou jistoty a efektivity.
+            {t("assessmentSummary.congratsText2")} <strong>Digiskills Index {overallScore.toFixed(1).replace(".", ",")}</strong>{" "}
+            {t("assessmentSummary.congratsText2Suffix")}
           </p>
           <p style={{ margin: 0, fontSize: 16, lineHeight: 1.9, color: "#1F2937" }}>
-            Tvou nejsilnější doménou je <strong>Zpracování informací a dat</strong>, kde tvé skóre{" "}
-            <strong>(7,5)</strong> výrazně převyšuje průměr firmy i trhu, což z tebe dělá ideálního mentora pro
-            tvůj tým.
+            {t("assessmentSummary.congratsText3")} <strong>{DIGCOMP_LABELS[strongestIndex]}</strong>,{" "}
+            {t("assessmentSummary.congratsText3Suffix")} <strong>({userScores[strongestIndex].toFixed(1).replace(".", ",")})</strong>{" "}
+            {t("assessmentSummary.congratsText3End")}
           </p>
           <p style={{ margin: 0, fontSize: 16, lineHeight: 1.9, color: "#1F2937" }}>
-            Pro tvůj další profesní růst vidíme největší potenciál v oblasti{" "}
-            <strong>Tvorby digitálního obsahu</strong>. Zaměřením se na moderní formáty a pokročilé nástroje pro
-            vizualizaci můžeš své stávající znalosti posunout na strategickou úroveň a ještě více zefektivnit
-            svou každodenní agendu.
+            {t("assessmentSummary.congratsText4")} <strong>{DIGCOMP_LABELS[weakestIndex]}</strong>.{" "}
+            {t("assessmentSummary.congratsText4Suffix")}
           </p>
         </div>
       </div>
@@ -367,16 +365,15 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
               <Image src={asset("/Screenshots/Symbol Dark.png")} alt="" width={28} height={28} style={{ objectFit: "contain" }} />
             </div>
             <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: 0 }}>
-              Tvé superschopnosti
+              {t("assessmentSummary.yourSuperpowers")}
             </h3>
           </div>
           <div style={{ fontSize: 20, fontWeight: 800, color: "#040E3C", marginBottom: 8 }}>
             {DIGCOMP_LABELS[strongestIndex]}
           </div>
           <p style={{ fontSize: 14, color: "#040E3C", margin: 0, lineHeight: 1.5 }}>
-            V této oblasti jsi nad průměrem firmy. Tvé skóre{" "}
-            <strong>{userScores[strongestIndex].toFixed(1)}</strong> ukazuje, že máš solidní základ pro
-            mentoring kolegů.
+            {t("assessmentSummary.superpowersDesc")} <strong>{userScores[strongestIndex].toFixed(1)}</strong>{" "}
+            {t("assessmentSummary.superpowersDescSuffix")}
           </p>
         </motion.div>
 
@@ -405,15 +402,15 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
               <Image src={asset("/Screenshots/Symbol Dark.png")} alt="" width={28} height={28} style={{ objectFit: "contain" }} />
             </div>
             <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: 0 }}>
-              Prostor pro růst
+              {t("assessmentSummary.growthSpace")}
             </h3>
           </div>
           <div style={{ fontSize: 20, fontWeight: 800, color: "#040E3C", marginBottom: 8 }}>
             {DIGCOMP_LABELS[weakestIndex]}
           </div>
           <p style={{ fontSize: 14, color: "#040E3C", margin: 0, lineHeight: 1.5 }}>
-            Zde máš největší potenciál se zlepšit. Aktuální skóre{" "}
-            <strong>{userScores[weakestIndex].toFixed(1)}</strong> – s cílenými kurzy se rychle posuneš dál.
+            {t("assessmentSummary.growthSpaceDesc")} <strong>{userScores[weakestIndex].toFixed(1)}</strong>{" "}
+            {t("assessmentSummary.growthSpaceDescSuffix")}
           </p>
         </motion.div>
       </div>
@@ -428,10 +425,10 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
         }}
       >
         <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: "0 0 16px" }}>
-          Aplikace k rozvoji
+          {t("assessmentSummary.appsToDevelop")}
         </h3>
         <p style={{ fontSize: 14, color: "#6B7280", margin: "0 0 20px" }}>
-          Podle tvých odpovědí jsme identifikovali nástroje, kde máš prostor pro zlepšení:
+          {t("assessmentSummary.appsToDevelopDesc")}
         </p>
         <div style={{ display: "flex", gap: 16 }}>
           {RECOMMENDED_APPS.map((app) => (
@@ -474,7 +471,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
       {/* DOPORUČENÉ KURZY */}
       <div>
         <h2 style={{ fontSize: 22, fontWeight: 700, color: "#040E3C", margin: "0 0 20px" }}>
-          Kurzy vybrané přímo pro tebe
+          {t("assessmentSummary.coursesForYou")}
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
           {getCourseList(language).slice(0, 3).map((course) => (
@@ -498,10 +495,10 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
       >
         <div style={{ color: "white" }}>
           <h3 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 6px" }}>
-            Připraven posunout se dál?
+            {t("assessmentSummary.readyToMove")}
           </h3>
           <p style={{ fontSize: 14, margin: 0, opacity: 0.9 }}>
-            Tvé výsledky byly uloženy. Kurzy na tebe čekají.
+            {t("assessmentSummary.readyToMoveDesc")}
           </p>
         </div>
         <motion.button
@@ -537,6 +534,7 @@ function IndividualDigiskillsIndexChart({
   companyAvg: number;
   bestEmployee: number;
 }) {
+  const { t } = useTranslation();
   const chartMin = Math.floor(companyAvg - 1);
   const chartMax = Math.ceil(bestEmployee + 1);
   const range = chartMax - chartMin;
@@ -557,7 +555,7 @@ function IndividualDigiskillsIndexChart({
           fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
         }}
       >
-        Digiskills index
+        {t("assessmentSummary.digiskillsIndex")}
       </h3>
 
       {/* Hodnoty nad grafem */}
@@ -720,7 +718,7 @@ function IndividualDigiskillsIndexChart({
             fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
           }}
         >
-          Průměr firmy
+          {t("assessmentSummary.companyAvg")}
         </div>
         <div
           style={{
@@ -734,7 +732,7 @@ function IndividualDigiskillsIndexChart({
             fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
           }}
         >
-          Já
+          {t("assessmentSummary.me")}
         </div>
         <div
           style={{
@@ -747,7 +745,7 @@ function IndividualDigiskillsIndexChart({
             fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
           }}
         >
-          Nejlepší
+          {t("assessmentSummary.best")}
         </div>
       </div>
     </div>
@@ -918,6 +916,7 @@ function IndividualRadarChart({
 }
 
 function CourseCard({ course }: { course: Course }) {
+  const { t } = useTranslation();
   return (
     <motion.div
       whileHover={{ y: -8, scale: 1.02, boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)" }}
@@ -1006,7 +1005,7 @@ function CourseCard({ course }: { course: Course }) {
           onMouseEnter={(e) => (e.currentTarget.style.background = "#1F80D9")}
           onMouseLeave={(e) => (e.currentTarget.style.background = "#2596FF")}
         >
-          Začít studovat
+          {t("dashboard.startStudy")}
         </motion.button>
       </div>
     </motion.div>

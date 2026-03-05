@@ -18,13 +18,19 @@ type CourseCard2Props = {
   delay?: number;
 };
 
+const LEVEL_TO_KEY: Record<string, string> = {
+  "Začátečník": "assessmentLevels.beginner",
+  "Beginner": "assessmentLevels.beginner",
+  "Středně pokročilý": "assessmentLevels.intermediate",
+  "Intermediate": "assessmentLevels.intermediate",
+  "Pokročilý": "assessmentLevels.advanced",
+  "Advanced": "assessmentLevels.advanced",
+};
+
 const LEVEL_COLORS: Record<string, { bg: string; text: string }> = {
-  "Začátečník": { bg: "rgba(119, 249, 217, 0.15)", text: "#0d8a6a" },
-  "Beginner": { bg: "rgba(119, 249, 217, 0.15)", text: "#0d8a6a" },
-  "Středně pokročilý": { bg: "rgba(37, 150, 255, 0.12)", text: "#1a6dbf" },
-  "Intermediate": { bg: "rgba(37, 150, 255, 0.12)", text: "#1a6dbf" },
-  "Pokročilý": { bg: "rgba(169, 127, 239, 0.15)", text: "#7040b0" },
-  "Advanced": { bg: "rgba(169, 127, 239, 0.15)", text: "#7040b0" },
+  "assessmentLevels.beginner": { bg: "rgba(119, 249, 217, 0.15)", text: "#0d8a6a" },
+  "assessmentLevels.intermediate": { bg: "rgba(37, 150, 255, 0.12)", text: "#1a6dbf" },
+  "assessmentLevels.advanced": { bg: "rgba(169, 127, 239, 0.15)", text: "#7040b0" },
 };
 
 const STATUS_CONFIG: Record<CourseStatus, { label: string; color: string; bg: string }> = {
@@ -41,7 +47,8 @@ export default function CourseCard2({
   delay = 0,
 }: CourseCard2Props) {
   const { t } = useTranslation();
-  const levelStyle = LEVEL_COLORS[course.level] ?? { bg: "#f0f0f0", text: "#666" };
+  const levelKey = LEVEL_TO_KEY[course.level] ?? "assessmentLevels.beginner";
+  const levelStyle = LEVEL_COLORS[levelKey] ?? { bg: "#f0f0f0", text: "#666" };
   const statusCfg = STATUS_CONFIG[status];
 
   return (
@@ -157,7 +164,7 @@ export default function CourseCard2({
                 backdropFilter: "blur(4px)",
               }}
             >
-              {course.level}
+              {t(levelKey)}
             </span>
           </div>
         </div>
