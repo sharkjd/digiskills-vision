@@ -62,55 +62,16 @@ const SALES_COUNTS = [8, 12, 6, 10, 5, 6];
 const MONTH_KEYS = ["creator.monthJan", "creator.monthFeb", "creator.monthMar", "creator.monthApr", "creator.monthMay", "creator.monthJun"];
 
 const CREATOR_BENEFITS = [
-  {
-    icon: Clock,
-    title: "Rychle od nápadu k obsahu",
-    description: "Místo dlouhého skládání osnovy začnete během chvíle. AI navrhne strukturu a vy jen doladíte detaily.",
-    gradient: "linear-gradient(135deg, #2596FF 0%, #1F80D9 100%)",
-    shadowColor: "rgba(37, 150, 255, 0.3)",
-  },
-  {
-    icon: Layers3,
-    title: "Obsah vhodný pro microlearning",
-    description: "Kurz je členěný do kratších, srozumitelných bloků. Lidé se učí průběžně a zvládnou to i vedle práce.",
-    gradient: "linear-gradient(135deg, #77F9D9 0%, #10B981 100%)",
-    shadowColor: "rgba(119, 249, 217, 0.3)",
-  },
-  {
-    icon: Target,
-    title: "AI navrhne strukturu",
-    description: "Stačí popsat téma a cíle. Umělá inteligence vytvoří logickou osnovu a rozdělí obsah do lekcí.",
-    gradient: "linear-gradient(135deg, #F7981C 0%, #EA580C 100%)",
-    shadowColor: "rgba(247, 152, 28, 0.3)",
-  },
-  {
-    icon: Sparkles,
-    title: "Profesionální vzhled bez námahy",
-    description: "Výsledný kurz působí moderně a přehledně. Nemusíte řešit design ani formátování.",
-    gradient: "linear-gradient(135deg, #6366F1 0%, #4F46E5 100%)",
-    shadowColor: "rgba(99, 102, 241, 0.3)",
-  },
+  { icon: Clock, titleKey: "creator.benefit1Title", descKey: "creator.benefit1Desc", gradient: "linear-gradient(135deg, #2596FF 0%, #1F80D9 100%)", shadowColor: "rgba(37, 150, 255, 0.3)" },
+  { icon: Layers3, titleKey: "creator.benefit2Title", descKey: "creator.benefit2Desc", gradient: "linear-gradient(135deg, #77F9D9 0%, #10B981 100%)", shadowColor: "rgba(119, 249, 217, 0.3)" },
+  { icon: Target, titleKey: "creator.benefit3Title", descKey: "creator.benefit3Desc", gradient: "linear-gradient(135deg, #F7981C 0%, #EA580C 100%)", shadowColor: "rgba(247, 152, 28, 0.3)" },
+  { icon: Sparkles, titleKey: "creator.benefit4Title", descKey: "creator.benefit4Desc", gradient: "linear-gradient(135deg, #6366F1 0%, #4F46E5 100%)", shadowColor: "rgba(99, 102, 241, 0.3)" },
 ];
 
 const TIPS = [
-  {
-    icon: Clock,
-    title: "Krátké lekce",
-    description: "Ideální délka lekce je 5-10 minut. Kratší obsah má vyšší míru dokončení.",
-    color: "#2596FF",
-  },
-  {
-    icon: Lightbulb,
-    title: "Praktické příklady",
-    description: "Ukažte reálné použití. Teorie bez praxe rychle upadá v zapomnění.",
-    color: "#F7981C",
-  },
-  {
-    icon: MessageSquare,
-    title: "Interaktivní kvízy",
-    description: "Přidejte kvízy na konec lekcí. Ověříte pochopení a zvýšíte zapojení.",
-    color: "#10B981",
-  },
+  { icon: Clock, titleKey: "creator.tip1Title", descKey: "creator.tip1Desc", color: "#2596FF" },
+  { icon: Lightbulb, titleKey: "creator.tip2Title", descKey: "creator.tip2Desc", color: "#F7981C" },
+  { icon: MessageSquare, titleKey: "creator.tip3Title", descKey: "creator.tip3Desc", color: "#10B981" },
 ];
 
 export default function CreatorDashboard() {
@@ -838,7 +799,7 @@ export default function CreatorDashboard() {
             const Icon = benefit.icon;
             return (
               <motion.div
-                key={benefit.title}
+                key={benefit.titleKey}
                 whileHover={{ y: -4, boxShadow: `0 12px 32px ${benefit.shadowColor}` }}
                 transition={HOVER_TRANSITION}
                 style={{
@@ -865,10 +826,10 @@ export default function CreatorDashboard() {
                   <Icon size={22} color="white" />
                 </div>
                 <h4 style={{ margin: "0 0 6px", color: "var(--color-text-main)", fontWeight: 700, fontSize: 14 }}>
-                  {benefit.title}
+                  {t(benefit.titleKey)}
                 </h4>
                 <p style={{ margin: 0, color: "var(--color-text-secondary)", fontSize: 12, lineHeight: 1.5 }}>
-                  {benefit.description}
+                  {t(benefit.descKey)}
                 </p>
               </motion.div>
             );
@@ -899,7 +860,7 @@ export default function CreatorDashboard() {
             const Icon = tip.icon;
             return (
               <motion.div
-                key={tip.title}
+                key={tip.titleKey}
                 whileHover={{ y: -4, boxShadow: "0 12px 32px rgba(0,0,0,0.1)" }}
                 transition={HOVER_TRANSITION}
                 style={{
@@ -925,10 +886,10 @@ export default function CreatorDashboard() {
                   <Icon size={24} color={tip.color} />
                 </div>
                 <h4 style={{ margin: "0 0 8px", color: "var(--color-text-main)", fontWeight: 700, fontSize: 16 }}>
-                  {tip.title}
+                  {t(tip.titleKey)}
                 </h4>
                 <p style={{ margin: 0, color: "var(--color-text-secondary)", fontSize: 14, lineHeight: 1.6 }}>
-                  {tip.description}
+                  {t(tip.descKey)}
                 </p>
               </motion.div>
             );

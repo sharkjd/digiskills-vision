@@ -102,7 +102,7 @@ export default function AssessmentOverview() {
                 marginBottom: 16,
               }}
             >
-              Assessment Progress
+              {t("firma.assessmentProgressBadge")}
             </div>
             <h1
               style={{
@@ -115,7 +115,7 @@ export default function AssessmentOverview() {
               {t("firma.overviewTitle")}
             </h1>
             <p style={{ fontSize: 15, opacity: 0.85, margin: 0 }}>
-              Sledujte průběh vyplňování assessmentu ve vaší organizaci
+              {t("firma.overviewSubtitle")}
             </p>
           </div>
 

@@ -57,15 +57,15 @@ const INACTIVE_STUDENTS = [
 ];
 
 const STRENGTHS = [
-  { topic: "Kyberbezpečnost", percent: 54 },
-  { topic: "Excel", percent: 49 },
-  { topic: "Komunikace", percent: 52 },
+  { topicKey: "manager.topicCybersecurity", percent: 54 },
+  { topicKey: "manager.topicExcel", percent: 49 },
+  { topicKey: "manager.topicCommunication", percent: 52 },
 ];
 
 const GAPS = [
-  { topic: "Power Automate", percent: 63 },
-  { topic: "AI Promptování", percent: 71 },
-  { topic: "Cloud", percent: 68 },
+  { topicKey: "manager.topicPowerAutomate", percent: 63 },
+  { topicKey: "manager.topicAIPrompting", percent: 71 },
+  { topicKey: "manager.topicCloud", percent: 68 },
 ];
 
 const MILESTONE_KEYS = [
@@ -80,25 +80,25 @@ const COMPANY_TEAM_MINIMUM = 5.8;
 const TEAM_RANKING = { place: 10, totalTeams: 12 };
 
 const COMPLETED_COURSES = [
-  { name: "Základy kyberbezpečnosti", completedBy: 9, total: 24, category: "Bezpečnost" },
-  { name: "Excel pro pokročilé", completedBy: 8, total: 24, category: "M365" },
-  { name: "Efektivní komunikace online", completedBy: 7, total: 24, category: "Soft skills" },
-  { name: "Teams & Spolupráce", completedBy: 10, total: 24, category: "M365" },
-  { name: "Základy datové analýzy", completedBy: 6, total: 24, category: "Data" },
+  { nameKey: "manager.courseCybersecurityBasics", completedBy: 9, total: 24, categoryKey: "manager.categorySecurity" },
+  { nameKey: "manager.courseExcelAdvanced", completedBy: 8, total: 24, categoryKey: "manager.categoryM365" },
+  { nameKey: "manager.courseCommunicationOnline", completedBy: 7, total: 24, categoryKey: "manager.categorySoftSkills" },
+  { nameKey: "manager.courseTeamsCollaboration", completedBy: 10, total: 24, categoryKey: "manager.categoryM365" },
+  { nameKey: "manager.courseDataAnalysis", completedBy: 6, total: 24, categoryKey: "manager.categoryData" },
 ];
 
 const POPULAR_COURSES = [
-  { name: "AI Promptování pro praxi", students: 9, category: "AI", trend: "-1 tento týden" },
-  { name: "ChatGPT v kanceláři", students: 8, category: "AI", trend: "-2 tento týden" },
-  { name: "Power Automate – začátky", students: 7, category: "Automatizace", trend: "-1 tento týden" },
-  { name: "Prezentace v PowerPoint", students: 6, category: "M365", trend: "stabilní" },
-  { name: "Teams pro efektivní spolupráci", students: 5, category: "M365", trend: "-1 tento týden" },
+  { nameKey: "manager.courseAIPrompting", students: 9, categoryKey: "manager.categoryAI", trend: "-1", trendKey: "manager.trendThisWeek" },
+  { nameKey: "manager.courseChatGPT", students: 8, categoryKey: "manager.categoryAI", trend: "-2", trendKey: "manager.trendThisWeek" },
+  { nameKey: "manager.coursePowerAutomate", students: 7, categoryKey: "manager.categoryAutomation", trend: "-1", trendKey: "manager.trendThisWeek" },
+  { nameKey: "manager.coursePowerPoint", students: 6, categoryKey: "manager.categoryM365", trend: "", trendKey: "manager.trendStable" },
+  { nameKey: "manager.courseTeamsEffective", students: 5, categoryKey: "manager.categoryM365", trend: "-1", trendKey: "manager.trendThisWeek" },
 ];
 
 const LOW_COMPLETION_COURSES = [
-  { name: "Cloud Computing základy", completionRate: 12, enrolled: 17, category: "Cloud" },
-  { name: "Power BI přehled", completionRate: 15, enrolled: 15, category: "Data" },
-  { name: "Projektové řízení (MS Project)", completionRate: 18, enrolled: 13, category: "Management" },
+  { nameKey: "manager.courseCloudComputing", completionRate: 12, enrolled: 17, categoryKey: "manager.categoryCloud" },
+  { nameKey: "manager.coursePowerBI", completionRate: 15, enrolled: 15, categoryKey: "manager.categoryData" },
+  { nameKey: "manager.courseProjectManagement", completionRate: 18, enrolled: 13, categoryKey: "manager.categoryManagement" },
 ];
 
 export default function ManagerDashboard() {
@@ -705,7 +705,7 @@ export default function ManagerDashboard() {
           </h3>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {STRENGTHS.map((item) => (
-              <div key={item.topic}>
+              <div key={item.topicKey}>
                 <div
                   style={{
                     display: "flex",
@@ -720,7 +720,7 @@ export default function ManagerDashboard() {
                       color: "var(--color-text-main)",
                     }}
                   >
-                    {item.topic}
+                    {t(item.topicKey)}
                   </span>
                   <span
                     style={{
@@ -778,7 +778,7 @@ export default function ManagerDashboard() {
           </h3>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {GAPS.map((item) => (
-              <div key={item.topic}>
+              <div key={item.topicKey}>
                 <div
                   style={{
                     display: "flex",
@@ -793,7 +793,7 @@ export default function ManagerDashboard() {
                       color: "var(--color-text-main)",
                     }}
                   >
-                    {item.topic}
+                    {t(item.topicKey)}
                   </span>
                   <span
                     style={{
@@ -863,7 +863,7 @@ export default function ManagerDashboard() {
             const pct = Math.round((course.completedBy / course.total) * 100);
             return (
               <div
-                key={course.name}
+                key={course.nameKey}
                 style={{
                   display: "grid",
                   gridTemplateColumns: "1fr auto 200px",
@@ -876,10 +876,10 @@ export default function ManagerDashboard() {
               >
                 <div>
                   <div style={{ fontSize: 14, fontWeight: 600, color: "var(--color-text-main)" }}>
-                    {course.name}
+                    {t(course.nameKey)}
                   </div>
                   <div style={{ fontSize: 12, color: "var(--color-text-secondary)", marginTop: 2 }}>
-                    {course.category}
+                    {t(course.categoryKey)}
                   </div>
                 </div>
                 <div
@@ -972,7 +972,7 @@ export default function ManagerDashboard() {
           <div style={{ display: "flex", flexDirection: "column", gap: 12, flex: 1, justifyContent: "space-between" }}>
             {POPULAR_COURSES.map((course, idx) => (
               <div
-                key={course.name}
+                key={course.nameKey}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -1011,10 +1011,10 @@ export default function ManagerDashboard() {
                       textOverflow: "ellipsis",
                     }}
                   >
-                    {course.name}
+                    {t(course.nameKey)}
                   </div>
                   <div style={{ fontSize: 11, color: "var(--color-text-secondary)", marginTop: 2 }}>
-                    {course.trend}
+                    {course.trend ? `${course.trend} ${t(course.trendKey)}` : t(course.trendKey)}
                   </div>
                 </div>
                 <div style={{ textAlign: "right", flexShrink: 0 }}>
@@ -1067,7 +1067,7 @@ export default function ManagerDashboard() {
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {LOW_COMPLETION_COURSES.map((course) => (
               <div
-                key={course.name}
+                key={course.nameKey}
                 style={{
                   padding: "14px 16px",
                   background: "rgba(247,152,28,0.08)",
@@ -1085,10 +1085,10 @@ export default function ManagerDashboard() {
                 >
                   <div>
                     <div style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-main)" }}>
-                      {course.name}
+                      {t(course.nameKey)}
                     </div>
                     <div style={{ fontSize: 11, color: "var(--color-text-secondary)", marginTop: 2 }}>
-                      {course.category} · {course.enrolled} {t("manager.activeStudents")}
+                      {t(course.categoryKey)} · {course.enrolled} {t("manager.activeStudents")}
                     </div>
                   </div>
                   <div

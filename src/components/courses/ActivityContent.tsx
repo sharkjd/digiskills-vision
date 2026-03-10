@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Play, ExternalLink } from "lucide-react";
 import Image from "next/image";
 import { asset } from "@/lib/paths";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type VideoActivityProps = {
   activityId: number;
@@ -24,11 +25,11 @@ const ACTIVITY_CONTENT: Record<
   {
     videoThumbnail: string;
     videoDuration: string;
-    description: string;
+    descriptionKey: string;
     instructorImage?: string;
     instructorName?: string;
-    sectionTitle: string;
-    recommended: RecommendedItem[];
+    sectionTitleKey: string;
+    recommended: { id: number; titleKey: string; thumbnail: string; duration: string }[];
     youtubeEmbedId?: string;
   }
 > = {
@@ -38,35 +39,24 @@ const ACTIVITY_CONTENT: Record<
     youtubeEmbedId: "FBmWaxir8Dg",
     instructorImage: asset("/avatars/honza.jpg"),
     instructorName: "Honza Dolejš",
-    description:
-      "Vývoj je neustále vpředu a s novými nástroji můžete pracovat rychleji i chytřeji. V tomto videu se podíváme na to, jak se technologie mění a jak s tím držet krok. Zjistíte, že adaptace na nové nástroje není tak složitá, jak se může zdát.",
-    sectionTitle: "Doporučené kurzy",
+    descriptionKey: "activityContent.activity1Desc",
+    sectionTitleKey: "activityContent.activity1SectionTitle",
     recommended: [],
   },
   2: {
     videoThumbnail: asset("/courses/digital-mindset.png"),
     videoDuration: "6:15",
-    description:
-      "Technologie jako dobrý sluha, ale zlý pán. Naučte se, jak si udržet zdravý vztah s digitálními nástroji a jak je využívat efektivně, aniž byste se stali jejich otroky. Digitální mindset je o rovnováze mezi využíváním technologií a zachováním lidského přístupu.",
-    sectionTitle: "Pro více informací",
+    descriptionKey: "activityContent.activity2Desc",
+    sectionTitleKey: "activityContent.activity2SectionTitle",
     recommended: [
-      {
-        id: 4,
-        title: "Digitální wellbeing",
-        thumbnail: asset("/courses/AI.webp"),
-        duration: "1h 30m",
-      },
-      {
-        id: 5,
-        title: "Focus a produktivita",
-        thumbnail: asset("/courses/excel.webp"),
-        duration: "2h 00m",
-      },
+      { id: 4, titleKey: "activityContent.recommendedDigitalWellbeing", thumbnail: asset("/courses/AI.webp"), duration: "1h 30m" },
+      { id: 5, titleKey: "activityContent.recommendedFocusProductivity", thumbnail: asset("/courses/excel.webp"), duration: "2h 00m" },
     ],
   },
 };
 
 export function VideoActivityContent({ activityId, title }: VideoActivityProps) {
+  const { t } = useTranslation();
   const content = ACTIVITY_CONTENT[activityId];
 
   if (!content) {
@@ -242,7 +232,7 @@ export function VideoActivityContent({ activityId, title }: VideoActivityProps) 
             margin: "0 0 24px",
           }}
         >
-          {content.description}
+          {t(content.descriptionKey)}
         </p>
 
         {/* Doporučené kurzy */}
@@ -259,7 +249,7 @@ export function VideoActivityContent({ activityId, title }: VideoActivityProps) 
               gap: 8,
             }}
           >
-            {content.sectionTitle}
+            {t(content.sectionTitleKey)}
           </h4>
           <div
             style={{
@@ -290,7 +280,7 @@ export function VideoActivityContent({ activityId, title }: VideoActivityProps) 
                 >
                   <Image
                     src={item.thumbnail}
-                    alt={item.title}
+                    alt={t(item.titleKey)}
                     fill
                     style={{ objectFit: "cover" }}
                     onError={(e) => {
@@ -325,7 +315,7 @@ export function VideoActivityContent({ activityId, title }: VideoActivityProps) 
                       gap: 6,
                     }}
                   >
-                    {item.title}
+                    {t(item.titleKey)}
                     <ExternalLink size={12} color="var(--color-text-secondary)" />
                   </span>
                 </div>

@@ -971,7 +971,7 @@ export default function AdminCourseManagement() {
                           color: orgSettings.language === lang ? "white" : "#6B7280",
                         }}
                       >
-                        {lang === "cs" ? "Čeština" : "English"}
+                        {lang === "cs" ? t("admin.languageCs") : t("admin.languageEn")}
                       </motion.button>
                     ))}
                   </div>
@@ -1027,7 +1027,7 @@ export default function AdminCourseManagement() {
                             : "#6B7280",
                         }}
                       >
-                        {val ? "Ano" : "Ne"}
+                        {val ? t("firma.yes") : t("firma.no")}
                       </motion.button>
                     ))}
                   </div>
@@ -1135,7 +1135,7 @@ export default function AdminCourseManagement() {
                             : "#6B7280",
                         }}
                       >
-                        {val ? "Zapnuto" : "Vypnuto"}
+                        {val ? t("admin.on") : t("admin.off")}
                       </motion.button>
                     ))}
                   </div>
@@ -1157,7 +1157,7 @@ export default function AdminCourseManagement() {
                     }}
                   >
                     <Eye size={14} />
-                    Veřejný profil firmy
+                    {t("admin.publicProfileLabel")}
                   </label>
                   <div
                     style={{
@@ -1191,7 +1191,7 @@ export default function AdminCourseManagement() {
                             : "#6B7280",
                         }}
                       >
-                        {val ? "Veřejný" : "Soukromý"}
+                        {val ? t("admin.public") : t("admin.private")}
                       </motion.button>
                     ))}
                   </div>

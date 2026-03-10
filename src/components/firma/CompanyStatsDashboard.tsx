@@ -43,43 +43,43 @@ const ACTIVITY_DATA_RAW = [
 ];
 
 const TOP_STUDENTS = [
-  { name: "Marie Nováková", points: 342, initials: "MN", department: "Marketing" },
-  { name: "Petr Svoboda", points: 298, initials: "PS", department: "IT" },
-  { name: "Eva Horáková", points: 276, initials: "EH", department: "HR" },
-  { name: "Jan Procházka", points: 251, initials: "JP", department: "Finance" },
-  { name: "Lucie Dvořáková", points: 234, initials: "LD", department: "Obchod" },
+  { name: "Marie Nováková", points: 342, initials: "MN", departmentKey: "companyReport.departmentMarketing" },
+  { name: "Petr Svoboda", points: 298, initials: "PS", departmentKey: "companyReport.departmentIt" },
+  { name: "Eva Horáková", points: 276, initials: "EH", departmentKey: "companyReport.departmentHr" },
+  { name: "Jan Procházka", points: 251, initials: "JP", departmentKey: "companyReport.departmentFinance" },
+  { name: "Lucie Dvořáková", points: 234, initials: "LD", departmentKey: "companyReport.departmentSales" },
 ];
 
 const INACTIVE_STUDENTS = [
-  { name: "Tomáš Veselý", points: 22, initials: "TV", department: "Výroba", inactiveDays: 18 },
-  { name: "Alena Bártová", points: 28, initials: "AB", department: "Podpora", inactiveDays: 14 },
-  { name: "Karel Urban", points: 33, initials: "KU", department: "Logistika", inactiveDays: 12 },
-  { name: "Iveta Blažková", points: 39, initials: "IB", department: "Administrativa", inactiveDays: 10 },
-  { name: "Milan Kučera", points: 44, initials: "MK", department: "Obchod", inactiveDays: 9 },
+  { name: "Tomáš Veselý", points: 22, initials: "TV", departmentKey: "manager.departmentProduction", inactiveDays: 18 },
+  { name: "Alena Bártová", points: 28, initials: "AB", departmentKey: "manager.departmentSupport", inactiveDays: 14 },
+  { name: "Karel Urban", points: 33, initials: "KU", departmentKey: "manager.departmentLogistics", inactiveDays: 12 },
+  { name: "Iveta Blažková", points: 39, initials: "IB", departmentKey: "manager.departmentAdmin", inactiveDays: 10 },
+  { name: "Milan Kučera", points: 44, initials: "MK", departmentKey: "companyReport.departmentSales", inactiveDays: 9 },
 ];
 
 const POPULAR_COURSES = [
-  { name: "AI Promptování pro praxi", students: 84, category: "AI", trend: "+12 tento týden" },
-  { name: "ChatGPT v kanceláři", students: 72, category: "AI", trend: "+8 tento týden" },
-  { name: "Základy kyberbezpečnosti", students: 68, category: "Bezpečnost", trend: "+5 tento týden" },
-  { name: "Excel pro pokročilé", students: 61, category: "M365", trend: "stabilní" },
-  { name: "Power Automate – začátky", students: 54, category: "Automatizace", trend: "+6 tento týden" },
+  { nameKey: "manager.courseAIPrompting", students: 84, categoryKey: "manager.categoryAI", trend: "+12", trendKey: "manager.trendThisWeek" },
+  { nameKey: "manager.courseChatGPT", students: 72, categoryKey: "manager.categoryAI", trend: "+8", trendKey: "manager.trendThisWeek" },
+  { nameKey: "manager.courseCybersecurityBasics", students: 68, categoryKey: "manager.categorySecurity", trend: "+5", trendKey: "manager.trendThisWeek" },
+  { nameKey: "manager.courseExcelAdvanced", students: 61, categoryKey: "manager.categoryM365", trend: "", trendKey: "manager.trendStable" },
+  { nameKey: "manager.coursePowerAutomate", students: 54, categoryKey: "manager.categoryAutomation", trend: "+6", trendKey: "manager.trendThisWeek" },
 ];
 
 const POPULAR_VIDEOS = [
-  { title: "Jak napsat efektivní AI prompt", views: 312, category: "AI", duration: "8 min" },
-  { title: "Excel: Pivot tabulky za 5 minut", views: 289, category: "M365", duration: "5 min" },
-  { title: "Kyberbezpečnost v praxi", views: 256, category: "Bezpečnost", duration: "12 min" },
-  { title: "Teams – tipy pro efektivní meetingy", views: 234, category: "M365", duration: "6 min" },
-  { title: "Power BI – první dashboard", views: 198, category: "Data", duration: "15 min" },
+  { titleKey: "manager.videoAIPrompt", views: 312, categoryKey: "manager.categoryAI", duration: "8 min" },
+  { titleKey: "manager.videoExcelPivot", views: 289, categoryKey: "manager.categoryM365", duration: "5 min" },
+  { titleKey: "manager.videoCybersecurity", views: 256, categoryKey: "manager.categorySecurity", duration: "12 min" },
+  { titleKey: "manager.videoTeamsTips", views: 234, categoryKey: "manager.categoryM365", duration: "6 min" },
+  { titleKey: "manager.videoPowerBI", views: 198, categoryKey: "manager.categoryData", duration: "15 min" },
 ];
 
 const COMPLETED_COURSES = [
-  { name: "Základy kyberbezpečnosti", completedBy: 89, total: 124, category: "Bezpečnost" },
-  { name: "Excel pro pokročilé", completedBy: 76, total: 124, category: "M365" },
-  { name: "Efektivní komunikace online", completedBy: 68, total: 124, category: "Soft skills" },
-  { name: "Teams & Spolupráce", completedBy: 94, total: 124, category: "M365" },
-  { name: "Základy datové analýzy", completedBy: 52, total: 124, category: "Data" },
+  { nameKey: "manager.courseCybersecurityBasics", completedBy: 89, total: 124, categoryKey: "manager.categorySecurity" },
+  { nameKey: "manager.courseExcelAdvanced", completedBy: 76, total: 124, categoryKey: "manager.categoryM365" },
+  { nameKey: "manager.courseCommunicationOnline", completedBy: 68, total: 124, categoryKey: "manager.categorySoftSkills" },
+  { nameKey: "manager.courseTeamsCollaboration", completedBy: 94, total: 124, categoryKey: "manager.categoryM365" },
+  { nameKey: "manager.courseDataAnalysis", completedBy: 52, total: 124, categoryKey: "manager.categoryData" },
 ];
 
 const COMPANY_INDEX = 6.8;
@@ -444,7 +444,7 @@ export default function CompanyStatsDashboard() {
                         marginTop: 2,
                       }}
                     >
-                      {student.department} · {student.points} bodů
+                      {t(student.departmentKey)} · {student.points} {t("companyStats.points")}
                     </div>
                   </div>
                   <div
@@ -530,7 +530,7 @@ export default function CompanyStatsDashboard() {
                         marginTop: 2,
                       }}
                     >
-                      {student.department} · {student.points} {t("companyStats.points")} · {student.inactiveDays} {t("companyStats.daysInactive")}
+                      {t(student.departmentKey)} · {student.points} {t("companyStats.points")} · {student.inactiveDays} {t("companyStats.daysInactive")}
                     </div>
                   </div>
                   <div
@@ -589,7 +589,7 @@ export default function CompanyStatsDashboard() {
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {POPULAR_COURSES.map((course, idx) => (
               <div
-                key={course.name}
+                key={course.nameKey}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -628,10 +628,10 @@ export default function CompanyStatsDashboard() {
                       textOverflow: "ellipsis",
                     }}
                   >
-                    {course.name}
+                    {t(course.nameKey)}
                   </div>
                   <div style={{ fontSize: 11, color: "var(--color-text-secondary)", marginTop: 2 }}>
-                    {course.trend}
+                    {course.trend ? `${course.trend} ${t(course.trendKey)}` : t(course.trendKey)}
                   </div>
                 </div>
                 <div style={{ textAlign: "right", flexShrink: 0 }}>
@@ -684,7 +684,7 @@ export default function CompanyStatsDashboard() {
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {POPULAR_VIDEOS.map((video, idx) => (
               <div
-                key={video.title}
+                key={video.titleKey}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -723,10 +723,10 @@ export default function CompanyStatsDashboard() {
                       textOverflow: "ellipsis",
                     }}
                   >
-                    {video.title}
+                    {t(video.titleKey)}
                   </div>
                   <div style={{ fontSize: 11, color: "var(--color-text-secondary)", marginTop: 2 }}>
-                    {video.category} · {video.duration}
+                    {t(video.categoryKey)} · {video.duration}
                   </div>
                 </div>
                 <div style={{ textAlign: "right", flexShrink: 0 }}>
@@ -783,7 +783,7 @@ export default function CompanyStatsDashboard() {
             const pct = Math.round((course.completedBy / course.total) * 100);
             return (
               <div
-                key={course.name}
+                key={course.nameKey}
                 style={{
                   display: "grid",
                   gridTemplateColumns: "1fr auto 200px",
@@ -796,10 +796,10 @@ export default function CompanyStatsDashboard() {
               >
                 <div>
                   <div style={{ fontSize: 14, fontWeight: 600, color: "var(--color-text-main)" }}>
-                    {course.name}
+                    {t(course.nameKey)}
                   </div>
                   <div style={{ fontSize: 12, color: "var(--color-text-secondary)", marginTop: 2 }}>
-                    {course.category}
+                    {t(course.categoryKey)}
                   </div>
                 </div>
                 <div

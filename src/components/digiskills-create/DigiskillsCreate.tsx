@@ -726,7 +726,7 @@ export default function DigiskillsCreate() {
                       Čas na studium: {(mockData as { studyTime?: string }).studyTime ?? mockData.generatedDuration}
                     </p>
                     <p style={{ fontSize: 14, color: "var(--color-text-main)", marginBottom: 20 }}>
-                      Certifikace: {(mockData as { certification?: string }).certification ?? "Ano"}
+                      {t("digiskillsCreate.certificationLabel", { value: (mockData as { certification?: string }).certification ?? t("firma.yes") })}
                     </p>
                     <motion.button
                       whileHover={{ scale: 1.02 }}

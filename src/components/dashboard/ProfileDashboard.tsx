@@ -38,15 +38,15 @@ const ACTIVITY_WEEKS = [1, 2, 3, 4, 5];
 const ACTIVITY_LESSONS = [2, 3, 1, 4, 2];
 
 const STRENGTHS = [
-  { topic: "Kyberbezpečnost", percent: 58 },
-  { topic: "Excel", percent: 44 },
-  { topic: "Komunikace", percent: 51 },
+  { topicKey: "manager.topicCybersecurity", percent: 58 },
+  { topicKey: "manager.topicExcel", percent: 44 },
+  { topicKey: "manager.topicCommunication", percent: 51 },
 ];
 
 const GAPS = [
-  { topic: "Power Automate", percent: 11 },
-  { topic: "AI Promptování", percent: 9 },
-  { topic: "Cloud", percent: 14 },
+  { topicKey: "manager.topicPowerAutomate", percent: 11 },
+  { topicKey: "manager.topicAIPrompting", percent: 9 },
+  { topicKey: "manager.topicCloud", percent: 14 },
 ];
 
 const MILESTONE_KEYS = ["manager.milestone1", "manager.milestone2", "manager.milestone3"] as const;
@@ -554,7 +554,7 @@ export default function ProfileDashboard() {
             <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
               {STRENGTHS.map((item) => (
                 <div
-                  key={item.topic}
+                  key={item.topicKey}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -566,7 +566,7 @@ export default function ProfileDashboard() {
                   }}
                 >
                   <span style={{ fontSize: 14, fontWeight: 600, color: "var(--color-text-main)" }}>
-                    {item.topic}
+                    {t(item.topicKey)}
                   </span>
                   <span
                     style={{
@@ -612,7 +612,7 @@ export default function ProfileDashboard() {
             <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
               {GAPS.map((item) => (
                 <div
-                  key={item.topic}
+                  key={item.topicKey}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -624,7 +624,7 @@ export default function ProfileDashboard() {
                   }}
                 >
                   <span style={{ fontSize: 14, fontWeight: 600, color: "var(--color-text-main)" }}>
-                    {item.topic}
+                    {t(item.topicKey)}
                   </span>
                   <span
                     style={{
