@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRecommendedCourses } from "@/context/RecommendedCoursesContext";
-import { useCompanyCourses } from "@/context/CompanyCoursesContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { getCourseList, getCompletedCourses, type Course } from "@/data/courses";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -36,7 +35,6 @@ const FAKE_DIGISKILLS_INDEX = 7.3;
 
 export default function MojeKurzyPage() {
   const { recommendedCourses } = useRecommendedCourses();
-  const { companyCourses } = useCompanyCourses();
   const { language } = useLanguage();
   const { t } = useTranslation();
   const [completedOpen, setCompletedOpen] = useState(true);
@@ -44,16 +42,18 @@ export default function MojeKurzyPage() {
   const courseList = getCourseList(language);
   const completedList = getCompletedCourses(language);
 
-  const myCourses =
-    recommendedCourses.length > 0 ? recommendedCourses : courseList.slice(0, 5);
+  // 6 kurzů z assessmentu: 1 rozdělaný + 3 doporučené + 2 dokončené
+  const assessmentCourses =
+    recommendedCourses.length > 0 ? recommendedCourses : courseList.slice(0, 6);
 
-  const mandatoryCompanyCourses =
-    companyCourses.length > 0 ? companyCourses : courseList.slice(5, 10);
+  const digitálníInspirace = courseList.find((c) => c.id === 1);
+  const inProgressCourse =
+    assessmentCourses.find((c) => c.id === 1) ?? digitálníInspirace ?? assessmentCourses[0];
+  const recommendedToStudy = assessmentCourses
+    .filter((c) => c.id !== 1)
+    .slice(0, 3);
 
-  const inProgressCourse = myCourses[0];
-  const remainingCourses = myCourses.slice(1);
-
-  const totalCourses = myCourses.length + mandatoryCompanyCourses.length;
+  const totalToStudy = 1 + recommendedToStudy.length;
 
   return (
     <div
@@ -75,8 +75,7 @@ export default function MojeKurzyPage() {
             userName={FAKE_USER_NAME}
             digiskillsIndex={FAKE_DIGISKILLS_INDEX}
             completedCount={completedList.length}
-            toStudyCount={myCourses.length}
-            mandatoryCount={mandatoryCompanyCourses.length}
+            toStudyCount={totalToStudy}
           />
         </motion.div>
 
@@ -112,7 +111,7 @@ export default function MojeKurzyPage() {
         <motion.div variants={sectionVariants} style={{ marginTop: 28 }}>
           <ProgressStrip
             completed={completedList.length}
-            total={totalCourses + completedList.length}
+            total={totalToStudy + completedList.length}
           />
         </motion.div>
 
@@ -143,7 +142,7 @@ export default function MojeKurzyPage() {
               gap: 20,
             }}
           >
-            {remainingCourses.map((course, index) => (
+            {recommendedToStudy.map((course, index) => (
               <CourseCard2
                 key={course.id}
                 course={course}
@@ -155,64 +154,7 @@ export default function MojeKurzyPage() {
           </div>
         </motion.section>
 
-        {/* 5. Mandatory company courses */}
-        <motion.section variants={sectionVariants} style={{ marginTop: 40 }}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-              marginBottom: 20,
-            }}
-          >
-            <div
-              style={{
-                width: 4,
-                height: 40,
-                borderRadius: 2,
-                background: "var(--color-accent-orange)",
-              }}
-            />
-            <div>
-              <h2
-                style={{
-                  fontSize: 22,
-                  fontWeight: 700,
-                  fontStyle: "italic",
-                  color: "var(--color-text-main)",
-                  margin: 0,
-                  marginBottom: 4,
-                }}
-              >
-                {t("dashboard.mandatoryTitle")}
-              </h2>
-              <p style={{ fontSize: 14, color: "var(--color-text-secondary)", margin: 0 }}>
-                {t("dashboard.mandatoryDesc")}
-              </p>
-            </div>
-          </div>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-              gap: 20,
-            }}
-          >
-            {mandatoryCompanyCourses.map((course, index) => (
-              <CourseCard2
-                key={course.id}
-                course={course}
-                index={index}
-                status="new"
-                isMandatory
-                delay={0.1 + index * 0.08}
-              />
-            ))}
-          </div>
-        </motion.section>
-
-        {/* 6. Completed courses */}
+        {/* 5. Completed courses */}
         <motion.section variants={sectionVariants} style={{ marginTop: 40, marginBottom: 32 }}>
           <button
             onClick={() => setCompletedOpen((v) => !v)}
