@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -85,6 +85,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
 
   const [selectedCourses, setSelectedCourses] = useState<Course[]>(() => allCourses.slice(0, 6));
   const [replacingIndex, setReplacingIndex] = useState<number | null>(null);
+  const coursesSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setSelectedCourses(getCourseList(language).slice(0, 6));
@@ -245,6 +246,49 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
             {t("assessmentSummary.companyRank", { rank: "3", total: "47" })}
           </div>
         </div>
+      </div>
+
+      {/* ÚVOD K DOPORUČENÝM KURZŮM – textbox + tlačítko */}
+      <div
+        style={{
+          background: "var(--color-card-light-blue)",
+          borderRadius: 12,
+          padding: 24,
+          border: "1px solid rgba(37, 150, 255, 0.25)",
+          boxShadow: "0 2px 8px var(--color-card-shadow)",
+          display: "flex",
+          flexDirection: "column",
+          gap: 16,
+          alignItems: "center",
+          textAlign: "center",
+        }}
+      >
+        <p style={{ margin: 0, fontSize: 16, lineHeight: 1.6, color: "var(--color-text-main)" }}>
+          {t("assessmentSummary.coursesIntroText")}
+        </p>
+        <button
+          type="button"
+          onClick={() => coursesSectionRef.current?.scrollIntoView({ behavior: "smooth" })}
+          style={{
+            padding: "12px 24px",
+            alignSelf: "center",
+            borderRadius: "var(--radius-btn)",
+            border: "none",
+            background: "var(--color-primary)",
+            color: "white",
+            fontSize: 15,
+            fontWeight: 700,
+            cursor: "pointer",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "var(--color-primary-hover)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "var(--color-primary)";
+          }}
+        >
+          {t("assessmentSummary.viewCoursesButton")}
+        </button>
       </div>
 
       {/* RADAR CHART SEKCE */}
@@ -438,10 +482,10 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
         </motion.div>
       </div>
 
-      {/* APLIKACE K ROZVOJI – Digi Breeze pozadí */}
+      {/* APLIKACE K ROZVOJI */}
       <div
         style={{
-          background: "#F4F5FA",
+          background: "var(--color-background)",
           borderRadius: 16,
           padding: 24,
           border: "1px solid #E5E7EB",
@@ -492,7 +536,7 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
       </div>
 
       {/* DOPORUČENÉ KURZY */}
-      <div>
+      <div ref={coursesSectionRef}>
         <h2 style={{ fontSize: 22, fontWeight: 700, color: "#040E3C", margin: "0 0 20px" }}>
           {t("assessmentSummary.coursesForYou")}
         </h2>

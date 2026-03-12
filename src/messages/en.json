@@ -253,6 +253,8 @@
     "appsToDevelop": "Apps to develop",
     "appsToDevelopDesc": "Based on your answers, we have identified tools where you have room for improvement:",
     "coursesForYou": "Courses selected just for you",
+    "coursesIntroText": "Based on your results, we have recommended training courses for you. They are carefully selected just for you.",
+    "viewCoursesButton": "View courses",
     "edit": "Edit",
     "editCoursesTitle": "Edit recommended courses",
     "replaceCourse": "Replace",

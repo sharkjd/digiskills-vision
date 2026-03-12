@@ -253,6 +253,8 @@
     "appsToDevelop": "Aplikace k rozvoji",
     "appsToDevelopDesc": "Podle tvých odpovědí jsme identifikovali nástroje, kde máš prostor pro zlepšení:",
     "coursesForYou": "Kurzy vybrané přímo pro tebe",
+    "coursesIntroText": "Na základě výsledků jsme pro tebe navrhli vzdělávací kurzy. Jsou vybrány pečlivě jen a pouze pro tebe.",
+    "viewCoursesButton": "Prohlédnout kurzy",
     "edit": "Upravit",
     "editCoursesTitle": "Upravit doporučené kurzy",
     "replaceCourse": "Nahradit",
