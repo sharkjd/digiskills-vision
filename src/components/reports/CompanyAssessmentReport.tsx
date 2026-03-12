@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -460,9 +460,17 @@ const RECOMMENDED_COURSES_CONFIG = [
 ];
 
 export default function CompanyAssessmentReport() {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const [selectedDepartment, setSelectedDepartment] = useState<DepartmentKey>("all");
   const [showDepartments, setShowDepartments] = useState(false);
+  const [aiQuestion, setAiQuestion] = useState(() => t("companyReport.aiQuestionDefault"));
+  const [isAiThinking, setIsAiThinking] = useState(false);
+  const [showAiAnswer, setShowAiAnswer] = useState(false);
+  const aiThinkingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    setAiQuestion(t("companyReport.aiQuestionDefault"));
+  }, [language, t]);
 
   const DEPARTMENTS_DATA = React.useMemo(() => {
     const result: Record<DepartmentKey, {
@@ -552,6 +560,32 @@ export default function CompanyAssessmentReport() {
     icon: M365_ICONS[app.app]?.icon || "",
     color: M365_ICONS[app.app]?.color || "#6B7280",
   }));
+
+  useEffect(() => {
+    return () => {
+      if (aiThinkingTimeoutRef.current) {
+        clearTimeout(aiThinkingTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleAiQuestionSubmit = () => {
+    if (!aiQuestion.trim()) {
+      return;
+    }
+
+    if (aiThinkingTimeoutRef.current) {
+      clearTimeout(aiThinkingTimeoutRef.current);
+    }
+
+    setShowAiAnswer(false);
+    setIsAiThinking(true);
+
+    aiThinkingTimeoutRef.current = setTimeout(() => {
+      setIsAiThinking(false);
+      setShowAiAnswer(true);
+    }, 1700);
+  };
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
@@ -1307,6 +1341,117 @@ export default function CompanyAssessmentReport() {
             </motion.div>
           ))}
         </div>
+      </div>
+
+      {/* AI Q&A K VÝSLEDKŮM */}
+      <div
+        style={{
+          background: "white",
+          borderRadius: 16,
+          padding: "28px",
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 2px 8px var(--color-card-shadow)",
+        }}
+      >
+        <div style={{ marginBottom: 16 }}>
+          <h2 style={{ fontSize: 22, fontWeight: 700, color: "#040E3C", margin: "0 0 6px", fontStyle: "italic" }}>
+            {t("companyReport.aiQaTitle")}
+          </h2>
+          <p style={{ fontSize: 14, color: "#6B7280", margin: 0 }}>
+            {t("companyReport.aiQaDesc")}
+          </p>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <label
+            htmlFor="company-ai-question"
+            style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-main)" }}
+          >
+            {t("companyReport.aiQaInputLabel")}
+          </label>
+          <textarea
+            id="company-ai-question"
+            value={aiQuestion}
+            onChange={(e) => setAiQuestion(e.target.value)}
+            rows={3}
+            style={{
+              width: "100%",
+              borderRadius: 8,
+              border: "1px solid var(--color-border-input)",
+              padding: "12px 14px",
+              fontSize: 14,
+              color: "var(--color-text-main)",
+              background: "white",
+              resize: "vertical",
+              fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+            }}
+          />
+          <div>
+            <motion.button
+              type="button"
+              whileHover={{ scale: isAiThinking ? 1 : 1.02 }}
+              transition={HOVER_TRANSITION}
+              onClick={handleAiQuestionSubmit}
+              disabled={isAiThinking || !aiQuestion.trim()}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 10,
+                padding: "10px 18px",
+                borderRadius: 8,
+                border: "none",
+                background: isAiThinking ? "#1F80D9" : "var(--color-primary)",
+                color: "white",
+                fontSize: 14,
+                fontWeight: 700,
+                cursor: isAiThinking ? "default" : "pointer",
+                opacity: !aiQuestion.trim() ? 0.65 : 1,
+              }}
+            >
+              {isAiThinking && <span className="ds-spinner" style={{ width: 14, height: 14 }} />}
+              {isAiThinking ? t("companyReport.aiQaThinkingButton") : t("companyReport.aiQaCta")}
+            </motion.button>
+          </div>
+        </div>
+
+        {isAiThinking && (
+          <div
+            style={{
+              marginTop: 16,
+              padding: "14px 16px",
+              borderRadius: 10,
+              background: "var(--color-breeze)",
+              border: "1px solid var(--color-border)",
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+            }}
+          >
+            <span className="ds-spinner" style={{ width: 16, height: 16 }} />
+            <span style={{ fontSize: 14, color: "var(--color-text-main)", fontWeight: 600 }}>
+              {t("companyReport.aiQaThinkingText")}
+            </span>
+          </div>
+        )}
+
+        {showAiAnswer && (
+          <div
+            style={{
+              marginTop: 16,
+              padding: "18px 20px",
+              borderRadius: 12,
+              background: "#F4F5FA",
+              border: "1px solid var(--color-border)",
+            }}
+          >
+            <div style={{ fontSize: 14, fontWeight: 700, color: "var(--color-text-main)", marginBottom: 8 }}>
+              {t("companyReport.aiQaAnswerTitle")}
+            </div>
+            <p style={{ margin: 0, fontSize: 14, lineHeight: 1.7, color: "#1F2937", whiteSpace: "pre-line" }}>
+              {t("companyReport.aiQaAnswerText")}
+            </p>
+          </div>
+        )}
       </div>
 
       {/* DOPORUČENÁ FIREMNÍ VZDĚLÁVACÍ CESTA */}

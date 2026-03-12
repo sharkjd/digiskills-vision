@@ -1,10 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "export",
-  basePath: "/vize",
-  assetPrefix: "/vize",
-  trailingSlash: true,
   images: {
     unoptimized: true,
   },

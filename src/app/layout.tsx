@@ -20,9 +20,6 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Digiskills",
   description: "Digiskills vzdělávací portál",
-  icons: {
-    icon: "/vize/favicon.png",
-  },
 };
 
 export default function RootLayout({
