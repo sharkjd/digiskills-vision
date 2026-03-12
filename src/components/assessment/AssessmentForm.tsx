@@ -126,8 +126,6 @@ export default function AssessmentForm() {
 
       if (phase !== "form") return;
 
-      const onVisualTaskBlocked = currentStep === ONEDRIVE_VISUAL_STEP && !visualTaskCompleted;
-      if (onVisualTaskBlocked) return;
 
       if (currentStep < TOTAL_STEPS - 1) {
         setDirection(1);
@@ -140,7 +138,7 @@ export default function AssessmentForm() {
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [currentStep, phase, visualTaskCompleted]);
+  }, [currentStep, phase]);
 
   const progress = Math.round((currentStep / (TOTAL_STEPS - 1)) * 100);
 
@@ -169,7 +167,7 @@ export default function AssessmentForm() {
         : -1;
   const currentSection = sectionIndex >= 0 ? SECTIONS[sectionIndex] : null;
   const isVisualTaskStep = currentStep === ONEDRIVE_VISUAL_STEP;
-  const visualTaskCanProceed = !isVisualTaskStep || visualTaskCompleted;
+  const visualTaskCanProceed = true;
   const isReport = phase === "report";
   const isLoading = phase === "loading";
 
@@ -754,7 +752,6 @@ export default function AssessmentForm() {
                 whileHover={{ scale: visualTaskCanProceed ? 1.02 : 1, boxShadow: visualTaskCanProceed ? "0 6px 20px rgba(37, 150, 255, 0.4)" : "none" }}
                 whileTap={{ scale: visualTaskCanProceed ? 0.98 : 1 }}
                 onClick={goNext}
-                disabled={isVisualTaskStep && !visualTaskCompleted}
                 style={{
                   padding: "10px 24px",
                   borderRadius: 10,

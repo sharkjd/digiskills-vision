@@ -1,14 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRecommendedCourses } from "@/context/RecommendedCoursesContext";
 import { getCourseList, type Course } from "@/data/courses";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTranslation } from "@/hooks/useTranslation";
 import { asset } from "@/lib/paths";
+import { CourseReplaceModal } from "@/components/shared/CourseReplaceModal";
 
 const HOVER_TRANSITION = { duration: 0.3, ease: "easeOut" as const };
 
@@ -80,6 +81,14 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
   const { setRecommendedCourses } = useRecommendedCourses();
   const { language } = useLanguage();
   const { t } = useTranslation();
+  const allCourses = getCourseList(language);
+
+  const [selectedCourses, setSelectedCourses] = useState<Course[]>(() => allCourses.slice(0, 6));
+  const [replacingIndex, setReplacingIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    setSelectedCourses(getCourseList(language).slice(0, 6));
+  }, [language]);
 
   const getLevelLabel = (score: number): { label: string; description: string } => {
     if (score < 5) return { label: t("assessmentSummary.digitalNewbie"), description: t("assessmentSummary.digitalNewbieDesc") };
@@ -115,9 +124,23 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
   }));
 
   const handleContinue = () => {
-    setRecommendedCourses(getCourseList(language).slice(0, 6));
+    setRecommendedCourses(selectedCourses);
     router.push("/moje-kurzy");
   };
+
+  const handleReplaceCourse = (index: number, newCourse: Course) => {
+    setSelectedCourses((prev) => {
+      const next = [...prev];
+      next[index] = newCourse;
+      return next;
+    });
+    setReplacingIndex(null);
+  };
+
+  const selectedCourseIds = useMemo(
+    () => new Set(selectedCourses.map((c) => c.id)),
+    [selectedCourses],
+  );
 
   const strongestIndex = userScores.indexOf(Math.max(...userScores));
   const weakestIndex = userScores.indexOf(Math.min(...userScores));
@@ -474,11 +497,28 @@ export default function AssessmentSummary({ formData, SECTIONS }: AssessmentSumm
           {t("assessmentSummary.coursesForYou")}
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
-          {getCourseList(language).slice(0, 3).map((course) => (
-            <CourseCard key={course.id} course={course} />
+          {selectedCourses.map((course, index) => (
+            <CourseCard
+              key={`${course.id}-${index}`}
+              course={course}
+              onReplace={() => setReplacingIndex(index)}
+            />
           ))}
         </div>
       </div>
+
+      {/* MODAL VÝBĚRU NÁHRADY – velké karty s náhledy (ze admin/kurzy) */}
+      <AnimatePresence>
+        {replacingIndex !== null && selectedCourses[replacingIndex] && (
+          <CourseReplaceModal
+            slotIndex={replacingIndex}
+            currentCourse={selectedCourses[replacingIndex]}
+            selectedCourseIds={selectedCourseIds}
+            onSelect={(course) => handleReplaceCourse(replacingIndex, course)}
+            onClose={() => setReplacingIndex(null)}
+          />
+        )}
+      </AnimatePresence>
 
       {/* CTA – Digi Azure #2596FF */}
       <div
@@ -915,7 +955,7 @@ function IndividualRadarChart({
   );
 }
 
-function CourseCard({ course }: { course: Course }) {
+function CourseCard({ course, onReplace }: { course: Course; onReplace?: () => void }) {
   const { t } = useTranslation();
   return (
     <motion.div
@@ -947,6 +987,33 @@ function CourseCard({ course }: { course: Course }) {
           style={{ objectFit: "cover" }}
           sizes="(max-width: 768px) 100vw, 280px"
         />
+        {onReplace && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onReplace();
+            }}
+            style={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 4,
+              padding: "6px 10px",
+              background: "rgba(255,255,255,0.95)",
+              border: "1px solid var(--color-primary)",
+              borderRadius: 8,
+              fontSize: 11,
+              fontWeight: 600,
+              color: "var(--color-primary)",
+              cursor: "pointer",
+            }}
+          >
+            {t("assessmentSummary.replaceCourse")}
+          </button>
+        )}
       </div>
 
       <div style={{ padding: 20, display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>

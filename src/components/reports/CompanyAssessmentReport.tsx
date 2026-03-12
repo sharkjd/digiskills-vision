@@ -451,14 +451,6 @@ const M365_ICONS: Record<string, { icon: string; color: string }> = {
   Copilot: { icon: asset("/logos/Copilot.png"), color: "#2596FF" },
 };
 
-const RECOMMENDED_COURSES_CONFIG = [
-  { id: 2, titleKey: "companyReport.course1Title", descKey: "companyReport.course1Desc", image: asset("/courses/Automatizace.webp"), durationKey: "3", levelKey: "assessmentLevels.advanced", priorityKey: "companyReport.priorityHigh", priorityLevel: "high" as const },
-  { id: 3, titleKey: "companyReport.course2Title", descKey: "companyReport.course2Desc", image: asset("/courses/AI.webp"), durationKey: "1.5", levelKey: "assessmentLevels.beginner", priorityKey: "companyReport.priorityHigh", priorityLevel: "high" as const },
-  { id: 5, titleKey: "companyReport.course3Title", descKey: "companyReport.course3Desc", image: asset("/courses/security.png"), durationKey: "1.5", levelKey: "assessmentLevels.beginner", priorityKey: "companyReport.priorityMedium", priorityLevel: "medium" as const },
-  { id: 4, titleKey: "companyReport.course4Title", descKey: "companyReport.course4Desc", image: asset("/courses/excel.webp"), durationKey: "2.5", levelKey: "assessmentLevels.intermediate", priorityKey: "companyReport.priorityMedium", priorityLevel: "medium" as const },
-  { id: 1, titleKey: "companyReport.course5Title", descKey: "companyReport.course5Desc", image: asset("/courses/teams.webp"), durationKey: "2", levelKey: "assessmentLevels.intermediate", priorityKey: "companyReport.priorityMedium", priorityLevel: "medium" as const },
-];
-
 export default function CompanyAssessmentReport() {
   const { t, language } = useTranslation();
   const [selectedDepartment, setSelectedDepartment] = useState<DepartmentKey>("all");
@@ -531,17 +523,7 @@ export default function CompanyAssessmentReport() {
     { short: t("companyReport.legendComm"), icon: "💬", color: "#EDE9FE", iconBg: "#6366F1" },
     { short: t("companyReport.legendSecurity"), icon: "✓", color: "#FEF3C7", iconBg: "#F59E0B" },
   ];
-  const RECOMMENDED_COURSES = RECOMMENDED_COURSES_CONFIG.map((c) => ({
-    id: c.id,
-    title: t(c.titleKey),
-    description: t(c.descKey),
-    image: c.image,
-    duration: c.durationKey,
-    level: t(c.levelKey),
-    priority: t(c.priorityKey),
-    priorityLevel: c.priorityLevel,
-  }));
-  
+
   const LEVEL_GROUPS_COLORS = ["#EF4444", "#F59E0B", "#2596FF", "#77F9D9"];
   const LEVEL_GROUPS = LEVEL_GROUP_KEYS.map((key, i) => ({
     name: t(key),
@@ -1454,54 +1436,6 @@ export default function CompanyAssessmentReport() {
         )}
       </div>
 
-      {/* DOPORUČENÁ FIREMNÍ VZDĚLÁVACÍ CESTA */}
-      <div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-          <div>
-            <h2 style={{ fontSize: 22, fontWeight: 700, color: "#040E3C", margin: "0 0 6px", fontStyle: "italic" }}>
-              {t("companyReport.strategicCourseSelection")}
-            </h2>
-            <p style={{ fontSize: 14, color: "#6B7280", margin: 0 }}>
-              {t("companyReport.strategicCourseDesc")}
-            </p>
-          </div>
-          <motion.div style={{ display: "inline-block" }} whileHover={{ scale: 1.02 }} transition={HOVER_TRANSITION}>
-            <Link
-              href="/admin/kurzy"
-              style={{
-                display: "inline-block",
-                padding: "10px 20px",
-                background: "transparent",
-                border: "2px solid #2596FF",
-                borderRadius: 8,
-                color: "#2596FF",
-                fontSize: 14,
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: "all 0.15s",
-                textDecoration: "none",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#2596FF";
-                e.currentTarget.style.color = "white";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "transparent";
-                e.currentTarget.style.color = "#2596FF";
-              }}
-            >
-              {t("companyReport.editSelectionAdmin")}
-            </Link>
-          </motion.div>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
-          {RECOMMENDED_COURSES.map((course, index) => (
-            <CompanyCourseCard key={course.id} course={course} index={index} />
-          ))}
-        </div>
-      </div>
-
       {/* CTA */}
       <div
         style={{
@@ -2152,136 +2086,5 @@ function CompanyRadarChart({
         );
       })}
     </div>
-  );
-}
-
-function CompanyCourseCard({
-  course,
-  index,
-}: {
-  course: {
-    id: number;
-    title: string;
-    description: string;
-    image: string;
-    duration: string;
-    level: string;
-    priority: string;
-    priorityLevel: "high" | "medium";
-  };
-  index: number;
-}) {
-  const { t } = useTranslation();
-  return (
-    <motion.div
-      whileHover={{ y: -8, scale: 1.02, boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)" }}
-      transition={HOVER_TRANSITION}
-      style={{
-        background: "white",
-        borderRadius: 16,
-        overflow: "hidden",
-        border: "1px solid #E5E7EB",
-        cursor: "pointer",
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        position: "relative",
-      }}
-    >
-      {/* Priority Badge */}
-      <div
-        style={{
-          position: "absolute",
-          top: 12,
-          left: 12,
-          background: course.priorityLevel === "high" ? "#EF4444" : "#F59E0B",
-          color: "white",
-          padding: "4px 10px",
-          borderRadius: 6,
-          fontSize: 11,
-          fontWeight: 700,
-          zIndex: 10,
-        }}
-      >
-        #{index + 1} • {course.priority}
-      </div>
-
-      <div
-        style={{
-          height: 140,
-          flexShrink: 0,
-          position: "relative",
-          background: "#F1F5F9",
-        }}
-      >
-        <Image
-          src={course.image}
-          alt={course.title}
-          fill
-          style={{ objectFit: "cover" }}
-          sizes="(max-width: 768px) 100vw, 280px"
-        />
-      </div>
-
-      <div style={{ padding: 20, display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
-        <div style={{ flex: 1 }}>
-          <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-            <span
-              style={{
-                fontSize: 11,
-                fontWeight: 600,
-                padding: "4px 8px",
-                background: "#F3F4F6",
-                borderRadius: 6,
-                color: "#6B7280",
-              }}
-            >
-              {course.duration}
-            </span>
-            <span
-              style={{
-                fontSize: 11,
-                fontWeight: 600,
-                padding: "4px 8px",
-                background: "rgba(37, 150, 255, 0.15)",
-                borderRadius: 6,
-                color: "#1F80D9",
-              }}
-            >
-              {course.level}
-            </span>
-          </div>
-
-          <h3 style={{ fontSize: 18, fontWeight: 700, color: "#040E3C", margin: "0 0 8px", lineHeight: 1.3 }}>
-            {course.title}
-          </h3>
-          <p style={{ fontSize: 13, color: "#6B7280", margin: 0, lineHeight: 1.5 }}>
-            {course.description}
-          </p>
-        </div>
-
-        <motion.button
-          whileHover={{ boxShadow: "0 4px 12px rgba(4,14,60,0.25)" }}
-          transition={HOVER_TRANSITION}
-          style={{
-            width: "100%",
-            marginTop: 16,
-            padding: "12px 20px",
-            background: "#040E3C",
-            color: "white",
-            border: "none",
-            borderRadius: 10,
-            fontSize: 14,
-            fontWeight: 700,
-            cursor: "pointer",
-            flexShrink: 0,
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "#2596FF")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "#040E3C")}
-        >
-          {t("companyReport.assignToEmployees")}
-        </motion.button>
-      </div>
-    </motion.div>
   );
 }

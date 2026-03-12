@@ -535,45 +535,78 @@ export default function AssessmentChatbot() {
                         onChange={handleImageSelect}
                         style={{ display: "none" }}
                       />
-                      
                       {!selectedImage ? (
-                        <motion.div
-                          whileHover={{ scale: 1.01, borderColor: "var(--color-primary)" }}
-                          whileTap={{ scale: 0.99 }}
-                          transition={HOVER_TRANSITION}
-                          onClick={() => fileInputRef.current?.click()}
-                          style={{
-                            padding: "32px 24px",
-                            borderRadius: 12,
-                            border: "2px dashed var(--color-border)",
-                            background: "var(--color-background)",
-                            cursor: "pointer",
-                            textAlign: "center",
-                          }}
-                        >
+                        <>
                           <motion.div
-                            whileHover={{ y: -4 }}
+                            whileHover={{ scale: 1.01, borderColor: "var(--color-primary)" }}
+                            whileTap={{ scale: 0.99 }}
                             transition={HOVER_TRANSITION}
+                            onClick={() => fileInputRef.current?.click()}
                             style={{
-                              width: 56,
-                              height: 56,
-                              borderRadius: 14,
-                              background: "linear-gradient(135deg, rgba(37, 150, 255, 0.15) 0%, rgba(119, 249, 217, 0.1) 100%)",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              margin: "0 auto 12px",
+                              padding: "32px 24px",
+                              borderRadius: 12,
+                              border: "2px dashed var(--color-border)",
+                              background: "var(--color-background)",
+                              cursor: "pointer",
+                              textAlign: "center",
                             }}
                           >
-                            <Upload size={24} color="var(--color-primary)" strokeWidth={2} />
+                            <motion.div
+                              whileHover={{ y: -4 }}
+                              transition={HOVER_TRANSITION}
+                              style={{
+                                width: 56,
+                                height: 56,
+                                borderRadius: 14,
+                                background: "linear-gradient(135deg, rgba(37, 150, 255, 0.15) 0%, rgba(119, 249, 217, 0.1) 100%)",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                margin: "0 auto 12px",
+                              }}
+                            >
+                              <Upload size={24} color="var(--color-primary)" strokeWidth={2} />
+                            </motion.div>
+                            <div style={{ fontSize: 15, fontWeight: 600, color: "var(--color-text-main)", marginBottom: 4 }}>
+                              {t("assessmentChatbot.visualTask.uploadHint")}
+                            </div>
+                            <div style={{ fontSize: 13, color: "var(--color-text-secondary)" }}>
+                              PNG, JPG nebo GIF
+                            </div>
                           </motion.div>
-                          <div style={{ fontSize: 15, fontWeight: 600, color: "var(--color-text-main)", marginBottom: 4 }}>
-                            {t("assessmentChatbot.visualTask.uploadHint")}
+                          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                            <motion.button
+                              type="button"
+                              whileHover={{ scale: 1.02, boxShadow: "0 6px 20px rgba(37, 150, 255, 0.4)" }}
+                              whileTap={{ scale: 0.98 }}
+                              onClick={() => {
+                                const DEMO_SCORE = 7;
+                                const newAnswers = [...answers, DEMO_SCORE];
+                                setAnswers(newAnswers);
+                                advanceToNextStep(newAnswers);
+                              }}
+                              style={{
+                                padding: "10px 24px",
+                                borderRadius: 10,
+                                border: "none",
+                                background: "#2596FF",
+                                color: "white",
+                                fontSize: 14,
+                                fontWeight: 700,
+                                cursor: "pointer",
+                                boxShadow: "0 4px 12px rgba(37, 150, 255, 0.3)",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 8,
+                              }}
+                            >
+                              {t("assessment.form.next")}
+                              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                                <path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                              </svg>
+                            </motion.button>
                           </div>
-                          <div style={{ fontSize: 13, color: "var(--color-text-secondary)" }}>
-                            PNG, JPG nebo GIF
-                          </div>
-                        </motion.div>
+                        </>
                       ) : (
                         <motion.div
                           initial={{ opacity: 0, scale: 0.95 }}
